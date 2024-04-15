@@ -42,5 +42,5 @@ app.use("/api/bon-sorties-details", bonSortiesDetails_router_1.default);
 app.use("/api/facture-vente-details", factureVenteDetail_router_1.default);
 var port = 443;
 app.listen(port, function () {
-    console.log("Website served on http://ids-gescom.onrender.com:" + port);
+    console.log("Website served on http://gescombackend.onrender.com:" + port);
 });
