@@ -1,4 +1,4 @@
-import { BonSortiesModel } from './../models/bonSortie.model';
+import { BonSortiesModel } from '../models/bonSortie.model';
 import  asyncHandler  from 'express-async-handler';
 import { Router } from "express";
 import { PointDeVenteModel } from '../models/pointDeVente.model';

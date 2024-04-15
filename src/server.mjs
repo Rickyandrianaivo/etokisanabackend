@@ -3,20 +3,20 @@ dotenv.config();
 
 import express from "express";
 import cors from "cors";
-import articleRouter from "./routers/article.router";
-import bonEntreesRouter from "./routers/bonEntrees.router";
-import { dbConnect } from './configs/database.config';
-import userRouter from './routers/user.router';
-import pointDeVenteRouter from './routers/pointDeVente.router';
-import mouvementStockRouter from './routers/mouvementStock.router';
-import bonSortiesRouter from './routers/bonSorties.router';
-import inventaireRouter from './routers/inventaire.router';
-import factureVenteRouter from './routers/factureVente.router';
-import factureVenteDetailRouter from './routers/factureVenteDetail.router';
-import bonEntreesDetailsRouter from './routers/bonEntreesDetails.router';
-import bonSortiesDetailsRouter from './routers/bonSortiesDetails.router';
-import inventaireDetailsRouter from './routers/inventaireDetails.router';
-import clientRouter from './routers/client.router';
+import articleRouter from "./routers/article.router.ts/index.js";
+import bonEntreesRouter from "./routers/bonEntrees.router.ts/index.js";
+import { dbConnect } from './configs/database.config.ts';
+import userRouter from './routers/user.router.ts/index.js';
+import pointDeVenteRouter from './routers/pointDeVente.router.ts/index.js';
+import mouvementStockRouter from './routers/mouvementStock.router.ts/index.js';
+import bonSortiesRouter from './routers/bonSorties.router.ts/index.js';
+import inventaireRouter from './routers/inventaire.router.ts/index.js';
+import factureVenteRouter from './routers/factureVente.router/index.js';
+import factureVenteDetailRouter from './routers/factureVenteDetail.router.ts/index.js';
+import bonEntreesDetailsRouter from './routers/bonEntreesDetails.router.ts/index.js';
+import bonSortiesDetailsRouter from './routers/bonSortiesDetails.router.ts/index.js';
+import inventaireDetailsRouter from './routers/inventaireDetails.router.ts/index.js';
+import clientRouter from './routers/client.router.mjs';
 dbConnect();
 
 
