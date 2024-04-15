@@ -1,7 +1,5 @@
-import { FactureVente } from './../../../frontend/src/app/shared/models/FactureVente';
 import { Router } from "express";
 import asyncHandler from "express-async-handler";
-import { sample_articles, sample_categories } from "../data";
 import { ArticleModel } from "../models/article.models";
 import { FactureVenteModel } from "../models/factureVente.model";
 

@@ -1,19 +1,19 @@
 import { Router } from "express";
 import asyncHandler from "express-async-handler";
-import { sample_articles, sample_categories } from "../data";
+// import { sample_articles, sample_categories } from "../data";
 import { ArticleModel } from "../models/article.models";
 
 const router = Router();
 
-router.get("/seed",asyncHandler(async(req, res) =>{
-    const articleCount = await ArticleModel.countDocuments();
-    if(articleCount > 0){
-        res.send("Article seed is already done");
-        return;
-    }
-    await ArticleModel.create(sample_articles);
-    res.send("seed is done!");
-}))
+// router.get("/seed",asyncHandler(async(req, res) =>{
+//     const articleCount = await ArticleModel.countDocuments();
+//     if(articleCount > 0){
+//         res.send("Article seed is already done");
+//         return;
+//     }
+//     await ArticleModel.create(sample_articles);
+//     res.send("seed is done!");
+// }))
 
 router.get("/", asyncHandler(async(req, res) =>{
     const articles = await ArticleModel.find();

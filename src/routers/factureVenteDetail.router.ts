@@ -1,9 +1,7 @@
-import { MouvementStock } from './../../../frontend/src/app/shared/models/MouvementStock';
 import { Router } from "express";
 import asyncHandler from "express-async-handler";
 import { FactureVenteDetails, FactureVenteDetailsModel } from '../models/factureVenteDetails.model';
 import { PointDeVenteModel } from "../models/pointDeVente.model";
-import { FactureVenteModel } from "../models/factureVente.model";
 import { ArticleModel } from '../models/article.models';
 
 const router = Router();

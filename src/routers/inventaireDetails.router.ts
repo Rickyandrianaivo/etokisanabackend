@@ -1,4 +1,3 @@
-import { Article } from './../models/article.models';
 import { Router } from "express";
 import  asyncHandler  from 'express-async-handler';
 import { InventaireModel } from '../models/inventaire.model';

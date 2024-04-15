@@ -1,4 +1,3 @@
-import { IUserRegister } from './../../../frontend/src/app/shared/Interfaces/IUserRegister';
 import { Router } from "express";
 import asyncHandler from "express-async-handler";
 import { User, UserModel } from "../models/user.models";
@@ -11,7 +10,6 @@ import { BonEntreeDetailsModel, BonEntreeDetailsSchema } from '../models/bonEntr
 import { BonSortiesDetailsModel } from '../models/bonSortieDetails.model';
 import { InventaireDetailModel } from '../models/inventaireDetail.model';
 import { InventaireModel } from '../models/inventaire.model';
-import { FactureVenteDetails } from '../../../frontend/src/app/shared/models/FactureVenteDetails';
 import { FactureVenteDetailsModel } from '../models/factureVenteDetails.model';
 import { MouvementStockModel } from '../models/mouvementStock.model';
 import { PointDeVenteModel } from '../models/pointDeVente.model';
