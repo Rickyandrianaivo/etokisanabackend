@@ -1,6 +1,9 @@
 {
     "compilerOptions": {
-        "module": "CommonJS",
+        // "module": "CommonJS",
+        "module": "ES2015",
+        "target": "ES2015",
+        "sourceMap": true,
         "moduleResolution": "node",
         "strict": true,
         "outDir": "./built",
