@@ -1,7 +1,10 @@
-import { Schema, model } from "mongoose";
-export const FactureVenteDetailsSchema = new Schema({
-    pointDeVente: { type: Schema.Types.ObjectId, ref: "pointDeVente", required: true },
-    article: { type: Schema.Types.ObjectId, ref: 'article', required: true },
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FactureVenteDetailsModel = exports.FactureVenteDetailsSchema = void 0;
+var mongoose_1 = require("mongoose");
+exports.FactureVenteDetailsSchema = new mongoose_1.Schema({
+    pointDeVente: { type: mongoose_1.Schema.Types.ObjectId, ref: "pointDeVente", required: true },
+    article: { type: mongoose_1.Schema.Types.ObjectId, ref: 'article', required: true },
     quantite: { type: Number, required: true },
     prixVenteTTC: { type: Number, required: true },
     remise: { type: Number, required: true },
@@ -16,5 +19,5 @@ export const FactureVenteDetailsSchema = new Schema({
         virtuals: true
     }
 });
-export const FactureVenteDetailsModel = model('factureVenteDetail', FactureVenteDetailsSchema);
+exports.FactureVenteDetailsModel = (0, mongoose_1.model)('factureVenteDetail', exports.FactureVenteDetailsSchema);
 //# sourceMappingURL=factureVenteDetails.model.js.map

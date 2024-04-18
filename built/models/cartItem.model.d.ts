@@ -23,7 +23,7 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Schema } from "mongoose";
-import { Article } from "./article.models";
+import { Article } from "./article.model";
 export interface CartItem {
     article: Article;
     quantity: number;

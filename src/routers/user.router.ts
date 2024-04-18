@@ -1,6 +1,6 @@
 import { Router } from "express";
 import asyncHandler from "express-async-handler";
-import { User, UserModel } from "../models/user.models";
+import { User, UserModel } from "../models/user.model";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { FactureVenteModel } from '../models/factureVente.model';

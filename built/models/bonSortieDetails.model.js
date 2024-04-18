@@ -1,6 +1,9 @@
-import { Schema, model } from "mongoose";
-export const BonSortiesDetailsSchema = new Schema({
-    article: { type: Schema.Types.ObjectId, ref: 'article', required: true },
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BonSortiesDetailsModel = exports.BonSortiesDetailsSchema = void 0;
+var mongoose_1 = require("mongoose");
+exports.BonSortiesDetailsSchema = new mongoose_1.Schema({
+    article: { type: mongoose_1.Schema.Types.ObjectId, ref: 'article', required: true },
     quantiteCommande: { type: Number, required: true },
     quantiteSortie: { type: Number, required: true },
     prixUnitaireVenteHT: { type: Number, required: true },
@@ -17,5 +20,5 @@ export const BonSortiesDetailsSchema = new Schema({
     },
     timestamps: true
 });
-export const BonSortiesDetailsModel = model('bonSortiesDetail', BonSortiesDetailsSchema);
+exports.BonSortiesDetailsModel = (0, mongoose_1.model)('bonSortiesDetail', exports.BonSortiesDetailsSchema);
 //# sourceMappingURL=bonSortieDetails.model.js.map

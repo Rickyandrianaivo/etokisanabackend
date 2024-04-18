@@ -1,5 +1,8 @@
-import { Schema, model } from "mongoose";
-export const FactureVenteSchema = new Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FactureVenteModel = exports.FactureVenteSchema = void 0;
+var mongoose_1 = require("mongoose");
+exports.FactureVenteSchema = new mongoose_1.Schema({
     numeroDocument: { type: String, required: true },
     date: { type: Date, required: true },
     numeroClient: { type: String },
@@ -21,5 +24,5 @@ export const FactureVenteSchema = new Schema({
         virtuals: true
     }
 });
-export const FactureVenteModel = model('factureVente', FactureVenteSchema);
+exports.FactureVenteModel = (0, mongoose_1.model)('factureVente', exports.FactureVenteSchema);
 //# sourceMappingURL=factureVente.model.js.map

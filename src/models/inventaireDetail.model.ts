@@ -1,6 +1,6 @@
 import { Schema, Types, model } from "mongoose";
 import { FamilleArticle, FamilleArticleSchema } from "./familleArticle.model";
-import { Article, ArticleSchema } from "./article.models";
+import { Article, ArticleSchema } from "./article.model";
 export interface InventaireDetail{
     // id                      : string,
     article                 : Types.ObjectId,

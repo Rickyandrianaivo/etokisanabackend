@@ -1,6 +1,9 @@
-import { Schema, model } from "mongoose";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.InventaireModel = exports.InventaireSchema = void 0;
+var mongoose_1 = require("mongoose");
 ;
-export const InventaireSchema = new Schema({
+exports.InventaireSchema = new mongoose_1.Schema({
     numeroDocument: { type: String, required: true },
     date: { type: Date, required: true },
     typeDocument: { type: String, required: true },
@@ -15,5 +18,5 @@ export const InventaireSchema = new Schema({
         virtuals: true
     }
 });
-export const InventaireModel = model('inventaire', InventaireSchema);
+exports.InventaireModel = (0, mongoose_1.model)('inventaire', exports.InventaireSchema);
 //# sourceMappingURL=inventaire.model.js.map

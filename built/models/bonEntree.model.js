@@ -1,5 +1,8 @@
-import { Schema, model } from "mongoose";
-export const BonEntreeSchema = new Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BonEntreeModel = exports.BonEntreeSchema = void 0;
+var mongoose_1 = require("mongoose");
+exports.BonEntreeSchema = new mongoose_1.Schema({
     numeroDocument: { type: String },
     date: { type: Date },
     typeDocument: { type: String, default: "Entrée" },
@@ -15,5 +18,5 @@ export const BonEntreeSchema = new Schema({
         virtuals: true
     }
 });
-export const BonEntreeModel = model('bonEntree', BonEntreeSchema);
+exports.BonEntreeModel = (0, mongoose_1.model)('bonEntree', exports.BonEntreeSchema);
 //# sourceMappingURL=bonEntree.model.js.map

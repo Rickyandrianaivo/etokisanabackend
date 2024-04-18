@@ -4,7 +4,7 @@ import { Inventaire, InventaireModel } from '../models/inventaire.model';
 import { InventaireDetail, InventaireDetailModel } from "../models/inventaireDetail.model";
 import { sample_inventaireDetails } from "../Inventaire_data";
 import { PointDeVenteModel } from "../models/pointDeVente.model";
-import { ArticleModel } from "../models/article.models";
+import { ArticleModel } from "../models/article.model";
 
 const router = Router();
 

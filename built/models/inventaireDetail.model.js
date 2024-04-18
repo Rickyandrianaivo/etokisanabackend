@@ -1,6 +1,9 @@
-import { Schema, model } from "mongoose";
-export const InventaireDetailSchema = new Schema({
-    article: { type: Schema.Types.ObjectId, ref: "article", required: true },
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.InventaireDetailModel = exports.InventaireDetailSchema = void 0;
+var mongoose_1 = require("mongoose");
+exports.InventaireDetailSchema = new mongoose_1.Schema({
+    article: { type: mongoose_1.Schema.Types.ObjectId, ref: "article", required: true },
     stockTheorique: { type: Number, required: true },
     valeurStockTheorique: { type: Number, required: true },
     stockPhysique: { type: Number, required: true },
@@ -17,5 +20,5 @@ export const InventaireDetailSchema = new Schema({
         virtuals: true
     }
 });
-export const InventaireDetailModel = model('inventaireDetail', InventaireDetailSchema);
+exports.InventaireDetailModel = (0, mongoose_1.model)('inventaireDetail', exports.InventaireDetailSchema);
 //# sourceMappingURL=inventaireDetail.model.js.map

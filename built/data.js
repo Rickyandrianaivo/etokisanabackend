@@ -1,4 +1,7 @@
-export const sample_articles = [
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.pointDeVente = exports.sample_bonEntrees = exports.sample_categories = exports.sample_articles = void 0;
+exports.sample_articles = [
     {
         codeSociete: "101",
         depot: "Ambohibao",
@@ -39435,7 +39438,7 @@ export const sample_articles = [
         prixUnitaireVenteTTC: 48600
     }
 ];
-export const sample_categories = [
+exports.sample_categories = [
     { famille: "ACCESSOIRES DES TENUES" },
     { famille: "AUTRES" },
     { famille: "COIFFE ET PROTECTION DE LA TETE" },
@@ -39449,7 +39452,7 @@ export const sample_categories = [
     { famille: "TENUE DE SPORT" },
     { famille: "TENUE DE TRAVAIL" },
 ];
-export const sample_bonEntrees = [
+exports.sample_bonEntrees = [
     {
         numeroDocument: "BE00000057",
         date: new Date('June 06, 2023 12:00:00'),
@@ -39488,7 +39491,7 @@ export const sample_bonEntrees = [
         bonEntreesDetails: []
     }
 ];
-export const pointDeVente = {
+exports.pointDeVente = {
     codeSociete: "101",
     codeFournisseur: "01",
     nomPV: "EMIV",

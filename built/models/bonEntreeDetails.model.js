@@ -1,6 +1,9 @@
-import { Schema, model } from "mongoose";
-export const BonEntreeDetailsSchema = new Schema({
-    article: { type: Schema.Types.ObjectId, ref: 'article', required: true },
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BonEntreeDetailsModel = exports.BonEntreeDetailsSchema = void 0;
+var mongoose_1 = require("mongoose");
+exports.BonEntreeDetailsSchema = new mongoose_1.Schema({
+    article: { type: mongoose_1.Schema.Types.ObjectId, ref: 'article', required: true },
     quantiteCommande: { type: Number, required: true },
     quantiteEntree: { type: Number, required: true },
     montantNetHT: { type: Number, required: true },
@@ -16,5 +19,5 @@ export const BonEntreeDetailsSchema = new Schema({
     },
     timestamps: true
 });
-export const BonEntreeDetailsModel = model('bonentreedetail', BonEntreeDetailsSchema);
+exports.BonEntreeDetailsModel = (0, mongoose_1.model)('bonentreedetail', exports.BonEntreeDetailsSchema);
 //# sourceMappingURL=bonEntreeDetails.model.js.map

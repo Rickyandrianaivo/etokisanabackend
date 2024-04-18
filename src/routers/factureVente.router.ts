@@ -1,6 +1,6 @@
 import { Router } from "express";
 import asyncHandler from "express-async-handler";
-import { ArticleModel } from "../models/article.models";
+import { ArticleModel } from "../models/article.model";
 import { FactureVenteModel } from "../models/factureVente.model";
 
 const router = Router();

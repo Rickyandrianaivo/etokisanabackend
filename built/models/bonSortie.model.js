@@ -1,5 +1,8 @@
-import { Schema, model } from "mongoose";
-export const BonSortiesSchema = new Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BonSortiesModel = exports.BonSortiesSchema = void 0;
+var mongoose_1 = require("mongoose");
+exports.BonSortiesSchema = new mongoose_1.Schema({
     numeroDocument: { type: String, required: true },
     date: { type: Date, required: true },
     typeDocument: { type: String, default: "Entrée" },
@@ -15,5 +18,5 @@ export const BonSortiesSchema = new Schema({
         virtuals: true
     }
 });
-export const BonSortiesModel = model('bonSorties', BonSortiesSchema);
+exports.BonSortiesModel = (0, mongoose_1.model)('bonSorties', exports.BonSortiesSchema);
 //# sourceMappingURL=bonSortie.model.js.map

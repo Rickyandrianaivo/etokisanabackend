@@ -2,7 +2,7 @@ import  asyncHandler  from 'express-async-handler';
 import { Router } from "express";
 import { PointDeVenteModel } from '../models/pointDeVente.model';
 import { BonEntreeDetails, BonEntreeDetailsModel } from '../models/bonEntreeDetails.model';
-import { ArticleModel } from '../models/article.models';
+import { ArticleModel } from '../models/article.model';
 
 const router = Router();
 

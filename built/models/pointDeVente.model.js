@@ -1,5 +1,8 @@
-import { Schema, model } from "mongoose";
-export const PointDeVenteSchema = new Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PointDeVenteModel = exports.PointDeVenteSchema = void 0;
+var mongoose_1 = require("mongoose");
+exports.PointDeVenteSchema = new mongoose_1.Schema({
     codeSociete: { type: String, required: true },
     codeFournisseur: { type: String, required: true },
     nomPV: { type: String, required: true },
@@ -36,5 +39,5 @@ export const PointDeVenteSchema = new Schema({
         virtuals: true
     }
 });
-export const PointDeVenteModel = model('PointDeVente', PointDeVenteSchema);
+exports.PointDeVenteModel = (0, mongoose_1.model)('PointDeVente', exports.PointDeVenteSchema);
 //# sourceMappingURL=pointDeVente.model.js.map

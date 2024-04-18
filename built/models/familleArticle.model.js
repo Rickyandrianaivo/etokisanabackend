@@ -1,6 +1,9 @@
-import { Schema, model } from "mongoose";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FamilleModel = exports.FamilleArticleSchema = void 0;
+var mongoose_1 = require("mongoose");
 ;
-export const FamilleArticleSchema = new Schema({
+exports.FamilleArticleSchema = new mongoose_1.Schema({
     famille: { type: String, required: true }
 }, {
     timestamps: true,
@@ -11,5 +14,5 @@ export const FamilleArticleSchema = new Schema({
         virtuals: true
     }
 });
-export const FamilleModel = model('famille', FamilleArticleSchema);
+exports.FamilleModel = (0, mongoose_1.model)('famille', exports.FamilleArticleSchema);
 //# sourceMappingURL=familleArticle.model.js.map

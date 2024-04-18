@@ -1,8 +1,11 @@
-import { Schema, model } from "mongoose";
-export const MouvementStockSchema = new Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MouvementStockModel = exports.MouvementStockSchema = void 0;
+var mongoose_1 = require("mongoose");
+exports.MouvementStockSchema = new mongoose_1.Schema({
     numeroLigne: { type: Number, required: true },
     date: { type: Date, required: true },
-    article: { type: Schema.Types.ObjectId, ref: 'article', required: true },
+    article: { type: mongoose_1.Schema.Types.ObjectId, ref: 'article', required: true },
     numeroDocument: { type: String, required: true },
     typeDocument: { type: String, required: true },
     sousTypeDocument: { type: String },
@@ -21,5 +24,5 @@ export const MouvementStockSchema = new Schema({
         virtuals: true
     }
 });
-export const MouvementStockModel = model('mouvementStock', MouvementStockSchema);
+exports.MouvementStockModel = (0, mongoose_1.model)('mouvementStock', exports.MouvementStockSchema);
 //# sourceMappingURL=mouvementStock.model.js.map

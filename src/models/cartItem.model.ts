@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-import { Article, ArticleSchema } from "./article.models";
+import { Article, ArticleSchema } from "./article.model";
 
 export interface CartItem{
     article : Article
