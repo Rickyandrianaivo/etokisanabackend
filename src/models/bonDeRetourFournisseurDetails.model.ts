@@ -36,7 +36,7 @@ export interface IBonDeRetourFournisseurDetails {
     TypeDocument        : string,
     Doc_noReference1    : string,
     Remise              : number,
-    RemiseMontant       : number ,
+    RemiseMontant       : number,
     ReferenceDateEntree : string,
     Famille             : string,
     SousFamille         : string

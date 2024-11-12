@@ -3,20 +3,20 @@ dotenv.config();
 
 import express from "express";
 import cors from "cors";
-import articleRouter from './routers/article.router.ts';
-import userRouter from './routers/user.router.ts';
-import pointDeVenteRouter from './routers/pointDeVente.router.ts';
-import mouvementStockRouter from './routers/mouvementStock.router.ts';
-import bonSortiesRouter from './routers/bonSorties.router.ts';
-import inventaireRouter from './routers/inventaire.router.ts';
-import factureVenteRouter from './routers/factureVente.router.ts';
-import factureVenteDetailRouter from './routers/factureVenteDetail.router.ts';
-import bonEntreesDetailsRouter from './routers/bonEntreesDetails.router.ts';
-import bonSortiesDetailsRouter from './routers/bonSortiesDetails.router.ts';
-import inventaireDetailsRouter from './routers/inventaireDetails.router.ts';
-import clientRouter from './routers/client.router.ts';
-import bonEntreesRouter from './routers/bonEntrees.router.ts';
-import { dbConnect } from './configs/database.config.ts';
+import articleRouter from './routers/article.router.js';
+import userRouter from './routers/user.router.js';
+import pointDeVenteRouter from './routers/pointDeVente.router.js';
+import mouvementStockRouter from './routers/mouvementStock.router.js';
+import bonSortiesRouter from './routers/bonSorties.router.js';
+import inventaireRouter from './routers/inventaire.router.js';
+import factureVenteRouter from './routers/factureVente.router.js';
+import factureVenteDetailRouter from './routers/factureVenteDetail.router.js';
+import bonEntreesDetailsRouter from './routers/bonEntreesDetails.router.js';
+import bonSortiesDetailsRouter from './routers/bonSortiesDetails.router.js';
+import inventaireDetailsRouter from './routers/inventaireDetails.router.js';
+import clientRouter from './routers/client.router.js';
+import bonEntreesRouter from './routers/bonEntrees.router.js';
+import { dbConnect } from './configs/database.config.js';
 dbConnect();
 
 

@@ -12,6 +12,7 @@
         "moduleResolution": "node",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+        "allowImportingTsExtensions": true,
     },
     "include": ["src/**/*"],
 }
