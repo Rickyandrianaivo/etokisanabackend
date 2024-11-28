@@ -128,31 +128,30 @@ router.post("passwordReset/",asyncHandler(async(req,res)=>{
     const {id,token,password} = req.body;
      resetPassword(id,token,password)
  }))
-router.post("requestResetPwd",asyncHandler(async(req,res)=>{
+router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
     const {email,userId} = req.body;
-    console.log(email+ " " + userId)
-    // const user = await UserModel.findOne({userEmail : email})
+    // console.log(email+ " " + userId)
+    const user = await UserModel.findOne({userEmail : email})
 
-    // if (!user) {
-    //     throw new Error("L'utilisateur n'existe pas")
-    // }
-    // let token = await TokenModel.findOne({ _id: userId });
-    // if (token) { 
-    //       await token.deleteOne()
-    // };
-    // let resetToken = randomBytes(32).toString("hex");
-    // const hash = await bcrypt.hash(resetToken, Number(bcryptSalt));
+    if (!user) {
+        throw new Error("L'utilisateur n'existe pas")
+    }
+    let token = await TokenModel.findOne({ _id: userId });
+    if (token) { 
+          await token.deleteOne()
+    };
+    let resetToken = randomBytes(32).toString("hex");
+    const hash = await bcrypt.hash(resetToken, Number(bcryptSalt));
     
-    //     await new TokenModel({
-    //       id: user._id,
-    //       token: hash,
-    //       createdAt: Date.now(),
-    //     }).save();
+        await new TokenModel({
+          id: user._id,
+          token: hash,
+          createdAt: Date.now(),
+        }).save();
         
-    //     const link = `${clientURL}/passwordReset?token=${resetToken}&id=${user._id}`;
-    //     sendEmail(user.userEmail,"Password Reset Request",{name: user.userName,link: link},"./template/requestResetPassword.handlebars");
-        // res.send(link);
-        res.send(email)
+        const link = `${clientURL}/passwordReset?token=${resetToken}&id=${user._id}`;
+        sendEmail(user.userEmail,"Password Reset Request",{name: user.userName,link: link},"./template/requestResetPassword.handlebars");
+        res.send(link);
 }))
 
 router.get("", asyncHandler(async(req, res) => {
@@ -166,7 +165,7 @@ router.get("", asyncHandler(async(req, res) => {
 // }))
 router.get("/email/:email", asyncHandler(async(req, res) => {
     const userEmail = req.params['email'];
-    const user = await UserModel.find({userEmail : userEmail});
+    const user = await UserModel.findOne({userEmail : userEmail});
     res.send(user);
 }))
 
