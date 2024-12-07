@@ -15,7 +15,9 @@ const logger = winston.createLogger({
     export const sendEmail = async (email : string , subject : string , payload : any, template : string) => {
        
         const transporter = nodemailer.createTransport({
-        service: process.env.MAIL_HOST,
+        host: process.env.MAIL_HOST,
+        port: 465,
+        secure : true,// true for port 465, false for others
         auth: {
             user: process.env.EMAIL_USERNAME,
             pass: process.env.EMAIL_PASSWORD
