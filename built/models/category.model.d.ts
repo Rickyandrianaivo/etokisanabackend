@@ -23,22 +23,14 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Schema } from "mongoose";
-export interface Product {
-    productName: string;
-    productDescription: string;
-    productPrice: number;
-    productCategory: string;
-    productUnite: string;
-    productStock: number;
-    productState: string;
-    productSource: string;
-    productOwner: string;
+export interface ICategory {
+    CatName: string;
 }
-export declare const ProductSchema: Schema<Product, import("mongoose").Model<Product, any, any, any, import("mongoose").Document<unknown, any, Product> & Product & {
+export declare const CategorySchema: Schema<ICategory, import("mongoose").Model<ICategory, any, any, any, import("mongoose").Document<unknown, any, ICategory> & ICategory & {
     _id: import("mongoose").Types.ObjectId;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Product, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<Product>> & import("mongoose").FlatRecord<Product> & {
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, ICategory, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<ICategory>> & import("mongoose").FlatRecord<ICategory> & {
     _id: import("mongoose").Types.ObjectId;
 }>;
-export declare const ProductModel: import("mongoose").Model<Product, {}, {}, {}, import("mongoose").Document<unknown, {}, Product> & Product & {
+export declare const CategoryModel: import("mongoose").Model<ICategory, {}, {}, {}, import("mongoose").Document<unknown, {}, ICategory> & ICategory & {
     _id: import("mongoose").Types.ObjectId;
 }, any>;

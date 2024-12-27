@@ -23,22 +23,18 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Schema } from "mongoose";
-export interface Product {
-    productName: string;
-    productDescription: string;
-    productPrice: number;
-    productCategory: string;
-    productUnite: string;
-    productStock: number;
-    productState: string;
-    productSource: string;
-    productOwner: string;
+export interface ISite {
+    SiteName: string;
+    SiteAddress: string;
+    SiteLat: number;
+    SiteLng: number;
+    SiteUserId: string;
 }
-export declare const ProductSchema: Schema<Product, import("mongoose").Model<Product, any, any, any, import("mongoose").Document<unknown, any, Product> & Product & {
+export declare const SiteSchema: Schema<ISite, import("mongoose").Model<ISite, any, any, any, import("mongoose").Document<unknown, any, ISite> & ISite & {
     _id: import("mongoose").Types.ObjectId;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Product, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<Product>> & import("mongoose").FlatRecord<Product> & {
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, ISite, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<ISite>> & import("mongoose").FlatRecord<ISite> & {
     _id: import("mongoose").Types.ObjectId;
 }>;
-export declare const ProductModel: import("mongoose").Model<Product, {}, {}, {}, import("mongoose").Document<unknown, {}, Product> & Product & {
+export declare const SiteModel: import("mongoose").Model<ISite, {}, {}, {}, import("mongoose").Document<unknown, {}, ISite> & ISite & {
     _id: import("mongoose").Types.ObjectId;
 }, any>;
