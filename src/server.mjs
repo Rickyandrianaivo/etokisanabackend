@@ -4,6 +4,9 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import userRouter from './routers/user.router.js';
+import productRouter from './routers/product.router.js';
+import siteRouter from './routers/site.router.js';
+import categoryRouter from './routers/category.router.js';
 import { dbConnect } from './configs/database.config.js';
 dbConnect();
 
@@ -18,18 +21,10 @@ app.use(cors({
 }));
 
 app.use("/api/users", userRouter);
-app.use("/api/articles", articleRouter);
-app.use("/api/bon-entrees", bonEntreesRouter);
-app.use("/api/bon-sorties", bonSortiesRouter);
-app.use("/api/clients", clientRouter);
-app.use("/api/inventaires", inventaireRouter);
-app.use("/api/pointDeVente", pointDeVenteRouter);
-app.use("/api/facture-ventes", factureVenteRouter);
-app.use("/api/mouvementStock", mouvementStockRouter);
-app.use("/api/inventaireDetails", inventaireDetailsRouter);
-app.use("/api/bon-entrees-details", bonEntreesDetailsRouter);
-app.use("/api/bon-sorties-details", bonSortiesDetailsRouter);
-app.use("/api/facture-vente-details", factureVenteDetailRouter);
+app.use("/api/product",productRouter)
+app.use("/api/site", siteRouter);
+app.use("/api/category", categoryRouter);
+// app.use("/api/bon-sorties", bonSortiesRouter);
 
 const port = 443;
 app.listen(port, () =>{
