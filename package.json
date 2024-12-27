@@ -27,7 +27,7 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.16",
     "randombytes": "^2.1.0",
-    "tsc": "^2.0.4",
+    "tsc": "5.6.3",
     "typescript": "^5.7.2",
     "winston": "^3.17.0"
   },
