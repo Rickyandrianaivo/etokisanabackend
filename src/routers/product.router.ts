@@ -1,7 +1,7 @@
 import { Router } from "express"
 import expressAsyncHandler from "express-async-handler";
-import { ProductModel } from "../models/product.model";
-import { sample_products } from "../data";
+import { ProductModel } from "../models/product.model.ts";
+import { sample_products } from "../data.ts";
 import multer from 'multer';
 
 const router = Router();
