@@ -23,34 +23,21 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Schema } from "mongoose";
-export interface User {
-    userName: string;
-    userFirstname: string;
-    userPassword: string;
-    userEmail: string;
-    userPhone: string;
-    userDescritpion: string;
-    userGender: string;
-    userImage: string;
-    userEnabled: boolean;
-    userDateOfBirth: Date;
-    userTotalSolde: number;
-    userLogo: string;
-    userStatut: string;
-    userManager: string;
-    userNif: string;
-    userRC: string;
-    identityDocumentType: string;
-    identityCardNumber: string;
-    userAdmin: boolean;
-    userAddress: string;
-    userIdentityCode: string;
+export interface Product {
+    productName: string;
+    productDescription: string;
+    productPrice: number;
+    productCategory: string;
+    productUnite: string;
+    productStock: number;
+    productState: string;
+    productSource: string;
 }
-export declare const UserSchema: Schema<User, import("mongoose").Model<User, any, any, any, import("mongoose").Document<unknown, any, User> & User & {
+export declare const ProductSchema: Schema<Product, import("mongoose").Model<Product, any, any, any, import("mongoose").Document<unknown, any, Product> & Product & {
     _id: import("mongoose").Types.ObjectId;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, User, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<User>> & import("mongoose").FlatRecord<User> & {
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Product, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<Product>> & import("mongoose").FlatRecord<Product> & {
     _id: import("mongoose").Types.ObjectId;
 }>;
-export declare const UserModel: import("mongoose").Model<User, {}, {}, {}, import("mongoose").Document<unknown, {}, User> & User & {
+export declare const ProductModel: import("mongoose").Model<Product, {}, {}, {}, import("mongoose").Document<unknown, {}, Product> & Product & {
     _id: import("mongoose").Types.ObjectId;
 }, any>;

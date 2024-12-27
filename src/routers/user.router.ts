@@ -53,11 +53,13 @@ router.post("/register/",asyncHandler(async(req, res) => {
       const info = await transporter.sendMail({
         from: '"Etokisana" <rickyandrianaivo@gmail.com>', // sender address
         // to: user.userEmail, // list of receivers
-        to: "randrianaivo.dominique@gmail.com", // list of receivers
+        to: userEmail, // list of receivers
         subject: "Bienvenue sur Etokisana", // Subject line
-        text: "Hello world?", // plain text body
+        text: "Bienvenue sur Etokisana", // plain text body
         html: `<h1>Bonjour + userName +</h1>
-        <p>ceci est une mail test</p>`, // html body
+        <p>Vous avez rejoins les membres très actifs de Etokisana, merci de votre intérêt. Toutes les opérations d'achats de ventes de dépôt et de retrait sont maintenant opérationnel</p></br>
+        <p>Nous pouvez consulter votre espace privé </p>
+        <p>Cordialement,</br>Etokisana Team</p>`, // html body
         // html:html,
       });
 

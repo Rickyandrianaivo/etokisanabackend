@@ -10,6 +10,7 @@ export interface Product{
     productStock        :number;
     productState        :string;
     productSource       :string;
+    productOwner       :string;
 }
 
 export const ProductSchema = new Schema<Product>({
@@ -21,6 +22,7 @@ export const ProductSchema = new Schema<Product>({
     productStock        : {type : Number},
     productState        : {type : String},
     productSource       : {type : String},
+    productOwner       : {type : String}
 },{
     timestamps : true,
     toJSON : {
