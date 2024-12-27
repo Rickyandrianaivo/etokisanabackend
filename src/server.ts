@@ -24,9 +24,9 @@ app.use(cors({
 //     limits:{fieldSize:50 * 1024 * 1024} // limit file size to 200MB
 // }))
 app.use("/api/users", userRouter);
-app.use("/api/site",siteRouter)
-app.use("/api/product",productRouter);
-app.use("/api/category",categoryRouter);
+app.use("/api/site", siteRouter)
+app.use("/api/product", productRouter);
+app.use("/api/category", categoryRouter);
 
 const port = 443;
 app.listen(port, () =>{
