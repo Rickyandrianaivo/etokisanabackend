@@ -5,8 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "cd src && nodemon server.ts",
-    "build": "tsc"
+    "start-dev": "cd src && nodemon server.ts",
+    "start":"cd built && node server.js",
+    "build": "npm install && tsc"
   },
   "author": "",
   "license": "ISC",
