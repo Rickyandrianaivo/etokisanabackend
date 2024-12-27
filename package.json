@@ -7,7 +7,7 @@
   "scripts": {
     "start-dev": "cd src && nodemon server.ts",
     "start": "cd built && node server.js",
-    "install":"npm install typescript",
+    "install": "npm install typescript",
     "build": "npm install  && tsc"
   },
   "author": "",
@@ -27,6 +27,7 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.16",
     "randombytes": "^2.1.0",
+    "tsc": "^2.0.4",
     "typescript": "^5.7.2",
     "winston": "^3.17.0"
   },
@@ -41,7 +42,6 @@
     "@types/nodemailer": "^6.4.17",
     "nodemon": "^3.0.2",
     "ts-node": "^10.9.2",
-    "tsc": "^2.0.4",
     "tsx": "^4.19.2",
     "webpack": "^5.91.0"
   }
