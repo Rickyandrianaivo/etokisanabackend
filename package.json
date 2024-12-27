@@ -7,7 +7,7 @@
   "scripts": {
     "start-dev": "cd src && nodemon server.ts",
     "start": "cd built && node server.js",
-    "build": "npm install  && tsc"
+    "build": "npm install -g typescript && npm install && tsc"
   },
   "author": "",
   "license": "ISC",
