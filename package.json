@@ -28,6 +28,7 @@
     "winston": "^3.17.0"
   },
   "devDependencies": {
+    "@tsconfig/node20": "^20.1.4",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
@@ -37,6 +38,8 @@
     "@types/nodemailer": "^6.4.17",
     "nodemon": "^3.0.2",
     "ts-node": "^10.9.2",
+    "tsc": "^2.0.4",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "webpack": "^5.91.0"
   }

@@ -1,56 +1,32 @@
 import { Router } from "express";
 import asyncHandler from "express-async-handler";
-import { User, UserModel } from "../models/user.model";
+import { UserModel } from "../models/user.model";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { TokenModel } from "../models/token.models";
-import {randomBytes} from"crypto";
+import { randomBytes } from "crypto";
 import { sendEmail } from "../Utils/Emails/sendEmail";
 import nodemailer from "nodemailer";
 const bcryptSalt = process.env.BCRYPT_SALT;
 const clientURL = process.env.CLIENT_URL;
 const router = Router();
-
-router.post("/register/",asyncHandler(async(req, res) => {
-    const {
-        userName,
-        userFirstname,
-        userPassword,
-        userEmail,
-        userPhone,
-        userDescritpion,
-        userGender,
-        userImage,
-        userEnabled,
-        userDateOfBirth,
-        userTotalSolde,
-        userLogo,
-        userStatut,
-        userManager,
-        userNif ,
-        userRC ,
-        identityDocumentType,
-        identityCardNumber,
-        userAdmin,
-        userAddress ,
-        userIdentityCode,} = req.body;
-    const user = await UserModel.findOne({userName : userName});
-
-    if(user){
+router.post("/register/", asyncHandler(async (req, res) => {
+    const { userName, userFirstname, userPassword, userEmail, userPhone, userDescritpion, userGender, userImage, userEnabled, userDateOfBirth, userTotalSolde, userLogo, userStatut, userManager, userNif, userRC, identityDocumentType, identityCardNumber, userAdmin, userAddress, userIdentityCode, } = req.body;
+    const user = await UserModel.findOne({ userName: userName });
+    if (user) {
         res.send("Ce nom est déjà utilisé!");
         return;
     }
-
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.email",
         port: 465,
         secure: true, // true for port 465, false for other ports
         auth: {
-          user: "rickyandrianaivo@gmail.email",
-          pass: "xtjmyjwqkgfnqlfd",
+            user: "rickyandrianaivo@gmail.email",
+            pass: "xtjmyjwqkgfnqlfd",
         },
-      });
-      const info = await transporter.sendMail({
+    });
+    const info = await transporter.sendMail({
         from: '"Etokisana" <rickyandrianaivo@gmail.com>', // sender address
         // to: user.userEmail, // list of receivers
         to: userEmail, // list of receivers
@@ -61,24 +37,23 @@ router.post("/register/",asyncHandler(async(req, res) => {
         <p>Nous pouvez consulter votre espace privé </p>
         <p>Cordialement,</br>Etokisana Team</p>`, // html body
         // html:html,
-      });
-
-      transporter.sendMail(info,(error,info)=>{
+    });
+    transporter.sendMail(info, (error, info) => {
         if (error) {
             console.log(error);
-            res.status(500).send("Error sendig mail")
-        }   else{
-            console.log("Email sent",info.response);
-            res.status(200).send("Email sent successfully")
+            res.status(500).send("Error sendig mail");
         }
-      })
-
-    const encryptedPassword = await bcrypt.hash(userPassword,10);
-    const newUser:User = {
+        else {
+            console.log("Email sent", info.response);
+            res.status(200).send("Email sent successfully");
+        }
+    });
+    const encryptedPassword = await bcrypt.hash(userPassword, 10);
+    const newUser = {
         userName,
         userFirstname,
         userPassword: encryptedPassword,
-        userEmail:userEmail.toLowerCase(),
+        userEmail: userEmail.toLowerCase(),
         userPhone,
         userDescritpion,
         userGender,
@@ -89,159 +64,121 @@ router.post("/register/",asyncHandler(async(req, res) => {
         userLogo,
         userStatut,
         userManager,
-        userNif ,
-        userRC ,
+        userNif,
+        userRC,
         identityDocumentType,
         identityCardNumber,
         userAdmin,
-        userAddress ,
+        userAddress,
         userIdentityCode,
-    }
+    };
     const dbUser = await UserModel.create(newUser);
     res.send(generateTokenResponse(dbUser));
-}))
-
-const generateTokenResponse = (user:any) =>{
+}));
+const generateTokenResponse = (user) => {
     const token = jwt.sign({
         _id: user._id,
-        userEmail:user.userEmail,
+        userEmail: user.userEmail,
         userName: user.userName,
-        userFirstname:user.userFirstname,
-        userPhone:user.userPhone,
-    },process.env.JWT_SECRET!,{
-        expiresIn:"30d"
+        userFirstname: user.userFirstname,
+        userPhone: user.userPhone,
+    }, process.env.JWT_SECRET, {
+        expiresIn: "30d"
     });
     return {
-        _id             : user._id,
-        userEmail       : user.userEmail,
-        userName        : user.userName,
-        userFirstname   : user.userFirstname,
-        userPhone       : user.userPhone,
-        userDescritpion : user.userDescription,
-        userGender      : user.userGender,
-        userTotalSolde  : user.userTotalSolde,
-        userStatut      : user.userStatut,
-        userManager     : user.userManager,
-        userNif         : user.userNif,
-        userRC          : user.userRC ,
-        token           : token
+        _id: user._id,
+        userEmail: user.userEmail,
+        userName: user.userName,
+        userFirstname: user.userFirstname,
+        userPhone: user.userPhone,
+        userDescritpion: user.userDescription,
+        userGender: user.userGender,
+        userTotalSolde: user.userTotalSolde,
+        userStatut: user.userStatut,
+        userManager: user.userManager,
+        userNif: user.userNif,
+        userRC: user.userRC,
+        token: token
     };
-}
-
-const resetPassword = async (userId : string, token :string, password :string) => {
+};
+const resetPassword = async (userId, token, password) => {
     let passwordResetToken = await TokenModel.findOne({ userId });
     if (!passwordResetToken) {
-      throw new Error("Invalid or expired password reset token");
+        throw new Error("Invalid or expired password reset token");
     }
     const isValid = await bcrypt.compare(token, passwordResetToken.token);
     if (!isValid) {
-      throw new Error("Invalid or expired password reset token");
+        throw new Error("Invalid or expired password reset token");
     }
     const hash = await bcrypt.hash(password, Number(bcryptSalt));
-    await UserModel.updateOne(
-      { _id: userId },
-      { $set: { password: hash } },
-      { new: true }
-    );
+    await UserModel.updateOne({ _id: userId }, { $set: { password: hash } }, { new: true });
     const user = await UserModel.findById({ _id: userId });
-    sendEmail(
-      user!.userEmail,
-      "Password Reset Successfully",
-      {
-        name: user!.userName,
-      },
-      "./template/resetPassword.handlebars"
-    );
+    sendEmail(user.userEmail, "Password Reset Successfully", {
+        name: user.userName,
+    }, "./template/resetPassword.handlebars");
     await passwordResetToken.deleteOne();
     return true;
-  };
+};
 // trouver à quelle moment le mot de passe doit être entrer et ou dirige le liende reinitialisation
-router.post("passwordReset/",asyncHandler(async(req,res)=>{
-    const {id,token,password} = req.body;
-     resetPassword(id,token,password)
- }))
-router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
-    const {email,userId} = req.body;
+router.post("passwordReset/", asyncHandler(async (req, res) => {
+    const { id, token, password } = req.body;
+    resetPassword(id, token, password);
+}));
+router.post("/requestResetPwd", asyncHandler(async (req, res) => {
+    const { email, userId } = req.body;
     // console.log(email+ " " + userId)
-    const user = await UserModel.findOne({userEmail : email})
-
+    const user = await UserModel.findOne({ userEmail: email });
     if (!user) {
-        throw new Error("L'utilisateur n'existe pas")
+        throw new Error("L'utilisateur n'existe pas");
     }
     let token = await TokenModel.findOne({ _id: userId });
-    if (token) { 
-          await token.deleteOne()
-    };
+    if (token) {
+        await token.deleteOne();
+    }
+    ;
     let resetToken = randomBytes(32).toString("hex");
     const hash = await bcrypt.hash(resetToken, Number(bcryptSalt));
-    
-        await new TokenModel({
-          id: user._id,
-          token: hash,
-          createdAt: Date.now(),
-        }).save();
-        
-        const link = `${clientURL}/passwordReset?token=${resetToken}&id=${user._id}`;
-        sendEmail(user.userEmail,"Password Reset Request",{name: user.userName,link: link},"./template/requestResetPassword.handlebars");
-        res.send(link);
-}))
-
-router.get("", asyncHandler(async(req, res) => {
+    await new TokenModel({
+        id: user._id,
+        token: hash,
+        createdAt: Date.now(),
+    }).save();
+    const link = `${clientURL}/passwordReset?token=${resetToken}&id=${user._id}`;
+    sendEmail(user.userEmail, "Password Reset Request", { name: user.userName, link: link }, "./template/requestResetPassword.handlebars");
+    res.send(link);
+}));
+router.get("", asyncHandler(async (req, res) => {
     const users = await UserModel.find();
     res.send(users);
-}))
+}));
 // router.get("/:id", asyncHandler(async(req, res) => {
 //     const userId = req.params['id'];
 //     const user = await UserModel.findOne({_id : userId});
 //     res.send(user);
 // }))
-router.get("/email/:email", asyncHandler(async(req, res) => {
+router.get("/email/:email", asyncHandler(async (req, res) => {
     const userEmail = req.params['email'];
-    const user = await UserModel.findOne({userEmail : userEmail});
+    const user = await UserModel.findOne({ userEmail: userEmail });
     res.send(user);
-}))
-
-router.post("/login",asyncHandler(async(req,res) => {
-    const {userEmail,userPassword} = req.body;
-    const user = await UserModel.findOne({userEmail})
-    if (user && (await bcrypt.compare(userPassword,user.userPassword))) {
+}));
+router.post("/login", asyncHandler(async (req, res) => {
+    const { userEmail, userPassword } = req.body;
+    const user = await UserModel.findOne({ userEmail });
+    if (user && (await bcrypt.compare(userPassword, user.userPassword))) {
         res.send(generateTokenResponse(user));
-        
-    }else{
-        res.status(404).send("User name or password is not valid!")
     }
-}))
-
-router.put("/update/:id",asyncHandler(async(req,res) => {
+    else {
+        res.status(404).send("User name or password is not valid!");
+    }
+}));
+router.put("/update/:id", asyncHandler(async (req, res) => {
     const userId = req.params['id'];
-    const {
-        userName,
-        userFirstname,
-        userPassword,
-        userEmail,
-        userPhone,
-        userDescritpion,
-        userGender,
-        userImage,
-        userEnabled,
-        userDateOfBirth,
-        userTotalSolde,
-        userLogo,
-        userStatut,
-        userManager,
-        userNif ,
-        userRC ,
-        identityDocumentType,
-        identityCardNumber,
-        userAdmin,
-        userAddress ,
-        userIdentityCode,
-    } = req.body;
+    const { userName, userFirstname, userPassword, userEmail, userPhone, userDescritpion, userGender, userImage, userEnabled, userDateOfBirth, userTotalSolde, userLogo, userStatut, userManager, userNif, userRC, identityDocumentType, identityCardNumber, userAdmin, userAddress, userIdentityCode, } = req.body;
     const userUpdates = {
         userName,
         userFirstname,
         userPassword,
-        userEmail:userEmail.toLowerCase(),
+        userEmail: userEmail.toLowerCase(),
         userPhone,
         userDescritpion,
         userGender,
@@ -252,18 +189,16 @@ router.put("/update/:id",asyncHandler(async(req,res) => {
         userLogo,
         userStatut,
         userManager,
-        userNif ,
-        userRC ,
+        userNif,
+        userRC,
         identityDocumentType,
         identityCardNumber,
         userAdmin,
-        userAddress ,
+        userAddress,
         userIdentityCode,
-        };
-
-    await UserModel.updateOne({id : userId}, userUpdates);
-}))
-
+    };
+    await UserModel.updateOne({ id: userId }, userUpdates);
+}));
 // router.get("/resetTable",asyncHandler(async(req,res)=>{
 //     const factureVenteCount = await FactureVenteModel.countDocuments()
 //     const factureVenteDetailsCount = await FactureVenteDetailsModel.countDocuments()
@@ -305,7 +240,6 @@ router.put("/update/:id",asyncHandler(async(req,res) => {
 //     }else{
 //         res.send("No item to delete")
 //     }
-    
 // }))
-
 export default router;
+//# sourceMappingURL=user.router.js.map
