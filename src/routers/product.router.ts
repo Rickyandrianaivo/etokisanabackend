@@ -52,7 +52,7 @@ router.post("/add/",expressAsyncHandler(async(req,res)=>{
     await ProductModel.create(newProduct);
     res.send(newProduct);
 }))
-router.put("/:id",expressAsyncHandler(async(req,res)=>{
+router.put("update/:id",expressAsyncHandler(async(req,res)=>{
     const {
         productName,
         productDescription,
