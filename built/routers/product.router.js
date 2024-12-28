@@ -35,7 +35,7 @@ router.post("/add/", expressAsyncHandler(async (req, res) => {
         productState,
         productSource,
         productOwner,
-        productImage: __dirname + '/../uploads' + productImage,
+        productImage: productImage,
     };
     await ProductModel.create(newProduct);
     res.send(newProduct);
