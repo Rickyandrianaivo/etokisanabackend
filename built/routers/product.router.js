@@ -24,7 +24,7 @@ router.post("/seed", expressAsyncHandler(async (req, res) => {
     res.send("Seed is done!!");
 }));
 router.post("/add/", expressAsyncHandler(async (req, res) => {
-    const { productName, productDescription, productPrice, productCategory, productUnite, productStock, productState, productSource, productOwner, } = req.body;
+    const { productName, productDescription, productPrice, productCategory, productUnite, productStock, productState, productSource, productOwner, productImage } = req.body;
     const newProduct = {
         productName,
         productDescription,
@@ -35,7 +35,7 @@ router.post("/add/", expressAsyncHandler(async (req, res) => {
         productState,
         productSource,
         productOwner,
-        productImage: productImagePath,
+        productImage: __dirname + '/../uploads' + productImage,
     };
     await ProductModel.create(newProduct);
     res.send(newProduct);
