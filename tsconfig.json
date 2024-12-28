@@ -17,8 +17,8 @@
         "importHelpers": true,
         "target": "es2022",
         "module": "es2020",
-        "emitDeclarationOnly": true,
-        "allowImportingTsExtensions": true,
+        "emitDeclarationOnly": false,
+        "noEmit": false,
         "lib": [
           "es2020",
           "dom"
@@ -44,6 +44,10 @@
         // "rewriteRelativeImportExtensions":true,
         // "verbatimModuleSyntax": true,
     },
-    // "include": ["src/**/*"],
-    "exclude": ["node_modules"] 
+    "include": ["./**/*"],
+    "exclude": [
+      "node_modules",
+      "built",
+      "built_backup"
+  ] 
 }

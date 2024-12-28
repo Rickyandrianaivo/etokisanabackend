@@ -1,11 +1,11 @@
 import { Router } from "express";
 import asyncHandler from "express-async-handler";
-import { UserModel } from "../models/user.model.js";
+import { UserModel } from "../models/user.model";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { TokenModel } from "../models/token.models.js";
+import { TokenModel } from "../models/token.models";
 import { randomBytes } from "crypto";
-import { sendEmail } from "../Utils/Emails/sendEmail.js";
+import { sendEmail } from "../Utils/Emails/sendEmail";
 import nodemailer from "nodemailer";
 const bcryptSalt = process.env.BCRYPT_SALT;
 const clientURL = process.env.CLIENT_URL;

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { ProductModel } from "../models/product.model.js";
-import { sample_products } from "../data.js";
+import { ProductModel } from "../models/product.model";
+import { sample_products } from "../data";
 import multer from 'multer';
 const router = Router();
 const storage = multer.diskStorage({
@@ -16,7 +16,7 @@ const upload = multer({ storage: storage, limits: { fieldSize: 50 * 1024 * 1024 
 let productImagePath = "";
 router.post("/seed", expressAsyncHandler(async (req, res) => {
     const productCounts = await ProductModel.countDocuments();
-    if (productCounts > 0) {
+    if (productCounts > 4) {
         res.send("Seed is already done !!");
         return;
     }
@@ -40,7 +40,7 @@ router.post("/add/", expressAsyncHandler(async (req, res) => {
     await ProductModel.create(newProduct);
     res.send(newProduct);
 }));
-router.put("/:id", expressAsyncHandler(async (req, res) => {
+router.put("/update/:id", expressAsyncHandler(async (req, res) => {
     const { productName, productDescription, productPrice, productCategory, productUnite, productStock, productState, productSource } = req.body;
     const modifiedProduct = await ProductModel.updateOne({ _id: req.params['id'] }, {
         productName,
@@ -54,7 +54,8 @@ router.put("/:id", expressAsyncHandler(async (req, res) => {
     });
     res.send(modifiedProduct);
 }));
-router.delete("/:id", expressAsyncHandler(async (req, res) => {
+router.delete("/delete/:id", expressAsyncHandler(async (req, res) => {
+    await ProductModel.deleteOne({ _id: req.params['id'] });
     res.status(200);
 }));
 router.get("/", expressAsyncHandler(async (req, res) => {
