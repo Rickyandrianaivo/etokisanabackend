@@ -3,11 +3,11 @@ dotenv.config();
 
 import express from "express";
 import cors from "cors";
-import userRouter from './routers/user.router';
-import siteRouter from './routers/site.router';
-import productRouter from './routers/product.router';
-import categoryRouter from './routers/category.router';
-import { dbConnect } from './configs/database.config';
+import userRouter from './routers/user.router.js';
+import siteRouter from './routers/site.router.js';
+import productRouter from './routers/product.router.js';
+import categoryRouter from './routers/category.router.js';
+import { dbConnect } from './configs/database.config.js';
 dbConnect();
 
 
