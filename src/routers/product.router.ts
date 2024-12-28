@@ -18,7 +18,7 @@ let productImagePath:string = "";
 
 router.post("/seed",expressAsyncHandler(async(req,res)=>{
         const productCounts = await ProductModel.countDocuments();
-        if(productCounts>3){
+        if(productCounts>4){
             res.send("Seed is already done !!");
             return;
         }
