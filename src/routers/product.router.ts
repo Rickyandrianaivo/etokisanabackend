@@ -77,6 +77,7 @@ router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
     res.send(modifiedProduct);
 }))
 router.delete("/delete/:id",expressAsyncHandler(async(req,res)=>{
+    await ProductModel.deleteOne({_id : req.params['id']})
     res.status(200)
 }))
 
