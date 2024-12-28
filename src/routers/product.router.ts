@@ -18,7 +18,7 @@ let productImagePath:string = "";
 
 router.post("/seed",expressAsyncHandler(async(req,res)=>{
         const productCounts = await ProductModel.countDocuments();
-        if(productCounts>0){
+        if(productCounts>3){
             res.send("Seed is already done !!");
             return;
         }
@@ -52,7 +52,7 @@ router.post("/add/",expressAsyncHandler(async(req,res)=>{
     await ProductModel.create(newProduct);
     res.send(newProduct);
 }))
-router.put("update/:id",expressAsyncHandler(async(req,res)=>{
+router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
     const {
         productName,
         productDescription,
@@ -76,7 +76,7 @@ router.put("update/:id",expressAsyncHandler(async(req,res)=>{
     })
     res.send(modifiedProduct);
 }))
-router.delete("/:id",expressAsyncHandler(async(req,res)=>{
+router.delete("/delete/:id",expressAsyncHandler(async(req,res)=>{
     res.status(200)
 }))
 
