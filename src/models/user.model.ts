@@ -8,7 +8,7 @@ export interface User{
     userEmail           : string;
     userPhone           : string;
     userDescritpion     : string;
-    userGender          : string;
+    userType          : string;
     userImage           : string;
     userEnabled         : boolean;
     userDateOfBirth     : Date;
@@ -32,7 +32,7 @@ export const UserSchema = new Schema<User>({
     userEmail               : {type : String, required : true},
     userPhone               : {type : String, required : true},
     userDescritpion         : {type : String},
-    userGender              : {type : String},
+    userType              : {type : String},
     userImage               : {type : String},
     userEnabled             : {type : Boolean, },
     userDateOfBirth         : {type : Date },

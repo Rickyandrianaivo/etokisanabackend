@@ -11,8 +11,8 @@ const bcryptSalt = process.env.BCRYPT_SALT;
 const clientURL = process.env.CLIENT_URL;
 const router = Router();
 router.post("/register/", asyncHandler(async (req, res) => {
-    const { userName, userFirstname, userPassword, userEmail, userPhone, userDescritpion, userGender, userImage, userEnabled, userDateOfBirth, userTotalSolde, userLogo, userStatut, userManager, userNif, userRC, identityDocumentType, identityCardNumber, userAdmin, userAddress, userIdentityCode, } = req.body;
-    const user = await UserModel.findOne({ userName: userName });
+    const { userName, userFirstname, userPassword, userEmail, userPhone, userDescritpion, userType, userImage, userEnabled, userDateOfBirth, userTotalSolde, userLogo, userStatut, userManager, userNif, userRC, identityDocumentType, identityCardNumber, userAdmin, userAddress, userIdentityCode, } = req.body;
+    const user = await UserModel.findOne({ userEmail: userEmail });
     if (user) {
         res.send("Ce nom est déjà utilisé!");
         return;
@@ -56,7 +56,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
         userEmail: userEmail.toLowerCase(),
         userPhone,
         userDescritpion,
-        userGender,
+        userType,
         userImage,
         userEnabled,
         userDateOfBirth,

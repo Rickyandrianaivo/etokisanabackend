@@ -6,7 +6,7 @@ export const UserSchema = new Schema({
     userEmail: { type: String, required: true },
     userPhone: { type: String, required: true },
     userDescritpion: { type: String },
-    userGender: { type: String },
+    userType: { type: String },
     userImage: { type: String },
     userEnabled: { type: Boolean, },
     userDateOfBirth: { type: Date },

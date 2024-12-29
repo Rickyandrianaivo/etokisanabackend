@@ -19,7 +19,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         userEmail,
         userPhone,
         userDescritpion,
-        userGender,
+        userType,
         userImage,
         userEnabled,
         userDateOfBirth,
@@ -34,7 +34,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         userAdmin,
         userAddress ,
         userIdentityCode,} = req.body;
-    const user = await UserModel.findOne({userName : userName});
+    const user = await UserModel.findOne({userEmail : userEmail});
 
     if(user){
         res.send("Ce nom est déjà utilisé!");
@@ -81,7 +81,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         userEmail:userEmail.toLowerCase(),
         userPhone,
         userDescritpion,
-        userGender,
+        userType,
         userImage,
         userEnabled,
         userDateOfBirth,
