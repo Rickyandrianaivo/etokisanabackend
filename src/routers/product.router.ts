@@ -92,8 +92,8 @@ router.get("/:id",expressAsyncHandler(async(req,res)=>{
     res.send(selectedProduct);
 }))
 router.get("owner/:id",expressAsyncHandler(async(req,res)=>{
-    const productId = req.params['id'];
-    const selectedProduct = await ProductModel.find({productOwner:productId});
+    const ownerId = req.params['id'];
+    const selectedProduct = await ProductModel.find({productOwner:ownerId});
     res.send(selectedProduct);
 }))
 router.get("/email/:email",expressAsyncHandler(async(req,res)=>{
