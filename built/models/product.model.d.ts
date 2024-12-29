@@ -9,6 +9,7 @@ export interface Product {
     productState: string;
     productSource: string;
     productOwner: string;
+    productImage: string;
 }
 export declare const ProductSchema: Schema<Product, import("mongoose").Model<Product, any, any, any, import("mongoose").Document<unknown, any, Product> & Product & {
     _id: import("mongoose").Types.ObjectId;
