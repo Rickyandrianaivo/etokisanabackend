@@ -41,37 +41,39 @@ router.post("/register/",asyncHandler(async(req, res) => {
         return;
     }
 
-    const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.email",
-        port: 465,
-        secure: true, // true for port 465, false for other ports
-        auth: {
-          user: "rickyandrianaivo@gmail.email",
-          pass: "xtjmyjwqkgfnqlfd",
-        },
-      });
-      const info = await transporter.sendMail({
-        from: '"Etokisana" <rickyandrianaivo@gmail.com>', // sender address
-        // to: user.userEmail, // list of receivers
-        to: userEmail, // list of receivers
-        subject: "Bienvenue sur Etokisana", // Subject line
-        text: "Bienvenue sur Etokisana", // plain text body
-        html: `<h1>Bonjour + userName +</h1>
-        <p>Vous avez rejoins les membres très actifs de Etokisana, merci de votre intérêt. Toutes les opérations d'achats de ventes de dépôt et de retrait sont maintenant opérationnel</p></br>
-        <p>Nous pouvez consulter votre espace privé </p>
-        <p>Cordialement,</br>Etokisana Team</p>`, // html body
-        // html:html,
-      });
+    // Sending mail
 
-      transporter.sendMail(info,(error,info)=>{
-        if (error) {
-            console.log(error);
-            res.status(500).send("Error sendig mail")
-        }   else{
-            console.log("Email sent",info.response);
-            res.status(200).send("Email sent successfully")
-        }
-      })
+    // const transporter = nodemailer.createTransport({
+    //     host: "smtp.gmail.email",
+    //     port: 465,
+    //     secure: true, // true for port 465, false for other ports
+    //     auth: {
+    //       user: "rickyandrianaivo@gmail.email",
+    //       pass: "xtjmyjwqkgfnqlfd",
+    //     },
+    //   });
+    //   const info = await transporter.sendMail({
+    //     from: '"Etokisana" <rickyandrianaivo@gmail.com>', // sender address
+    //     // to: user.userEmail, // list of receivers
+    //     to: userEmail, // list of receivers
+    //     subject: "Bienvenue sur Etokisana", // Subject line
+    //     text: "Bienvenue sur Etokisana", // plain text body
+    //     html: `<h1>Bonjour + userName +</h1>
+    //     <p>Vous avez rejoins les membres très actifs de Etokisana, merci de votre intérêt. Toutes les opérations d'achats de ventes de dépôt et de retrait sont maintenant opérationnel</p></br>
+    //     <p>Nous pouvez consulter votre espace privé </p>
+    //     <p>Cordialement,</br>Etokisana Team</p>`, // html body
+    //     // html:html,
+    //   });
+
+    //   transporter.sendMail(info,(error,info)=>{
+    //     if (error) {
+    //         console.log(error);
+    //         res.status(500).send("Error sendig mail")
+    //     }   else{
+    //         console.log("Email sent",info.response);
+    //         res.status(200).send("Email sent successfully")
+    //     }
+    //   })
 
     const encryptedPassword = await bcrypt.hash(userPassword,10);
     const newUser:User = {
