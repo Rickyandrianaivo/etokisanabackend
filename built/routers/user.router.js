@@ -59,7 +59,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
         userImage,
         userEnabled,
         userDateOfBirth,
-        userTotalSolde,
+        userTotalSolde: 0,
         userLogo,
         userStatut,
         userManager,
@@ -198,6 +198,7 @@ router.put("/update/:id", asyncHandler(async (req, res) => {
     };
     await UserModel.updateOne({ id: userId }, userUpdates);
 }));
+//reset tables{
 // router.get("/resetTable",asyncHandler(async(req,res)=>{
 //     const factureVenteCount = await FactureVenteModel.countDocuments()
 //     const factureVenteDetailsCount = await FactureVenteDetailsModel.countDocuments()
