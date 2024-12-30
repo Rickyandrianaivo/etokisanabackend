@@ -2,8 +2,9 @@ import { model, Schema } from "mongoose";
 
 export interface ITransaction{
     transactionType     :string;
-    transactionAmount   :number;
     transactionState    :string;
+    transactionAmount   :number;
+    transactionMethode  :string;
 }
 export const TransactionSchema = new Schema<ITransaction>({
     transactionType     :{type:String},

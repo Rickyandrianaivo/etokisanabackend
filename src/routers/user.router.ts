@@ -34,11 +34,39 @@ router.post("/register/",asyncHandler(async(req, res) => {
         userAdmin,
         userAddress ,
         userIdentityCode,} = req.body;
-    const user = await UserModel.findOne({userEmail : userEmail});
+    const user = await UserModel.findOne({userEmail : userEmail.toLowerCase()});
 
     if(user){
         res.send("Ce nom est déjà utilisé!");
         return;
+    }else
+    {
+        const encryptedPassword = await bcrypt.hash(userPassword,10);
+        const newUser:User = {
+            userName,
+            userFirstname,
+            userPassword: encryptedPassword,
+            userEmail:userEmail.toLowerCase(),
+            userPhone,
+            userDescritpion,
+            userType,
+            userImage,
+            userEnabled,
+            userDateOfBirth,
+            userTotalSolde : 0,
+            userLogo,
+            userStatut,
+            userManager,
+            userNif ,
+            userRC ,
+            identityDocumentType,
+            identityCardNumber,
+            userAdmin,
+            userAddress ,
+            userIdentityCode,
+        }
+        const dbUser = await UserModel.create(newUser);
+        res.send(generateTokenResponse(dbUser));
     }
 
     // Sending mail
@@ -75,32 +103,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
     //     }
     //   })
 
-    const encryptedPassword = await bcrypt.hash(userPassword,10);
-    const newUser:User = {
-        userName,
-        userFirstname,
-        userPassword: encryptedPassword,
-        userEmail:userEmail.toLowerCase(),
-        userPhone,
-        userDescritpion,
-        userType,
-        userImage,
-        userEnabled,
-        userDateOfBirth,
-        userTotalSolde : 0,
-        userLogo,
-        userStatut,
-        userManager,
-        userNif ,
-        userRC ,
-        identityDocumentType,
-        identityCardNumber,
-        userAdmin,
-        userAddress ,
-        userIdentityCode,
-    }
-    const dbUser = await UserModel.create(newUser);
-    res.send(generateTokenResponse(dbUser));
+    
 }))
 
 const generateTokenResponse = (user:any) =>{

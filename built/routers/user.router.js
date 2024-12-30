@@ -11,10 +11,38 @@ const clientURL = process.env.CLIENT_URL;
 const router = Router();
 router.post("/register/", asyncHandler(async (req, res) => {
     const { userName, userFirstname, userPassword, userEmail, userPhone, userDescritpion, userType, userImage, userEnabled, userDateOfBirth, userTotalSolde, userLogo, userStatut, userManager, userNif, userRC, identityDocumentType, identityCardNumber, userAdmin, userAddress, userIdentityCode, } = req.body;
-    const user = await UserModel.findOne({ userEmail: userEmail });
+    const user = await UserModel.findOne({ userEmail: userEmail.toLowerCase() });
     if (user) {
         res.send("Ce nom est déjà utilisé!");
         return;
+    }
+    else {
+        const encryptedPassword = await bcrypt.hash(userPassword, 10);
+        const newUser = {
+            userName,
+            userFirstname,
+            userPassword: encryptedPassword,
+            userEmail: userEmail.toLowerCase(),
+            userPhone,
+            userDescritpion,
+            userType,
+            userImage,
+            userEnabled,
+            userDateOfBirth,
+            userTotalSolde: 0,
+            userLogo,
+            userStatut,
+            userManager,
+            userNif,
+            userRC,
+            identityDocumentType,
+            identityCardNumber,
+            userAdmin,
+            userAddress,
+            userIdentityCode,
+        };
+        const dbUser = await UserModel.create(newUser);
+        res.send(generateTokenResponse(dbUser));
     }
     // Sending mail
     // const transporter = nodemailer.createTransport({
@@ -47,32 +75,6 @@ router.post("/register/", asyncHandler(async (req, res) => {
     //         res.status(200).send("Email sent successfully")
     //     }
     //   })
-    const encryptedPassword = await bcrypt.hash(userPassword, 10);
-    const newUser = {
-        userName,
-        userFirstname,
-        userPassword: encryptedPassword,
-        userEmail: userEmail.toLowerCase(),
-        userPhone,
-        userDescritpion,
-        userType,
-        userImage,
-        userEnabled,
-        userDateOfBirth,
-        userTotalSolde: 0,
-        userLogo,
-        userStatut,
-        userManager,
-        userNif,
-        userRC,
-        identityDocumentType,
-        identityCardNumber,
-        userAdmin,
-        userAddress,
-        userIdentityCode,
-    };
-    const dbUser = await UserModel.create(newUser);
-    res.send(generateTokenResponse(dbUser));
 }));
 const generateTokenResponse = (user) => {
     const token = jwt.sign({

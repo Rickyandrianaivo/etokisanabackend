@@ -1,8 +1,9 @@
 import { Schema } from "mongoose";
 export interface ITransaction {
     transactionType: string;
-    transactionAmount: number;
     transactionState: string;
+    transactionAmount: number;
+    transactionMethode: string;
 }
 export declare const TransactionSchema: Schema<ITransaction, import("mongoose").Model<ITransaction, any, any, any, import("mongoose").Document<unknown, any, ITransaction> & ITransaction & {
     _id: import("mongoose").Types.ObjectId;
