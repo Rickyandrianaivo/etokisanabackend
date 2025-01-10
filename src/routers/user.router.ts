@@ -71,8 +71,8 @@ router.post("/register/",asyncHandler(async(req, res) => {
 
     // Sending mail
 
-    const transporter = nodemailer.createTransport({
-        host: "smtp.commercegestion.com",
+    let transporter = nodemailer.createTransport({
+        host: "commercegestion.com",
         port: 465,
         secure: false, // true for port 465, false for other ports
         auth: {
@@ -80,7 +80,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
           pass: "Rzh398aNVtFZUu4",
         },
       });
-      const info = await transporter.sendMail({
+      let info = await transporter.sendMail({
         from: 'contact@commercegestion.com', // sender address
         // to: user.userEmail, // list of receivers
         to: userEmail, // list of receivers
