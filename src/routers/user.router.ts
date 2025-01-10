@@ -81,7 +81,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         },
       });
       const info = await transporter.sendMail({
-        from: '"Etokisana" <contact@commercegestion.com>', // sender address
+        from: 'contact@commercegestion.com', // sender address
         // to: user.userEmail, // list of receivers
         to: userEmail, // list of receivers
         subject: "Bienvenue sur Etokisana", // Subject line
@@ -161,7 +161,7 @@ const resetPassword = async (userId : string, token :string, password :string) =
     return true;
   };
 // trouver à quelle moment le mot de passe doit être entrer et ou dirige le liende reinitialisation
-router.post("passwordReset/",asyncHandler(async(req,res)=>{
+router.post("/passwordReset/",asyncHandler(async(req,res)=>{
     const {id,token,password} = req.body;
      resetPassword(id,token,password)
  }))
