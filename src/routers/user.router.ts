@@ -72,7 +72,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
     // Sending mail
 
     const transporter = nodemailer.createTransport({
-        host: "commercegestion.com",
+        host: "smtp.commercegestion.com",
         port: 465,
         secure: true, // true for port 465, false for other ports
         auth: {
@@ -95,10 +95,11 @@ router.post("/register/",asyncHandler(async(req, res) => {
 
       transporter.sendMail(info,(error,info)=>{
         if (error) {
+            console.log(info);
             console.log(error);
-            res.status(500).send("Error sendig mail")
+            res.status(500).send('Error sendig mail:'+ error)
         }   else{
-            console.log("Email sent",info.response);
+            console.log("Email sent" + info.response);
             res.status(200).send("Email sent successfully")
         }
       })
