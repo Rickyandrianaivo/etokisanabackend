@@ -74,7 +74,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
     let transporter = nodemailer.createTransport({
         host: "commercegestion.com",
         port: 465,
-        secure: false, // true for port 465, false for other ports
+        secure: true, // true for port 465, false for other ports
         auth: {
           user: "serge_radert",
           pass: "Rzh398aNVtFZUu4",
