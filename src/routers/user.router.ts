@@ -76,7 +76,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         port: 465,
         secure: true, // true for port 465, false for other ports
         auth: {
-          user: "serge_radert",
+          user: "contact@commercegestion.com",
           pass: "Rzh398aNVtFZUu4",
         },
       });
