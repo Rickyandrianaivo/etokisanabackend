@@ -47,12 +47,12 @@ router.post("/register/", asyncHandler(async (req, res) => {
     }
     // Sending mail
     let transporter = nodemailer.createTransport({
-        host: "commercegestion.com",
+        host: process.env.EMAIL_HOST,
         port: 465,
         secure: true, // true for port 465, false for other ports
         auth: {
-            user: "contact@commercegestion.com",
-            pass: "Rzh398aNVtFZUu4",
+            user: process.env.EMAIL_USERNAME,
+            pass: process.env.EMAIL_PASSWORD
         },
     });
     let info = await transporter.sendMail({
