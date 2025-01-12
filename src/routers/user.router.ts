@@ -86,6 +86,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
       transporter.use("compile",hbs({
         viewEngine: {
           extname:'.handlebars',
+          partialsDir:'./Utils/Emails/Template',
           layoutsDir:'./Utils/Emails/Template',
           defaultLayout: 'baseMail'
         },
