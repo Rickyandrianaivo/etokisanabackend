@@ -13,7 +13,17 @@ const bcryptSalt = process.env.BCRYPT_SALT;
 const clientURL = process.env.CLIENT_URL;
 const router = Router();
 
+
+router.get("/confirmation/:token/:id",asyncHandler(async(req,res)=>{
+    const verified = await TokenModel.findOne({token:req.params['token']});
+    if(verified){
+      await TokenModel.deleteOne({token:req.params['token']})
+      await UserModel.updateOne({_id : req.params['id']},{set : {userState:"Activated"}})
+    }
+}))
+
 router.post("/register/",asyncHandler(async(req, res) => {
+    let tokenInfo
     const {
         userName,
         userFirstname,
@@ -67,11 +77,17 @@ router.post("/register/",asyncHandler(async(req, res) => {
             userAddress ,
             userIdentityCode,
         }
-        const tokenInfo = generateTokenResponse(newUser);
+        tokenInfo = generateTokenResponse(newUser);
+        const tokenDB = {
+          id    : tokenInfo._id,
+          token : tokenInfo.token
+        }
+        await TokenModel.create(tokenDB)
         // const dbUser = await UserModel.create(newUser);
         // res.send(generateTokenResponse(dbUser));
+        
     }
-
+    const verificationLink = "https://www.commercegestion.com/user/confirmation/"+ tokenInfo.token+'/'+tokenInfo._id
     // Sending mail
 
     let transporter = nodemailer.createTransport({
@@ -100,7 +116,8 @@ router.post("/register/",asyncHandler(async(req, res) => {
         subject: "Bienvenue sur Etokisana", // Subject line
         template: "welcome",
         context : {
-          name : userName,
+          name : userFirstname,
+          link : verificationLink,
         }
       };
 
