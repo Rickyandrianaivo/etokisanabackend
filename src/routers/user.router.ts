@@ -88,7 +88,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         // res.send(generateTokenResponse(dbUser));
         
     }
-    const verificationLink = "https://www.commercegestion.com/user/confirmation/"+ tokenInfo.token+'/'+tokenInfo._id
+    const verificationLink = "https://www.commercegestion.com/user-confirmation/"+ tokenInfo.token+'/'+tokenInfo._id
     // Sending mail
 
     let transporter = nodemailer.createTransport({

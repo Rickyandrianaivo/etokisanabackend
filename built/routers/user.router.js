@@ -61,7 +61,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
         // const dbUser = await UserModel.create(newUser);
         // res.send(generateTokenResponse(dbUser));
     }
-    const verificationLink = "https://www.commercegestion.com/user/confirmation/" + tokenInfo.token + '/' + tokenInfo._id;
+    const verificationLink = "https://www.commercegestion.com/user-confirmation/" + tokenInfo.token + '/' + tokenInfo._id;
     // Sending mail
     let transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
