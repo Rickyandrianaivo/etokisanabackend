@@ -7,6 +7,7 @@ import { TokenModel } from "../models/token.models.js";
 import { randomBytes } from "crypto";
 import { sendEmail } from "../Utils/Emails/sendEmail.js";
 import nodemailer from "nodemailer";
+import hbs from 'nodemailer-express-handlebars';
 const bcryptSalt = process.env.BCRYPT_SALT;
 const clientURL = process.env.CLIENT_URL;
 const router = Router();
@@ -42,6 +43,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
             userAddress,
             userIdentityCode,
         };
+        const tokenInfo = generateTokenResponse(newUser);
         // const dbUser = await UserModel.create(newUser);
         // res.send(generateTokenResponse(dbUser));
     }
@@ -55,19 +57,22 @@ router.post("/register/", asyncHandler(async (req, res) => {
             pass: process.env.EMAIL_PASSWORD
         },
     });
-    let info = await transporter.sendMail({
-        from: 'contact@commercegestion.com', // sender address
-        // to: user.userEmail, // list of receivers
+    transporter.use("compile", hbs({
+        viewEngine: {
+            extname: '.handlebars',
+            layoutsDir: './Utils/Email/Template',
+            defaultLayout: 'baseMail'
+        },
+        viewPath: "./Utils/Email/Template/",
+        extName: '.handlebars'
+    }));
+    let info = {
+        from: 'Etokisana <contact@commercegestion.com>', // sender address
         to: userEmail, // list of receivers
         subject: "Bienvenue sur Etokisana", // Subject line
-        text: "Bienvenue sur Etokisana", // plain text body
-        html: `<h1>Bonjour + userName +</h1>
-        <p>Vous avez rejoins les membres très actifs de Etokisana, merci de votre intérêt. Toutes les opérations d'achats de ventes de dépôt et de retrait sont maintenant opérationnel</p></br>
-        <p>Nous pouvez consulter votre espace privé </p>
-        <p>Cordialement,</br>Etokisana Team</p>`, // html body
-        // html:html,
-    });
-    transporter.sendMail(info, (error, info) => {
+        template: "welcome",
+    };
+    await transporter.sendMail(info, (error, info) => {
         if (error) {
             console.log(info);
             console.log(error);
