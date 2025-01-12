@@ -71,6 +71,9 @@ router.post("/register/", asyncHandler(async (req, res) => {
         to: userEmail, // list of receivers
         subject: "Bienvenue sur Etokisana", // Subject line
         template: "welcome",
+        context: {
+            name: userName,
+        }
     };
     await transporter.sendMail(info, (error, info) => {
         if (error) {

@@ -91,12 +91,16 @@ router.post("/register/",asyncHandler(async(req, res) => {
         },
         viewPath : "./Utils/Email/Template/",
         extName : '.handlebars'
+    
       }))
       let info = {
         from: 'Etokisana <contact@commercegestion.com>', // sender address
         to: userEmail, // list of receivers
         subject: "Bienvenue sur Etokisana", // Subject line
         template: "welcome",
+        context : {
+          name : userName,
+        }
       };
 
       await transporter.sendMail(info,(error,info)=>{
