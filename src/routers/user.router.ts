@@ -133,6 +133,8 @@ router.post("/register/",asyncHandler(async(req, res) => {
       })
 }))
 
+
+
 const generateTokenResponse = (user:any) =>{
     const token = jwt.sign({
         _id: user._id,
@@ -185,6 +187,14 @@ const resetPassword = async (userId : string, token :string, password :string) =
     await passwordResetToken.deleteOne();
     return true;
   };
+
+  router.post("/token/:token",asyncHandler(async(req,res)=>{
+    const token = req.params['token'];
+    const tokenUserId = await TokenModel.findOne({token});
+    if (tokenUserId) {
+      res.send(tokenUserId._id)
+    }
+ }))
 // trouver à quelle moment le mot de passe doit être entrer et ou dirige le liende reinitialisation
 router.post("/passwordReset/",asyncHandler(async(req,res)=>{
     const {id,token,password} = req.body;
