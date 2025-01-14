@@ -11,11 +11,11 @@ import hbs from 'nodemailer-express-handlebars';
 const bcryptSalt = process.env.BCRYPT_SALT;
 const clientURL = process.env.CLIENT_URL;
 const router = Router();
-router.get("/confirmation/:token/:id", asyncHandler(async (req, res) => {
+router.get("/user-confirmation/:token/:id", asyncHandler(async (req, res) => {
     const verified = await TokenModel.findOne({ token: req.params['token'] });
     if (verified) {
         await TokenModel.deleteOne({ token: req.params['token'] });
-        await UserModel.updateOne({ _id: req.params['id'] }, { set: { userState: "Activated" } });
+        await UserModel.updateOne({ _id: req.params['id'] }, { set: { userEnabled: true } });
     }
 }));
 router.post("/register/", asyncHandler(async (req, res) => {
@@ -37,7 +37,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
             userDescritpion,
             userType,
             userImage,
-            userEnabled,
+            userEnabled: false,
             userDateOfBirth,
             userTotalSolde: 0,
             userLogo,
@@ -55,13 +55,13 @@ router.post("/register/", asyncHandler(async (req, res) => {
         tokenInfo = generateTokenResponse(userDb);
         const tokenDB = {
             id: tokenInfo._id,
-            token: tokenInfo.token
+            token: tokenInfo.token,
+            createdAt: new Date()
         };
         await TokenModel.create(tokenDB);
-        // const dbUser = await UserModel.create(newUser);
-        // res.send(generateTokenResponse(dbUser));
     }
-    const verificationLink = "https://www.commercegestion.com/user-confirmation/" + tokenInfo.token + '/' + tokenInfo._id;
+    const verificationLink = "https://www.commercegestion.com/user-confirmation/" + tokenInfo.token;
+    // const verificationLink = "https://www.commercegestion.com/user-confirmation/"+ tokenInfo.token+'/'+tokenInfo._id
     // Sending mail
     let transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
@@ -108,8 +108,6 @@ const generateTokenResponse = (user) => {
     const token = jwt.sign({
         _id: user._id,
         userEmail: user.userEmail,
-        userName: user.userName,
-        userFirstname: user.userFirstname,
         userPhone: user.userPhone,
     }, process.env.JWT_SECRET, {
         expiresIn: "30d"

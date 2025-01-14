@@ -8,7 +8,7 @@ export interface Token{
 export const TokenSchema = new Schema<Token>({
     id                   : {type : String, required : true},
     token                : {type : String, required : true},
-    createdAt            : {type : Date, required : true, default: Date.now,expires:3600},
+    // createdAt            : {type : Date, required : true, default: Date.now,expires:3600},
 },{
     timestamps : true,
     expireAfterSeconds:3600,
