@@ -11,7 +11,7 @@ import hbs from 'nodemailer-express-handlebars';
 const bcryptSalt = process.env.BCRYPT_SALT;
 const clientURL = process.env.CLIENT_URL;
 const router = Router();
-router.get("/user-confirmation/:token", asyncHandler(async (req, res) => {
+router.get("/user-confirmation/:token/:id", asyncHandler(async (req, res) => {
     const verified = await TokenModel.findOne({ token: req.params['token'] });
     if (verified) {
         await TokenModel.deleteOne({ token: req.params['token'] });
