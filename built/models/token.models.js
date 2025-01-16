@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 export const TokenSchema = new Schema({
-    id: { type: String, required: true },
+    userId: { type: String, required: true },
     token: { type: String, required: true },
     // createdAt            : {type : Date, required : true, default: Date.now,expires:3600},
 }, {

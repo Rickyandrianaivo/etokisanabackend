@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 export interface Token {
-    id: string;
+    userId: string;
     token: string;
     createdAt: Date;
 }
