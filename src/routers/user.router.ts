@@ -18,35 +18,35 @@ router.get("/user-confirmation/:token",asyncHandler(async(req,res)=>{
     const verified = await TokenModel.findOne({token:req.params['token']});
     if(verified){
         console.log(verified);
-        const user = await UserModel.findOne({id : verified.id});
-        if (user) {
-          const activatedUser = {
-            userName: user.userName,
-            userFirstname: user.userFirstname,
-            userPassword : user.userPassword,
-            userEmail : user.userEmail,
-            userPhone : user.userPhone,
-            userDescritpion : user.userDescritpion,
-            userType : user.userType,
-            userImage : user.userImage,
-            userDateOfBirth : user.userDateOfBirth,
-            userLogo : user.userLogo,
-            userStatut : user.userStatut,
-            userManager : user.userManager,
-            userNif : user. userNif,
-            userRC : user. userRC,
-            identityDocumentType : user.identityDocumentType,
-            identityCardNumber : user.identityCardNumber,
-            userAdmin : user.userAdmin,
-            userAddress : user.userAddress,
-            userIdentityCode : user.userIdentityCode,
-            userEnabled : true,
-          }
-          await UserModel.updateOne({id : verified.id}, activatedUser)
+        // const user = await UserModel.findOne({id : verified.id});
+        // if (user) {
+        //   const activatedUser = {
+        //     userName: user.userName,
+        //     userFirstname: user.userFirstname,
+        //     userPassword : user.userPassword,
+        //     userEmail : user.userEmail,
+        //     userPhone : user.userPhone,
+        //     userDescritpion : user.userDescritpion,
+        //     userType : user.userType,
+        //     userImage : user.userImage,
+        //     userDateOfBirth : user.userDateOfBirth,
+        //     userLogo : user.userLogo,
+        //     userStatut : user.userStatut,
+        //     userManager : user.userManager,
+        //     userNif : user. userNif,
+        //     userRC : user. userRC,
+        //     identityDocumentType : user.identityDocumentType,
+        //     identityCardNumber : user.identityCardNumber,
+        //     userAdmin : user.userAdmin,
+        //     userAddress : user.userAddress,
+        //     userIdentityCode : user.userIdentityCode,
+        //     userEnabled : true,
+        //   }
+          // await UserModel.updateOne({id : verified.id}, activatedUser)
           await TokenModel.deleteOne({token : verified.token});
-          res.status(200).send("Utilisateur vérifié")
+          res.status(200).send("Token Effacer")
         }
-    }
+    // }
     else{
       res.status(404).send("Token Introuvable")
     }
