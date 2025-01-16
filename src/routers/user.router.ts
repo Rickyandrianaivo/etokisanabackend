@@ -307,31 +307,30 @@ router.put("/update/:id",asyncHandler(async(req,res) => {
         userAddress ,
         userIdentityCode,
     } = req.body;
-    const userUpdates = {
-        userName,
-        userFirstname,
-        userPassword,
-        userEmail:userEmail.toLowerCase(),
-        userPhone,
-        userDescritpion,
-        userGender,
-        userImage,
-        userEnabled,
-        userDateOfBirth,
-        userTotalSolde,
-        userLogo,
-        userStatut,
-        userManager,
-        userNif ,
-        userRC ,
-        identityDocumentType,
-        identityCardNumber,
-        userAdmin,
-        userAddress ,
-        userIdentityCode,
-        };
 
-    await UserModel.updateOne({_id : userId}, userUpdates);
+    await UserModel.updateOne({_id : userId}, {
+      userName,
+      userFirstname,
+      userPassword,
+      userEmail:userEmail.toLowerCase(),
+      userPhone,
+      userDescritpion,
+      userGender,
+      userImage,
+      userEnabled,
+      userDateOfBirth,
+      userTotalSolde,
+      userLogo,
+      userStatut,
+      userManager,
+      userNif ,
+      userRC ,
+      identityDocumentType,
+      identityCardNumber,
+      userAdmin,
+      userAddress ,
+      userIdentityCode,
+      });
 }))
 
 //reset tables{

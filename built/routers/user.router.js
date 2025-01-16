@@ -240,7 +240,7 @@ router.post("/login", asyncHandler(async (req, res) => {
 router.put("/update/:id", asyncHandler(async (req, res) => {
     const userId = req.params['id'];
     const { userName, userFirstname, userPassword, userEmail, userPhone, userDescritpion, userGender, userImage, userEnabled, userDateOfBirth, userTotalSolde, userLogo, userStatut, userManager, userNif, userRC, identityDocumentType, identityCardNumber, userAdmin, userAddress, userIdentityCode, } = req.body;
-    const userUpdates = {
+    await UserModel.updateOne({ _id: userId }, {
         userName,
         userFirstname,
         userPassword,
@@ -262,8 +262,7 @@ router.put("/update/:id", asyncHandler(async (req, res) => {
         userAdmin,
         userAddress,
         userIdentityCode,
-    };
-    await UserModel.updateOne({ _id: userId }, userUpdates);
+    });
 }));
 //reset tables{
 // router.get("/resetTable",asyncHandler(async(req,res)=>{
