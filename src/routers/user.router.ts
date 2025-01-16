@@ -18,9 +18,34 @@ router.get("/user-confirmation/:token",asyncHandler(async(req,res)=>{
     const verified = await TokenModel.findOne({token:req.params['token']});
     if(verified){
         console.log(verified);
-        await UserModel.updateOne({_id : verified._id},{userEnabled:true});
-        await TokenModel.deleteOne({token : verified.token});
-        res.status(200).send("Utilisateur vérifié")
+        const user = await UserModel.findOne({_id : verified._id});
+        if (user) {
+          const activatedUser = {
+            userName: user.userName,
+            userFirstname: user.userFirstname,
+            userPassword : user.userPassword,
+            userEmail : user.userEmail,
+            userPhone : user.userPhone,
+            userDescritpion : user.userDescritpion,
+            userType : user.userType,
+            userImage : user.userImage,
+            userDateOfBirth : user.userDateOfBirth,
+            userLogo : user.userLogo,
+            userStatut : user.userStatut,
+            userManager : user.userManager,
+            userNif : user. userNif,
+            userRC : user. userRC,
+            identityDocumentType : user.identityDocumentType,
+            identityCardNumber : user.identityCardNumber,
+            userAdmin : user.userAdmin,
+            userAddress : user.userAddress,
+            userIdentityCode : user.userIdentityCode,
+            userEnabled : true,
+          }
+          await UserModel.updateOne({_id : verified._id}, activatedUser)
+          await TokenModel.deleteOne({token : verified.token});
+          res.status(200).send("Utilisateur vérifié")
+        }
     }
     else{
       res.status(404).send("Token Introuvable")
