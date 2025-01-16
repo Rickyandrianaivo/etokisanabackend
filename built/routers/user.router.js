@@ -20,7 +20,7 @@ router.get("/user-confirmation/:token/:id", asyncHandler(async (req, res) => {
 }));
 router.post("/register/", asyncHandler(async (req, res) => {
     let tokenInfo;
-    const { userName, userFirstname, userPassword, userEmail, userPhone, userDescritpion, userType, userImage, userEnabled, userDateOfBirth, userTotalSolde, userLogo, userStatut, userManager, userNif, userRC, identityDocumentType, identityCardNumber, userAdmin, userAddress, userIdentityCode, } = req.body;
+    const { userName, userFirstname, userPassword, userEmail, userPhone, userDescritpion, userType, userImage, userDateOfBirth, userLogo, userStatut, userManager, userNif, userRC, identityDocumentType, identityCardNumber, userAdmin, userAddress, userIdentityCode, } = req.body;
     const user = await UserModel.findOne({ userEmail: userEmail.toLowerCase() });
     if (user) {
         res.send("Ce nom est déjà utilisé!");
