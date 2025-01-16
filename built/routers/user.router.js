@@ -39,8 +39,9 @@ router.get("/user-confirmation/:token", asyncHandler(async (req, res) => {
                 userIdentityCode: user.userIdentityCode,
                 userEnabled: true,
             };
-            await UserModel.updateOne({ _id: verified.id }, activatedUser);
-            await TokenModel.deleteOne({ token: verified.token });
+            await UserModel.updateOne({ _id: verified.userId }, activatedUser);
+            console.log();
+            // await TokenModel.deleteOne({token : verified.token});
             res.status(200).send("Token Effacer");
         }
     }
