@@ -217,7 +217,7 @@ router.get("", asyncHandler(async (req, res) => {
 }));
 router.get("/id/:id", asyncHandler(async (req, res) => {
     const userId = req.params['id'];
-    const user = await UserModel.findOne({ id: userId });
+    const user = await UserModel.findOne({ _id: userId });
     console.log(user);
     res.send(user);
 }));
