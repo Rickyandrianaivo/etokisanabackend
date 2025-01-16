@@ -263,7 +263,7 @@ router.put("/update/:id", asyncHandler(async (req, res) => {
         userAddress,
         userIdentityCode,
     };
-    await UserModel.updateOne({ id: userId }, userUpdates);
+    await UserModel.updateOne({ _id: userId }, userUpdates);
 }));
 //reset tables{
 // router.get("/resetTable",asyncHandler(async(req,res)=>{
