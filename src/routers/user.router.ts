@@ -14,11 +14,20 @@ const clientURL = process.env.CLIENT_URL;
 const router = Router();
 
 
-router.get("/user-confirmation/:token/:id",asyncHandler(async(req,res)=>{
+router.get("/user-confirmation/:token",asyncHandler(async(req,res)=>{
     const verified = await TokenModel.findOne({token:req.params['token']});
     if(verified){
-      await TokenModel.deleteOne({token:req.params['token']})
-      await UserModel.updateOne({_id : req.params['id']},{userEnabled:true})
+      const tokenInfo = await TokenModel.findOne({token:req.params['token']});
+      if (tokenInfo) {
+        const tokenUserID = tokenInfo._id;
+        console.log(tokenUserID);
+        await UserModel.updateOne({_id : tokenUserID},{userEnabled:true});
+        await TokenModel.deleteOne({token:tokenInfo.token});
+        res.status(200).send("Utilisateur vérifié")
+      }
+    }
+    else{
+      res.status(404).send("Token Introuvable")
     }
 }))
 
