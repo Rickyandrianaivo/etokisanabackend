@@ -215,11 +215,11 @@ router.get("", asyncHandler(async (req, res) => {
     const users = await UserModel.find();
     res.send(users);
 }));
-// router.get("/:id", asyncHandler(async(req, res) => {
-//     const userId = req.params['id'];
-//     const user = await UserModel.findOne({_id : userId});
-//     res.send(user);
-// }))
+router.get("/:id", asyncHandler(async (req, res) => {
+    const userId = req.params['id'];
+    const user = await UserModel.findOne({ _id: userId });
+    res.send(user);
+}));
 router.get("/email/:email", asyncHandler(async (req, res) => {
     const userEmail = req.params['email'];
     const user = await UserModel.findOne({ userEmail: userEmail });
