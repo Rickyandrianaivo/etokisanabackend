@@ -18,7 +18,7 @@ router.get("/user-confirmation/:token",asyncHandler(async(req,res)=>{
     const verified = await TokenModel.findOne({token:req.params['token']});
     if(verified){
         console.log(verified);
-        const user = await UserModel.findOne({_id : verified._id});
+        const user = await UserModel.findOne({id : verified.id});
         if (user) {
           const activatedUser = {
             userName: user.userName,
