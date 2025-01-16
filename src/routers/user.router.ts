@@ -220,7 +220,8 @@ const resetPassword = async (userId : string, token :string, password :string) =
     const token = req.params['token'];
     const tokenUserId = await TokenModel.findOne({token});
     if (tokenUserId) {
-      res.send(tokenUserId.userId)
+      const userConcerned =await UserModel.findOne({id:tokenUserId.userId})
+      res.send(userConcerned).status(200)
     }
  }))
 // trouver à quelle moment le mot de passe doit être entrer et ou dirige le liende reinitialisation
