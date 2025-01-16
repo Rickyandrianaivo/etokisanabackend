@@ -180,7 +180,7 @@ router.get("/token/:token", asyncHandler(async (req, res) => {
     const token = req.params['token'];
     const tokenUserId = await TokenModel.findOne({ token });
     if (tokenUserId) {
-        const userConcerned = await UserModel.findOne({ id: tokenUserId.userId });
+        const userConcerned = await UserModel.findOne({ _id: tokenUserId.userId });
         res.send(userConcerned).status(200);
     }
 }));
