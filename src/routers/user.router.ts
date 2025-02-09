@@ -115,7 +115,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         }
         await TokenModel.create(tokenDB);        
     }
-    const verificationLink = "https://www.commercegestion.com/user-confirmation/"+ tokenInfo.token;
+    const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
     // const verificationLink = "https://www.commercegestion.com/user-confirmation/"+ tokenInfo.token+'/'+tokenInfo._id
     // Sending mail
 
