@@ -8,7 +8,7 @@ export interface User{
     userEmail           : string;
     userPhone           : string;
     userDescritpion     : string;
-    userType          : string;
+    userType            : string;
     userImage           : string;
     userEnabled         : boolean;
     userDateOfBirth     : Date;
@@ -22,6 +22,8 @@ export interface User{
     identityCardNumber  : string;
     userAdmin           : boolean;
     userAddress         : string;
+    userLongitude       : string;
+    userLatitude        : string;
     userIdentityCode    : string;
 }
 
@@ -32,7 +34,7 @@ export const UserSchema = new Schema<User>({
     userEmail               : {type : String, required : true, unique:true},
     userPhone               : {type : String, required : true},
     userDescritpion         : {type : String},
-    userType              : {type : String},
+    userType                : {type : String},
     userImage               : {type : String},
     userEnabled             : {type : Boolean, },
     userDateOfBirth         : {type : Date },
@@ -45,6 +47,8 @@ export const UserSchema = new Schema<User>({
     identityDocumentType    : {type : String},
     identityCardNumber      : {type : String},
     userAddress             : {type : String},
+    userLongitude           : {type : String},
+    userLatitude            : {type : String},
     userIdentityCode        : {type : String},
 },{
     timestamps : true,
