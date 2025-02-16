@@ -1,10 +1,10 @@
 import { Schema } from "mongoose";
 export interface ISite {
-    SiteName: string;
-    SiteAddress: string;
-    SiteLat: number;
-    SiteLng: number;
-    SiteUserId: string;
+    siteName: string;
+    siteAddress: string;
+    siteLat: number;
+    siteLng: number;
+    siteUserId: string;
 }
 export declare const SiteSchema: Schema<ISite, import("mongoose").Model<ISite, any, any, any, import("mongoose").Document<unknown, any, ISite> & ISite & {
     _id: import("mongoose").Types.ObjectId;
