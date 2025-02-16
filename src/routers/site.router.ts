@@ -28,8 +28,8 @@ router.get("/",expressAsyncHandler(async(req,res)=>{
     res.send(allSites);
 }))
 router.get("/:id",expressAsyncHandler(async(req,res)=>{
-    const SiteId = req.params['id'];
-    const selectedSite = await SiteModel.findById(SiteId);
+    const userId = req.params['userid'];
+    const selectedSite = await SiteModel.find({siteUserId : userId});
     res.send(selectedSite);
 }))
 router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
