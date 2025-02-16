@@ -22,8 +22,6 @@ export interface User{
     identityCardNumber  : string;
     userAdmin           : boolean;
     userAddress         : string;
-    userLongitude       : string;
-    userLatitude        : string;
     userIdentityCode    : string;
 }
 
@@ -47,8 +45,6 @@ export const UserSchema = new Schema<User>({
     identityDocumentType    : {type : String},
     identityCardNumber      : {type : String},
     userAddress             : {type : String},
-    userLongitude           : {type : String},
-    userLatitude            : {type : String},
     userIdentityCode        : {type : String},
 },{
     timestamps : true,
