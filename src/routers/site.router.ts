@@ -29,6 +29,7 @@ router.get("/",expressAsyncHandler(async(req,res)=>{
 }))
 router.get("/:id",expressAsyncHandler(async(req,res)=>{
     const userId = req.params['userid'];
+    console.log(userId);
     const selectedSite = await SiteModel.find({siteUserId : userId});
     res.send(selectedSite);
 }))
