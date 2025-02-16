@@ -5,17 +5,7 @@ import { SiteModel } from "../models/site.model.js";
 
 const router = Router();
 
-
-router.post("/site/seed",expressAsyncHandler(async(req,res)=>{
-        const SiteCounts = await SiteModel.countDocuments();
-        if(SiteCounts>0){
-            res.send("Seed is already done !!");
-            return;
-        }
-        // await SiteModel.create(sample_Sites);
-        res.send("Seed is done!!")
-}))
-router.post("/site",expressAsyncHandler(async(req,res)=>{
+router.post("/add",expressAsyncHandler(async(req,res)=>{
     const {
         SiteName,
         SiteAddress,
@@ -31,26 +21,6 @@ router.post("/site",expressAsyncHandler(async(req,res)=>{
     await SiteModel.create(newSite);
     res.send(newSite);
 }))
-router.put("/site/:id",expressAsyncHandler(async(req,res)=>{
-    const {
-        SiteName,
-        SiteAddress,
-        SiteLat,
-        SiteLng,
-    }= req.body;
-    const modifiedSite = await SiteModel.updateOne({_id : req.params['id']},
-    {
-        SiteName,
-        SiteAddress,
-        SiteLat,
-        SiteLng,
-    })
-    res.send(modifiedSite);
-}))
-router.delete("/:id",expressAsyncHandler(async(req,res)=>{
-    res.status(200)
-}))
-
 router.get("/",expressAsyncHandler(async(req,res)=>{
     const allSites = await SiteModel.find();
     res.send(allSites);
@@ -60,15 +30,27 @@ router.get("/:id",expressAsyncHandler(async(req,res)=>{
     const selectedSite = await SiteModel.findById(SiteId);
     res.send(selectedSite);
 }))
-router.get("/category/:category",expressAsyncHandler(async(req,res)=>{
-    const SiteCat = req.params['category']
-    const SiteByCat = await SiteModel.find({SiteCategory : SiteCat});
-    res.send(SiteByCat);
+router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
+    const {
+        siteName,
+        siteAddress,
+        siteLat,
+        siteLng,
+        siteUserId,
+    }= req.body;
+    const modifiedSite = await SiteModel.updateOne({_id : req.params['id']},
+    {
+        siteName,
+        siteAddress,
+        siteLat,
+        siteLng,
+        siteUserId
+    })
+    res.send(modifiedSite);
 }))
-router.get("/state/:state",expressAsyncHandler(async(req,res)=>{
-    const SiteState = req.params['state']
-    const SiteByState = await SiteModel.find({SiteCategory : SiteState});
-    res.send(SiteByState);
+router.delete("delete/:id",expressAsyncHandler(async(req,res)=>{
+    res.status(200)
 }))
+
 
 export default router;

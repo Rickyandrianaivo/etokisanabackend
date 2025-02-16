@@ -1,19 +1,19 @@
 import { model, Schema } from "mongoose";
 
 export interface ISite {
-    SiteName:string;
-    SiteAddress:string;
-    SiteLat:number;
-    SiteLng:number;
-    SiteUserId:string;
+    siteName:string;
+    siteAddress:string;
+    siteLat:number;
+    siteLng:number;
+    siteUserId:string;
 }
 
 export const SiteSchema = new Schema<ISite>({
-    SiteName    :{type:String},
-    SiteAddress :{type:String},
-    SiteLat     :{type:Number},
-    SiteLng     :{type:Number},
-    SiteUserId  :{type:String},
+    siteName    :{type:String},
+    siteAddress :{type:String},
+    siteLat     :{type:Number},
+    siteLng     :{type:Number},
+    siteUserId  :{type:String},
 },{
     timestamps : true,
     toJSON : {
