@@ -7,16 +7,18 @@ const router = Router();
 
 router.post("/add",expressAsyncHandler(async(req,res)=>{
     const {
-        SiteName,
-        SiteAddress,
-        SiteLat,
-        SiteLng,
+        siteName,
+        siteAddress,
+        siteLat,
+        siteLng,
+        siteUserId
     }= req.body;
     const newSite = {
-        SiteName,
-        SiteAddress,
-        SiteLat,
-        SiteLng,
+        siteName,
+        siteAddress,
+        siteLat,
+        siteLng,
+        siteUserId
     }
     await SiteModel.create(newSite);
     res.send(newSite);
