@@ -1,6 +1,6 @@
 import { Router } from "express"
 import expressAsyncHandler from "express-async-handler";
-import { ProductModel } from "../models/product.model.js";
+import { ProductModel } from "../models/product.model";
 import { sample_products } from "../data.js";
 import multer from 'multer';
 
@@ -116,11 +116,17 @@ router.get("/state/:state",expressAsyncHandler(async(req,res)=>{
 //Upload essay 2
 router.post('/upload',upload.single('file'),(req,res)=>{
     // router.post('/imageUpload',expressAsyncHandler(async(req,res)=>{
-        console.log(req.file);
+    const responseData = {
+        message : "Fichier uploadé avec succès !",
+        originalFileName : req.file?.originalname,
+        mimeType : req.file?.mimetype,
+        sizeInBytes : req.file?.size
+    }    
+    // console.log(responseData);
         if (req.file) {
             productImagePath = req.file.path
         }
-        res.status(200).json(req.file)
+        res.status(200).json(responseData)
 })
 
 

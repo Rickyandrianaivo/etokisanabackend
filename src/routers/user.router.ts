@@ -1,11 +1,11 @@
 import { Router } from "express";
 import asyncHandler from "express-async-handler";
-import { User, UserModel } from "../models/user.model.js";
+import { User, UserModel } from "../models/user.model";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { Token, TokenModel } from "../models/token.models.js";
+import { Token, TokenModel } from "../models/token.models";
 import {randomBytes} from"crypto";
-import { sendEmail } from "../Utils/Emails/sendEmail.js";
+import { sendEmail } from "../Utils/Emails/sendEmail";
 import nodemailer from "nodemailer";
 import hbs from 'nodemailer-express-handlebars';
 

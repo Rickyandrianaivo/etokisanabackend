@@ -32,7 +32,7 @@ export const UserSchema = new Schema<User>({
     userEmail               : {type : String, required : true, unique:true},
     userPhone               : {type : String, required : true},
     userDescritpion         : {type : String},
-    userType                : {type : String},
+    userType                : {type : String, required : true},
     userImage               : {type : String},
     userEnabled             : {type : Boolean, },
     userDateOfBirth         : {type : Date },
