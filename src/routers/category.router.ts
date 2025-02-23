@@ -15,22 +15,30 @@ router.post("/category/seed",expressAsyncHandler(async(req,res)=>{
         res.send("Seed is done!!")
 }))
 
-router.post("/category",expressAsyncHandler(async(req,res)=>{
+router.post("/category/add",expressAsyncHandler(async(req,res)=>{
     const {
-        CatName
+        CatMiniatureUrl,
+        CatName,
+        CatDescription
     } = req.body;
     const newCategory = {
+        CatMiniatureUrl,
         CatName,
+        CatDescription
     }
     await CategoryModel.create(newCategory);
     res.status(200)
 }))
 router.put("/category/:id",expressAsyncHandler(async(req,res)=>{
     const {
-        CatName
+        CatMiniatureUrl,
+        CatName,
+        CatDescription
     } = req.body;
     await CategoryModel.updateOne({_id : req.params['id']},{
-        CatName
+        CatMiniatureUrl,
+        CatName,
+        CatDescription
     })
 }))
 router.delete("/category/:id",expressAsyncHandler(async(req,res)=>{

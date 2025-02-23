@@ -1,11 +1,15 @@
 import { model, Schema } from "mongoose";
 
 export interface ICategory{
-    CatName:string;
+    CatMiniatureUrl : string;
+    CatName         : string;
+    CatDescription  : string;
 }
 
 export const CategorySchema = new Schema<ICategory>({
-    CatName :  {type : String,required:true}
+    CatMiniatureUrl : { type : String},
+    CatName         : { type : String,required:true},
+    CatDescription  : { type : String}
 },{
     timestamps : true,
     toJSON : {
