@@ -29,14 +29,14 @@ router.get("/",expressAsyncHandler(async(req,res)=>{
 }))
 router.get("/user/:userId",expressAsyncHandler(async(req,res)=>{
     const userId = req.params['userId'];
-    console.log(userId);
+    // console.log(userId);
     const userSites = await SiteModel.find({siteUserId : userId});
     res.send(userSites);
 }))
 router.get("/:id",expressAsyncHandler(async(req,res)=>{
     const siteId = req.params['id'];
-    console.log(siteId);
-    const selectedSite = await SiteModel.find({_id : siteId});
+    // console.log(siteId);
+    const selectedSite = await SiteModel.findById({_id : siteId});
     res.send(selectedSite);
 }))
 router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
