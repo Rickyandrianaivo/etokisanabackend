@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start-dev": "cd src && nodemon server.ts",
+    "start-dev": "cd built && nodemon server.js",
     "start": "cd built && node server.js",
     "build": "npm install && npm install -g typescript && tsc",
     "buildDev": "npm install && tsc"
