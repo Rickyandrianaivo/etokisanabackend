@@ -1,4 +1,4 @@
-import { Router } from "express"
+import { query, Router } from "express"
 import expressAsyncHandler from "express-async-handler";
 import { SiteModel } from "../models/site.model.js";
 // import { sample_Sites } from "../data";
@@ -57,8 +57,10 @@ router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
     })
     res.send(modifiedSite);
 }))
-router.delete("delete/:id",expressAsyncHandler(async(req,res)=>{
+router.delete("/delete/:id",expressAsyncHandler(async(req,res)=>{
+    const siteId = req.params['id']
     res.status(200)
+    await SiteModel.deleteOne({_id : siteId});
 }))
 
 
