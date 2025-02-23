@@ -5,7 +5,7 @@ import { sample_categories } from "../data.js";
 
 const router = Router();
 
-router.post("/category/seed",expressAsyncHandler(async(req,res)=>{
+router.post("/seed",expressAsyncHandler(async(req,res)=>{
     const productCounts = await CategoryModel.countDocuments();
         if(productCounts>0){
             res.send("Seed is already done !!");
@@ -15,7 +15,7 @@ router.post("/category/seed",expressAsyncHandler(async(req,res)=>{
         res.send("Seed is done!!")
 }))
 
-router.post("/category/add",expressAsyncHandler(async(req,res)=>{
+router.post("/add",expressAsyncHandler(async(req,res)=>{
     const {
         CatMiniatureUrl,
         CatName,
@@ -29,7 +29,7 @@ router.post("/category/add",expressAsyncHandler(async(req,res)=>{
     await CategoryModel.create(newCategory);
     res.status(200)
 }))
-router.put("/category/:id",expressAsyncHandler(async(req,res)=>{
+router.put("/id/:id",expressAsyncHandler(async(req,res)=>{
     const {
         CatMiniatureUrl,
         CatName,
@@ -41,7 +41,7 @@ router.put("/category/:id",expressAsyncHandler(async(req,res)=>{
         CatDescription
     })
 }))
-router.delete("/category/:id",expressAsyncHandler(async(req,res)=>{
+router.delete("/delete/:id",expressAsyncHandler(async(req,res)=>{
     res.status(200);
 }))
 
