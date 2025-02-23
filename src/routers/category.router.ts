@@ -29,7 +29,12 @@ router.post("/add",expressAsyncHandler(async(req,res)=>{
     await CategoryModel.create(newCategory);
     res.status(200)
 }))
-router.put("/id/:id",expressAsyncHandler(async(req,res)=>{
+router.get("/", expressAsyncHandler(async(req,res)=>{
+    const categories = await CategoryModel.find();
+    res.send(categories).status(200);
+    
+}))
+router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
     const {
         CatMiniatureUrl,
         CatName,
