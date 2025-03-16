@@ -7,10 +7,10 @@ export interface User{
     userPassword        : string;
     userEmail           : string;
     userPhone           : string;
-    userDescritpion     : string;
     userType            : string;
     userEnabled         : boolean;
     userTotalSolde      : number;
+    // userDescritpion     : string;
     // userImage           : string;
     // userDateOfBirth     : Date;
     // userLogo            : string;
