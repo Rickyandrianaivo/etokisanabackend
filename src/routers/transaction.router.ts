@@ -1,7 +1,7 @@
 import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { CategoryModel } from "../models/category.model.js";
 import { sample_categories } from "../data.js";
+import { TransactionModel } from "../models/transaction.model.js";
 
 const router = Router();
 
@@ -29,11 +29,11 @@ router.post("/add",expressAsyncHandler(async(req,res)=>{
         statut,
         siteId
     }
-    await CategoryModel.create(newCategory);
+    await TransactionModel.create(newCategory);
     res.status(200)
 }))
 router.get("/", expressAsyncHandler(async(req,res)=>{
-    const categories = await CategoryModel.find();
+    const categories = await TransactionModel.find();
     res.send(categories).status(200);
     
 }))
@@ -49,7 +49,7 @@ router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
         statut,
         siteId
     } = req.body;
-    await CategoryModel.updateOne({_id : req.params['id']},{
+    await TransactionModel.updateOne({_id : req.params['id']},{
         userId,
         tiersId,
         codeProduit,
