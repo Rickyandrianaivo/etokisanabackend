@@ -9,20 +9,20 @@ export interface User{
     userPhone           : string;
     userDescritpion     : string;
     userType            : string;
-    userImage           : string;
     userEnabled         : boolean;
-    userDateOfBirth     : Date;
     userTotalSolde      : number;
-    userLogo            : string;
-    userStatut          : string;
-    userManager         : string;
-    userNif             : string;
-    userRC              : string;
-    identityDocumentType: string;
-    identityCardNumber  : string;
-    userAdmin           : boolean;
-    userAddress         : string;
-    userIdentityCode    : string;
+    // userImage           : string;
+    // userDateOfBirth     : Date;
+    // userLogo            : string;
+    // userStatut          : string;
+    // userManager         : string;
+    // userNif             : string;
+    // userRC              : string;
+    // identityDocumentType: string;
+    // identityCardNumber  : string;
+    // userAdmin           : boolean;
+    // userAddress         : string;
+    // userIdentityCode    : string;
 }
 
 export const UserSchema = new Schema<User>({
@@ -31,21 +31,21 @@ export const UserSchema = new Schema<User>({
     userPassword            : {type : String, required : true},
     userEmail               : {type : String, required : true, unique:true},
     userPhone               : {type : String, required : true},
-    userDescritpion         : {type : String},
     userType                : {type : String, required : true},
-    userImage               : {type : String},
-    userEnabled             : {type : Boolean, },
-    userDateOfBirth         : {type : Date },
     userTotalSolde          : {type : Number},
-    userLogo                : {type : String},
-    userStatut              : {type : String},
-    userManager             : {type : String},
-    userNif                 : {type : String},
-    userRC                  : {type : String},
-    identityDocumentType    : {type : String},
-    identityCardNumber      : {type : String},
-    userAddress             : {type : String},
-    userIdentityCode        : {type : String},
+    userEnabled             : {type : Boolean, },
+    // userDescritpion         : {type : String},
+    // userImage               : {type : String},
+    // userDateOfBirth         : {type : Date },
+    // userLogo                : {type : String},
+    // userStatut              : {type : String},
+    // userManager             : {type : String},
+    // userNif                 : {type : String},
+    // userRC                  : {type : String},
+    // identityDocumentType    : {type : String},
+    // identityCardNumber      : {type : String},
+    // userAddress             : {type : String},
+    // userIdentityCode        : {type : String},
 },{
     timestamps : true,
     toJSON : {
