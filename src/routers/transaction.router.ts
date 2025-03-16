@@ -37,7 +37,7 @@ router.get("/", expressAsyncHandler(async(req,res)=>{
     
 }))
 router.get("/user/:id", expressAsyncHandler(async(req,res)=>{
-    const transactions = await TransactionModel.find({_id: req.params['id']});
+    const transactions = await TransactionModel.find({userId: req.params['id']});
     res.send(transactions).status(200);
     
 }))
