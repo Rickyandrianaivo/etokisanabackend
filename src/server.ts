@@ -8,6 +8,7 @@ import siteRouter from './routers/site.router.js';
 import productRouter from './routers/product.router.js';
 import categoryRouter from './routers/category.router.js';
 import { dbConnect } from './configs/database.config.js';
+import transactionRouter from './routers/transaction.router.js';
 dbConnect();
 
 
@@ -28,6 +29,7 @@ app.use("/api/users", userRouter);
 app.use("/api/site", siteRouter)
 app.use("/api/product", productRouter);
 app.use("/api/category", categoryRouter);
+app.use("/api/transaction", transactionRouter);
 
 const port = 443;
 app.listen(port, () =>{

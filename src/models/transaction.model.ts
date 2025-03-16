@@ -1,15 +1,25 @@
 import { model, Schema } from "mongoose";
 
 export interface ITransaction{
-    transactionType     :string;
-    transactionState    :string;
-    transactionAmount   :number;
-    transactionMethode  :string;
+    userId      : string ;
+    tiersId     : string ;
+    codeProduit : string ;
+    typeES      : string ; 
+    produitId   : string ;
+    libelle     : string ;
+    montant     : number ;
+    statut      : string ;
+    siteId     : string ;
 }
 export const TransactionSchema = new Schema<ITransaction>({
-    transactionType     :{type:String},
-    transactionAmount   :{type:Number},
-    transactionState    :{type:String},
+    userId      :{ type:String, required:true },
+    tiersId     :{ type:String, required:true },
+    codeProduit :{ type:String },
+    produitId   :{ type:String },
+    libelle     :{ type:String },
+    montant     :{ type:Number, required:true },
+    statut      :{ type:String },
+    siteId      :{ type:String },
 },{
     timestamps : true,
     toJSON : {
