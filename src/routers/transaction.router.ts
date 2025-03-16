@@ -1,6 +1,5 @@
 import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { sample_categories } from "../data.js";
 import { TransactionModel } from "../models/transaction.model.js";
 
 const router = Router();
@@ -33,8 +32,13 @@ router.post("/add",expressAsyncHandler(async(req,res)=>{
     res.status(200)
 }))
 router.get("/", expressAsyncHandler(async(req,res)=>{
-    const categories = await TransactionModel.find();
-    res.send(categories).status(200);
+    const transactions = await TransactionModel.find();
+    res.send(transactions).status(200);
+    
+}))
+router.get("/user/:id", expressAsyncHandler(async(req,res)=>{
+    const transactions = await TransactionModel.find({_id: req.params['id']});
+    res.send(transactions).status(200);
     
 }))
 router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
