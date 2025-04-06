@@ -9,7 +9,7 @@ export interface ITransaction{
     libelle     : string ;
     montant     : number ;
     statut      : string ;
-    siteId     : string ;
+    siteId      : string ;
 }
 export const TransactionSchema = new Schema<ITransaction>({
     userId      :{ type:String, required:true },
@@ -20,6 +20,7 @@ export const TransactionSchema = new Schema<ITransaction>({
     montant     :{ type:Number, required:true },
     statut      :{ type:String },
     siteId      :{ type:String },
+    typeES      :{ type:String, required : true },
 },{
     timestamps : true,
     toJSON : {

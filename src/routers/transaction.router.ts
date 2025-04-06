@@ -17,7 +17,7 @@ router.post("/add",expressAsyncHandler(async(req,res)=>{
         statut,
         siteId
     } = req.body;
-    const newCategory = {
+    const newTransaction = {
         userId,
         tiersId,
         codeProduit,
@@ -28,7 +28,7 @@ router.post("/add",expressAsyncHandler(async(req,res)=>{
         statut,
         siteId
     }
-    await TransactionModel.create(newCategory);
+    await TransactionModel.create(newTransaction);
     res.status(200)
 }))
 router.get("/", expressAsyncHandler(async(req,res)=>{

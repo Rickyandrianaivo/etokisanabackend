@@ -284,7 +284,7 @@ router.post("/login",asyncHandler(async(req,res) => {
     }
 }))
 
-router.put("/update/:id",asyncHandler(async(req,res) => {
+router.patch("/update/:id",asyncHandler(async(req,res) => {
     const userId = req.params['id'];
     const {
         userName,
