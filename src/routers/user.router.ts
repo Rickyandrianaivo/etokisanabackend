@@ -191,7 +191,7 @@ const generateTokenResponse = (user:any) =>{
 }
 
 const resetPassword = async (userId : string, token :string, password :string) => {
-    let passwordResetToken = await TokenModel.findOne({ userId });
+    let passwordResetToken = await TokenModel.findOne({ _id : userId });
     if (!passwordResetToken) {
       throw new Error("Invalid or expired password reset token");
     }
@@ -200,21 +200,14 @@ const resetPassword = async (userId : string, token :string, password :string) =
       throw new Error("Invalid or expired password reset token");
     }
     const hash = await bcrypt.hash(password, Number(bcryptSalt));
-    await UserModel.updateOne(
+    const updatePassword = await UserModel.updateOne(
       { _id: userId },
-      { $set: { userPassword: hash } },
+      { userPassword: hash },
       { new: true }
     );
-    const user = await UserModel.findById({ _id: userId });
-    sendEmail(
-      user!.userEmail,
-      "Password Reset Successfully",
-      {
-        name: user!.userName,
-      },
-      "./template/resetPassword.handlebars"
-    );
-    await passwordResetToken.deleteOne();
+    if (updatePassword) {
+      await passwordResetToken.deleteOne({_id : token});
+  }
     return true;
   };
 
@@ -230,8 +223,52 @@ const resetPassword = async (userId : string, token :string, password :string) =
 router.post("/passwordReset",asyncHandler(async(req,res)=>{
     const {id,token,password} = req.body;
     console.log(id,token,password)
-    //  resetPassword(id,token,password)
-     res.send("Password reseted")
+     resetPassword(id,token,password)
+
+    const user = await UserModel.findOne({ _id: id });
+    if (user) {
+      let transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: 465,
+      secure: true, // true for port 465, false for other ports
+      auth: {
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD
+      },
+    });
+    transporter.use("compile",hbs({
+      viewEngine: {
+        extname:'.handlebars',
+        partialsDir:'./Utils/Emails/Template',
+        layoutsDir:'./Utils/Emails/Template',
+        defaultLayout: 'resetPassword'
+      },
+      viewPath : "./Utils/Emails/Template/",
+      extName : '.handlebars'
+  
+    }))
+    let info = {
+      from: 'Etokisana <contact@commercegestion.com>', // sender address
+      to: user.userEmail, // list of receivers
+      subject: "Bienvenue sur Etokisana", // Subject line
+      template: "welcome",
+      context : {
+        name : user.userFirstname,
+      }
+    };
+
+    await transporter.sendMail(info,(error,info)=>{
+      if (error) {
+          console.log(info);
+          console.log(error);
+          res.status(500).send('Error sendig mail:'+ error)
+      }   else{
+          console.log("Email sent" + info.response);
+          res.status(200).send("Email sent successfully")
+      }
+    })
+    }
+    res.send("Password reseted")
  }))
 router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
     const {email} = req.body;
