@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 export interface Token{
     userId                   : string,
     token                : string,
-    createdAt            : Date,
+    // createdAt            : Date,
 }
 export const TokenSchema = new Schema<Token>({
     userId                   : {type : String, required : true},

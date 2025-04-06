@@ -112,7 +112,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         const tokenDB : Token = {
           userId    : tokenInfo._id,
           token : tokenInfo.token,
-          createdAt : new Date()
+          // createdAt : new Date()
         }
         await TokenModel.create(tokenDB);        
     }
@@ -247,9 +247,9 @@ router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
     const hash = await bcrypt.hash(resetToken, Number(bcryptSalt));
     
         await new TokenModel({
-          id: user._id,
+          userId: user._id,
           token: hash,
-          createdAt: Date.now(),
+          // createdAt: Date.now(),
         }).save();
         
         const link = `${clientURL}/passwordReset?token=${resetToken}&id=${user._id}`;
