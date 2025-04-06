@@ -253,8 +253,47 @@ router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
         }).save();
         
         const link = `${clientURL}/passwordReset/${resetToken}/${user._id}`;
-        sendEmail(user.userEmail,"Password Reset Request",{name: user.userName,link: link},"./template/requestResetPassword.handlebars");
-        res.send(link);
+        let transporter = nodemailer.createTransport({
+          host: process.env.EMAIL_HOST,
+          port: 465,
+          secure: true, // true for port 465, false for other ports
+          auth: {
+            user: process.env.EMAIL_USERNAME,
+            pass: process.env.EMAIL_PASSWORD
+          },
+        });
+        transporter.use("compile",hbs({
+          viewEngine: {
+            extname:'.handlebars',
+            partialsDir:'./Utils/Emails/Template',
+            layoutsDir:'./Utils/Emails/Template',
+            defaultLayout: 'requestResetPassword'
+          },
+          viewPath : "./Utils/Emails/Template/",
+          extName : '.handlebars'
+      
+        }))
+        let info = {
+          from: 'Etokisana <contact@commercegestion.com>', // sender address
+          to: user.userEmail, // list of receivers
+          subject: "Bienvenue sur Etokisana", // Subject line
+          template: "welcome",
+          context : {
+            name : user.userFirstname,
+            link : link,
+          }
+        };
+  
+        await transporter.sendMail(info,(error,info)=>{
+          if (error) {
+              console.log(info);
+              console.log(error);
+              res.status(500).send('Error sendig mail:'+ error)
+          }   else{
+              console.log("Email sent" + info.response);
+              res.status(200).send("Email sent successfully")
+          }
+        })
 }))
 
 router.get("", asyncHandler(async(req, res) => {
