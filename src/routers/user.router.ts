@@ -202,7 +202,7 @@ const resetPassword = async (userId : string, token :string, password :string) =
     const hash = await bcrypt.hash(password, Number(bcryptSalt));
     await UserModel.updateOne(
       { _id: userId },
-      { $set: { password: hash } },
+      { $set: { userPassword: hash } },
       { new: true }
     );
     const user = await UserModel.findById({ _id: userId });
@@ -229,8 +229,8 @@ const resetPassword = async (userId : string, token :string, password :string) =
 // trouver à quelle moment le mot de passe doit être entrer et ou dirige le liende reinitialisation
 router.post("/passwordReset",asyncHandler(async(req,res)=>{
     const {id,token,password} = req.body;
-    console.log(id)
-     resetPassword(id,token,password)
+    console.log(id,token,password)
+    //  resetPassword(id,token,password)
      res.send("Password reseted")
  }))
 router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
