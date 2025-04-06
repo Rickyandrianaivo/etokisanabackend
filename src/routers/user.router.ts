@@ -227,9 +227,11 @@ const resetPassword = async (userId : string, token :string, password :string) =
     }
  }))
 // trouver à quelle moment le mot de passe doit être entrer et ou dirige le liende reinitialisation
-router.post("/passwordReset/",asyncHandler(async(req,res)=>{
+router.post("/passwordReset",asyncHandler(async(req,res)=>{
     const {id,token,password} = req.body;
+    console.log(id)
      resetPassword(id,token,password)
+     res.send("Password reseted")
  }))
 router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
     const {email} = req.body;
