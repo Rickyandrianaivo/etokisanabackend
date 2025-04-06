@@ -232,14 +232,14 @@ router.post("/passwordReset/",asyncHandler(async(req,res)=>{
      resetPassword(id,token,password)
  }))
 router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
-    const {email,userId} = req.body;
+    const {email} = req.body;
     // console.log(email+ " " + userId)
     const user = await UserModel.findOne({userEmail : email})
 
     if (!user) {
         throw new Error("L'utilisateur n'existe pas")
     }
-    let token = await TokenModel.findOne({ _id: userId });
+    let token = await TokenModel.findOne({ _id: user._id });
     if (token) { 
           await token.deleteOne()
     };
@@ -252,7 +252,7 @@ router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
           // createdAt: Date.now(),
         }).save();
         
-        const link = `${clientURL}/passwordReset?token=${resetToken}&id=${user._id}`;
+        const link = `${clientURL}/passwordReset/${resetToken}/${user._id}`;
         sendEmail(user.userEmail,"Password Reset Request",{name: user.userName,link: link},"./template/requestResetPassword.handlebars");
         res.send(link);
 }))
