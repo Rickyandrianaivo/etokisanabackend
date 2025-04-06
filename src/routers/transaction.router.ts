@@ -29,7 +29,7 @@ router.post("/add",expressAsyncHandler(async(req,res)=>{
         siteId
     }
     await TransactionModel.create(newTransaction);
-    res.status(200)
+    res.send(newTransaction).status(200)
 }))
 router.get("/", expressAsyncHandler(async(req,res)=>{
     const transactions = await TransactionModel.find();
@@ -53,7 +53,7 @@ router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
         statut,
         siteId
     } = req.body;
-    await TransactionModel.updateOne({_id : req.params['id']},{
+    const updatedTransaction = await TransactionModel.updateOne({_id : req.params['id']},{
         userId,
         tiersId,
         codeProduit,
@@ -64,6 +64,7 @@ router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
         statut,
         siteId
     })
+    res.send(updatedTransaction)
 }))
 router.delete("/delete/:id",expressAsyncHandler(async(req,res)=>{
     res.send().status(200);
