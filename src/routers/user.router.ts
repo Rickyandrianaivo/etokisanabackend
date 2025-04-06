@@ -252,7 +252,7 @@ router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
           // createdAt: Date.now(),
         }).save();
         
-        const link = `${clientURL}/passwordReset/${resetToken}/${user._id}`;
+        const link = `${clientURL}/#/passwordReset/${resetToken}/${user._id}`;
         let transporter = nodemailer.createTransport({
           host: process.env.EMAIL_HOST,
           port: 465,
