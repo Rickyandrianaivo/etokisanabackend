@@ -292,7 +292,7 @@ router.put("/passwordReset",asyncHandler(async(req,res)=>{
         }
       });
       if (updatePassword) {
-          await passwordResetToken.deleteOne({token : token});
+          // await passwordResetToken.deleteOne({token : token});
           console.log(activatedUser)
       }
     }
