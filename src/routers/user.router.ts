@@ -191,7 +191,7 @@ const generateTokenResponse = (user:any) =>{
 }
 
 const resetPassword = async (userId : string, token :string, password :string) => {
-    let passwordResetToken = await TokenModel.findOne({ token : token });
+    let passwordResetToken = await TokenModel.findOne({ userId : userId });
     let user = await UserModel.findOne({_id:userId})
     if (!passwordResetToken) {
       throw new Error("Invalid or expired password reset token");
@@ -313,7 +313,7 @@ router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
           // createdAt: Date.now(),
         }).save();
         
-        const link = `${clientURL}/#/passwordReset/${resetToken}/${user._id}`;
+        const link = `${clientURL}/#/passwordReset/${hash}/${user._id}`;
         let transporter = nodemailer.createTransport({
           host: process.env.EMAIL_HOST,
           port: 465,
