@@ -189,50 +189,6 @@ const generateTokenResponse = (user:any) =>{
         token           : token
     };
 }
-
-const resetPassword = async (userId : string, token :string, password :string) => {
-    let passwordResetToken = await TokenModel.findOne({ userId : userId });
-    let user = await UserModel.findOne({_id:userId})
-    if (!passwordResetToken) {
-      throw new Error("Invalid or expired password reset token");
-    }
-    const isValid = await bcrypt.compare(token, passwordResetToken.token);
-    if (!isValid) {
-      throw new Error("Invalid or expired password reset token");
-    }
-    const hash = await bcrypt.hash(password, Number(bcryptSalt));
-    if (user) {
-      const activatedUser = {
-        userName: user.userName,
-        userFirstname: user.userFirstname,
-        userPassword : hash,
-        userEmail : user.userEmail,
-        userPhone : user.userPhone,
-        userEnabled : user.userEnabled,
-        userType : user.userType,
-        userTotalSolde : user.userTotalSolde,
-        // userDescritpion : user.userDescritpion,
-        // userImage : user.userImage,
-        // userDateOfBirth : user.userDateOfBirth,
-        // userLogo : user.userLogo,
-        // userStatut : user.userStatut,
-        // userManager : user.userManager,
-        // userNif : user. userNif,
-        // userRC : user. userRC,
-        // identityDocumentType : user.identityDocumentType,
-        // identityCardNumber : user.identityCardNumber,
-        // userAdmin : user.userAdmin,
-        // userAddress : user.userAddress,
-        // userIdentityCode : user.userIdentityCode,
-      }
-      const updatePassword = await UserModel.updateOne({ _id: userId },{activatedUser});
-      if (updatePassword) {
-          await passwordResetToken.deleteOne({token : token});
-      }
-    }
-    return true;
-  };
-
   router.get("/token/:token",asyncHandler(async(req,res)=>{
     const token = req.params['token'];
     const tokenUserId = await TokenModel.findOne({token});
@@ -241,11 +197,10 @@ const resetPassword = async (userId : string, token :string, password :string) =
       res.send(userConcerned).status(200)
     }
  }))
-// trouver à quelle moment le mot de passe doit être entrer et ou dirige le liende reinitialisation
+ 
 router.put("/passwordReset",asyncHandler(async(req,res)=>{
     const {id,token,password} = req.body;
     console.log(id,token,password)
-    //  resetPassword(id,token,password)
     let passwordResetToken = await TokenModel.findOne({ userId : id });
     let user = await UserModel.findOne({_id:id})
     if (!passwordResetToken) {
@@ -257,29 +212,6 @@ router.put("/passwordReset",asyncHandler(async(req,res)=>{
     }
     const hash = await bcrypt.hash(password, Number(bcryptSalt));
     if (user) {
-      const activatedUser = {
-        userName: user.userName,
-        userFirstname: user.userFirstname,
-        userPassword : hash,
-        userEmail : user.userEmail,
-        userPhone : user.userPhone,
-        userEnabled : user.userEnabled,
-        userType : user.userType,
-        userTotalSolde : user.userTotalSolde,
-        // userDescritpion : user.userDescritpion,
-        // userImage : user.userImage,
-        // userDateOfBirth : user.userDateOfBirth,
-        // userLogo : user.userLogo,
-        // userStatut : user.userStatut,
-        // userManager : user.userManager,
-        // userNif : user. userNif,
-        // userRC : user. userRC,
-        // identityDocumentType : user.identityDocumentType,
-        // identityCardNumber : user.identityCardNumber,
-        // userAdmin : user.userAdmin,
-        // userAddress : user.userAddress,
-        // userIdentityCode : user.userIdentityCode,
-      }
       const updatePassword = await UserModel.updateOne({ _id: id },{$set:{
           userName: user.userName,
           userFirstname: user.userFirstname,
@@ -292,11 +224,9 @@ router.put("/passwordReset",asyncHandler(async(req,res)=>{
         }
       });
       if (updatePassword) {
-          // await passwordResetToken.deleteOne({token : token});
-          console.log(activatedUser)
+          await passwordResetToken.deleteOne({token : token});
       }
     }
-      // const user = await UserModel.findOne({ _id: id });
     if (user) {
       let transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
@@ -328,16 +258,16 @@ router.put("/passwordReset",asyncHandler(async(req,res)=>{
       }
     };
 
-    // await transporter.sendMail(info,(error,info)=>{
-    //   if (error) {
-    //       console.log(info);
-    //       console.log(error);
-    //       res.status(500).send('Error sendig mail:'+ error)
-    //   }   else{
-    //       console.log("Email sent" + info.response);
-    //       res.status(200).send("Email sent successfully")
-    //   }
-    // })
+    await transporter.sendMail(info,(error,info)=>{
+      if (error) {
+          console.log(info);
+          console.log(error);
+          res.status(500).send('Error sendig mail:'+ error)
+      }   else{
+          console.log("Email sent" + info.response);
+          res.status(200).send("Email sent successfully")
+      }
+    })
     }
     res.send('Password reseted')   
  }))
