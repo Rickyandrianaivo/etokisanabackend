@@ -191,7 +191,8 @@ const generateTokenResponse = (user:any) =>{
 }
 
 const resetPassword = async (userId : string, token :string, password :string) => {
-    let passwordResetToken = await TokenModel.findOne({ _id : userId });
+    let passwordResetToken = await TokenModel.findOne({ token : token });
+    let user = await UserModel.findOne({_id:userId})
     if (!passwordResetToken) {
       throw new Error("Invalid or expired password reset token");
     }
@@ -200,14 +201,37 @@ const resetPassword = async (userId : string, token :string, password :string) =
       throw new Error("Invalid or expired password reset token");
     }
     const hash = await bcrypt.hash(password, Number(bcryptSalt));
-    const updatePassword = await UserModel.updateOne(
-      { _id: userId },
-      { userPassword: hash },
-      { new: true }
-    );
+    if (user) {
+      const activatedUser = {
+      userName: user.userName,
+      userFirstname: user.userFirstname,
+      userPassword : hash,
+      userEmail : user.userEmail,
+      userPhone : user.userPhone,
+      userEnabled : user.userEnabled,
+      userType : user.userType,
+      userTotalSolde : user.userTotalSolde,
+      // userDescritpion : user.userDescritpion,
+      // userImage : user.userImage,
+      // userDateOfBirth : user.userDateOfBirth,
+      // userLogo : user.userLogo,
+      // userStatut : user.userStatut,
+      // userManager : user.userManager,
+      // userNif : user. userNif,
+      // userRC : user. userRC,
+      // identityDocumentType : user.identityDocumentType,
+      // identityCardNumber : user.identityCardNumber,
+      // userAdmin : user.userAdmin,
+      // userAddress : user.userAddress,
+      // userIdentityCode : user.userIdentityCode,
+    }
+    const updatePassword = await UserModel.updateOne({ _id: userId },{activatedUser});
     if (updatePassword) {
-      await passwordResetToken.deleteOne({_id : token});
+      await passwordResetToken.deleteOne({token : token});
   }
+    }
+    
+    
     return true;
   };
 
