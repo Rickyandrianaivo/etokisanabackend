@@ -245,8 +245,48 @@ const resetPassword = async (userId : string, token :string, password :string) =
 router.put("/passwordReset",asyncHandler(async(req,res)=>{
     const {id,token,password} = req.body;
     console.log(id,token,password)
-     resetPassword(id,token,password)
-      const user = await UserModel.findOne({ _id: id });
+    //  resetPassword(id,token,password)
+    let passwordResetToken = await TokenModel.findOne({ userId : id });
+    let user = await UserModel.findOne({_id:id})
+    if (!passwordResetToken) {
+      throw new Error("Invalid or expired password reset token");
+    }
+    const isValid = await bcrypt.compare(token, passwordResetToken.token);
+    if (!isValid) {
+      throw new Error("Invalid or expired password reset token");
+    }
+    const hash = await bcrypt.hash(password, Number(bcryptSalt));
+    if (user) {
+      const activatedUser = {
+        userName: user.userName,
+        userFirstname: user.userFirstname,
+        userPassword : hash,
+        userEmail : user.userEmail,
+        userPhone : user.userPhone,
+        userEnabled : user.userEnabled,
+        userType : user.userType,
+        userTotalSolde : user.userTotalSolde,
+        // userDescritpion : user.userDescritpion,
+        // userImage : user.userImage,
+        // userDateOfBirth : user.userDateOfBirth,
+        // userLogo : user.userLogo,
+        // userStatut : user.userStatut,
+        // userManager : user.userManager,
+        // userNif : user. userNif,
+        // userRC : user. userRC,
+        // identityDocumentType : user.identityDocumentType,
+        // identityCardNumber : user.identityCardNumber,
+        // userAdmin : user.userAdmin,
+        // userAddress : user.userAddress,
+        // userIdentityCode : user.userIdentityCode,
+      }
+      const updatePassword = await UserModel.updateOne({ _id: id },{activatedUser});
+      if (updatePassword) {
+          await passwordResetToken.deleteOne({token : token});
+          console.log(hash)
+      }
+    }
+      // const user = await UserModel.findOne({ _id: id });
     if (user) {
       let transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
