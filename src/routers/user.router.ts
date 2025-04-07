@@ -312,7 +312,7 @@ router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
           token: hash,
           // createdAt: Date.now(),
         }).save();
-        
+        //on envoi le token non crypté pour le comparer avec le token crypté de la base de donnée
         const link = `${clientURL}/#/passwordReset/${token}/${user._id}`;
         let transporter = nodemailer.createTransport({
           host: process.env.EMAIL_HOST,
