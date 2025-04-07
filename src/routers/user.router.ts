@@ -328,16 +328,16 @@ router.put("/passwordReset",asyncHandler(async(req,res)=>{
       }
     };
 
-    await transporter.sendMail(info,(error,info)=>{
-      if (error) {
-          console.log(info);
-          console.log(error);
-          res.status(500).send('Error sendig mail:'+ error)
-      }   else{
-          console.log("Email sent" + info.response);
-          res.status(200).send("Email sent successfully")
-      }
-    })
+    // await transporter.sendMail(info,(error,info)=>{
+    //   if (error) {
+    //       console.log(info);
+    //       console.log(error);
+    //       res.status(500).send('Error sendig mail:'+ error)
+    //   }   else{
+    //       console.log("Email sent" + info.response);
+    //       res.status(200).send("Email sent successfully")
+    //   }
+    // })
     }
     res.send('Password reseted')   
  }))
