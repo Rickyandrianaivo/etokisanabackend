@@ -5,22 +5,9 @@ export interface User {
     userPassword: string;
     userEmail: string;
     userPhone: string;
-    userDescritpion: string;
     userType: string;
-    userImage: string;
     userEnabled: boolean;
-    userDateOfBirth: Date;
     userTotalSolde: number;
-    userLogo: string;
-    userStatut: string;
-    userManager: string;
-    userNif: string;
-    userRC: string;
-    identityDocumentType: string;
-    identityCardNumber: string;
-    userAdmin: boolean;
-    userAddress: string;
-    userIdentityCode: string;
 }
 export declare const UserSchema: Schema<User, import("mongoose").Model<User, any, any, any, import("mongoose").Document<unknown, any, User> & User & {
     _id: import("mongoose").Types.ObjectId;

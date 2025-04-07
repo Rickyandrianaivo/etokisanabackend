@@ -91,11 +91,17 @@ router.get("/state/:state", expressAsyncHandler(async (req, res) => {
 //Upload essay 2
 router.post('/upload', upload.single('file'), (req, res) => {
     // router.post('/imageUpload',expressAsyncHandler(async(req,res)=>{
-    console.log(req.file);
+    const responseData = {
+        message: "Fichier uploadé avec succès !",
+        originalFileName: req.file?.originalname,
+        mimeType: req.file?.mimetype,
+        sizeInBytes: req.file?.size
+    };
+    // console.log(responseData);
     if (req.file) {
         productImagePath = req.file.path;
     }
-    res.status(200).json(req.file);
+    res.status(200).json(responseData);
 });
 //Upload essay 1
 // router.post("/product/imageupload", async(req,res)=>{

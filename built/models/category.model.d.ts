@@ -1,6 +1,8 @@
 import { Schema } from "mongoose";
 export interface ICategory {
+    CatMiniatureUrl: string;
     CatName: string;
+    CatDescription: string;
 }
 export declare const CategorySchema: Schema<ICategory, import("mongoose").Model<ICategory, any, any, any, import("mongoose").Document<unknown, any, ICategory> & ICategory & {
     _id: import("mongoose").Types.ObjectId;

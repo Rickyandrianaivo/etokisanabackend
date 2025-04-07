@@ -1,6 +1,8 @@
 import { model, Schema } from "mongoose";
 export const CategorySchema = new Schema({
-    CatName: { type: String, required: true }
+    CatMiniatureUrl: { type: String },
+    CatName: { type: String, required: true },
+    CatDescription: { type: String }
 }, {
     timestamps: true,
     toJSON: {

@@ -2,7 +2,6 @@ import { Schema } from "mongoose";
 export interface Token {
     userId: string;
     token: string;
-    createdAt: Date;
 }
 export declare const TokenSchema: Schema<Token, import("mongoose").Model<Token, any, any, any, import("mongoose").Document<unknown, any, Token> & Token & {
     _id: import("mongoose").Types.ObjectId;

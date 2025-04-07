@@ -3,7 +3,7 @@ import expressAsyncHandler from "express-async-handler";
 import { CategoryModel } from "../models/category.model.js";
 import { sample_categories } from "../data.js";
 const router = Router();
-router.post("/category/seed", expressAsyncHandler(async (req, res) => {
+router.post("/seed", expressAsyncHandler(async (req, res) => {
     const productCounts = await CategoryModel.countDocuments();
     if (productCounts > 0) {
         res.send("Seed is already done !!");
@@ -12,21 +12,29 @@ router.post("/category/seed", expressAsyncHandler(async (req, res) => {
     await CategoryModel.create(sample_categories);
     res.send("Seed is done!!");
 }));
-router.post("/category", expressAsyncHandler(async (req, res) => {
-    const { CatName } = req.body;
+router.post("/add", expressAsyncHandler(async (req, res) => {
+    const { CatMiniatureUrl, CatName, CatDescription } = req.body;
     const newCategory = {
+        CatMiniatureUrl,
         CatName,
+        CatDescription
     };
     await CategoryModel.create(newCategory);
     res.status(200);
 }));
-router.put("/category/:id", expressAsyncHandler(async (req, res) => {
-    const { CatName } = req.body;
+router.get("/", expressAsyncHandler(async (req, res) => {
+    const categories = await CategoryModel.find();
+    res.send(categories).status(200);
+}));
+router.put("/update/:id", expressAsyncHandler(async (req, res) => {
+    const { CatMiniatureUrl, CatName, CatDescription } = req.body;
     await CategoryModel.updateOne({ _id: req.params['id'] }, {
-        CatName
+        CatMiniatureUrl,
+        CatName,
+        CatDescription
     });
 }));
-router.delete("/category/:id", expressAsyncHandler(async (req, res) => {
+router.delete("/delete/:id", expressAsyncHandler(async (req, res) => {
     res.status(200);
 }));
 export default router;

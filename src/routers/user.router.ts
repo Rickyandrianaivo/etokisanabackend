@@ -205,7 +205,7 @@ const resetPassword = async (userId : string, token :string, password :string) =
       const activatedUser = {
         userName: user.userName,
         userFirstname: user.userFirstname,
-        userPassword : hash,
+        userPassword : '',
         userEmail : user.userEmail,
         userPhone : user.userPhone,
         userEnabled : user.userEnabled,
@@ -246,8 +246,7 @@ router.post("/passwordReset",asyncHandler(async(req,res)=>{
     const {id,token,password} = req.body;
     console.log(id,token,password)
      resetPassword(id,token,password)
-
-    const user = await UserModel.findOne({ _id: id });
+      const user = await UserModel.findOne({ _id: id });
     if (user) {
       let transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
@@ -272,8 +271,8 @@ router.post("/passwordReset",asyncHandler(async(req,res)=>{
     let info = {
       from: 'Etokisana <contact@commercegestion.com>', // sender address
       to: user.userEmail, // list of receivers
-      subject: "Bienvenue sur Etokisana", // Subject line
-      template: "welcome",
+      subject: "Réinitialisation du mot de passe", // Subject line
+      template: "baseMail",
       context : {
         name : user.userFirstname,
       }
@@ -290,8 +289,9 @@ router.post("/passwordReset",asyncHandler(async(req,res)=>{
       }
     })
     }
-    res.send("Password reseted")
+    res.send('Password reseted')   
  }))
+
 router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
     const {email} = req.body;
     // console.log(email+ " " + userId)
@@ -337,8 +337,8 @@ router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
         let info = {
           from: 'Etokisana <contact@commercegestion.com>', // sender address
           to: user.userEmail, // list of receivers
-          subject: "Bienvenue sur Etokisana", // Subject line
-          template: "welcome",
+          subject: "Réinitialisation du mot de passe", // Subject line
+          template: "baseMail",
           context : {
             name : user.userFirstname,
             link : link,

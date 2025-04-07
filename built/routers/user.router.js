@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { TokenModel } from "../models/token.models.js";
 import { randomBytes } from "crypto";
-import { sendEmail } from "../Utils/Emails/sendEmail.js";
 import nodemailer from "nodemailer";
 import hbs from 'nodemailer-express-handlebars';
 const bcryptSalt = process.env.BCRYPT_SALT;
@@ -23,21 +22,22 @@ router.get("/user-confirmation/:token", asyncHandler(async (req, res) => {
                 userPassword: user.userPassword,
                 userEmail: user.userEmail,
                 userPhone: user.userPhone,
-                userDescritpion: user.userDescritpion,
-                userType: user.userType,
-                userImage: user.userImage,
-                userDateOfBirth: user.userDateOfBirth,
-                userLogo: user.userLogo,
-                userStatut: user.userStatut,
-                userManager: user.userManager,
-                userNif: user.userNif,
-                userRC: user.userRC,
-                identityDocumentType: user.identityDocumentType,
-                identityCardNumber: user.identityCardNumber,
-                userAdmin: user.userAdmin,
-                userAddress: user.userAddress,
-                userIdentityCode: user.userIdentityCode,
                 userEnabled: true,
+                userType: user.userType,
+                userTotalSolde: user.userTotalSolde,
+                // userDescritpion : user.userDescritpion,
+                // userImage : user.userImage,
+                // userDateOfBirth : user.userDateOfBirth,
+                // userLogo : user.userLogo,
+                // userStatut : user.userStatut,
+                // userManager : user.userManager,
+                // userNif : user. userNif,
+                // userRC : user. userRC,
+                // identityDocumentType : user.identityDocumentType,
+                // identityCardNumber : user.identityCardNumber,
+                // userAdmin : user.userAdmin,
+                // userAddress : user.userAddress,
+                // userIdentityCode : user.userIdentityCode,
             };
             await UserModel.updateOne({ _id: verified.userId }, activatedUser);
             console.log();
@@ -65,29 +65,29 @@ router.post("/register/", asyncHandler(async (req, res) => {
             userPassword: encryptedPassword,
             userEmail: userEmail.toLowerCase(),
             userPhone,
-            userDescritpion,
-            userType,
-            userImage,
-            userEnabled: false,
-            userDateOfBirth,
             userTotalSolde: 0,
-            userLogo,
-            userStatut,
-            userManager,
-            userNif,
-            userRC,
-            identityDocumentType,
-            identityCardNumber,
-            userAdmin,
-            userAddress,
-            userIdentityCode,
+            userType,
+            userEnabled: false,
+            // userDescritpion,
+            // userImage,
+            // userDateOfBirth,
+            // userLogo,
+            // userStatut,
+            // userManager,
+            // userNif ,
+            // userRC ,
+            // identityDocumentType,
+            // identityCardNumber,
+            // userAdmin,
+            // userAddress ,
+            // userIdentityCode,
         };
         const userDb = await UserModel.create(newUser);
         tokenInfo = generateTokenResponse(userDb);
         const tokenDB = {
             userId: tokenInfo._id,
             token: tokenInfo.token,
-            createdAt: new Date()
+            // createdAt : new Date()
         };
         await TokenModel.create(tokenDB);
     }
@@ -160,7 +160,8 @@ const generateTokenResponse = (user) => {
     };
 };
 const resetPassword = async (userId, token, password) => {
-    let passwordResetToken = await TokenModel.findOne({ userId });
+    let passwordResetToken = await TokenModel.findOne({ userId: userId });
+    let user = await UserModel.findOne({ _id: userId });
     if (!passwordResetToken) {
         throw new Error("Invalid or expired password reset token");
     }
@@ -169,12 +170,35 @@ const resetPassword = async (userId, token, password) => {
         throw new Error("Invalid or expired password reset token");
     }
     const hash = await bcrypt.hash(password, Number(bcryptSalt));
-    await UserModel.updateOne({ _id: userId }, { $set: { password: hash } }, { new: true });
-    const user = await UserModel.findById({ _id: userId });
-    sendEmail(user.userEmail, "Password Reset Successfully", {
-        name: user.userName,
-    }, "./template/resetPassword.handlebars");
-    await passwordResetToken.deleteOne();
+    if (user) {
+        const activatedUser = {
+            userName: user.userName,
+            userFirstname: user.userFirstname,
+            userPassword: '',
+            userEmail: user.userEmail,
+            userPhone: user.userPhone,
+            userEnabled: user.userEnabled,
+            userType: user.userType,
+            userTotalSolde: user.userTotalSolde,
+            // userDescritpion : user.userDescritpion,
+            // userImage : user.userImage,
+            // userDateOfBirth : user.userDateOfBirth,
+            // userLogo : user.userLogo,
+            // userStatut : user.userStatut,
+            // userManager : user.userManager,
+            // userNif : user. userNif,
+            // userRC : user. userRC,
+            // identityDocumentType : user.identityDocumentType,
+            // identityCardNumber : user.identityCardNumber,
+            // userAdmin : user.userAdmin,
+            // userAddress : user.userAddress,
+            // userIdentityCode : user.userIdentityCode,
+        };
+        const updatePassword = await UserModel.updateOne({ _id: userId }, { activatedUser });
+        if (updatePassword) {
+            await passwordResetToken.deleteOne({ token: token });
+        }
+    }
     return true;
 };
 router.get("/token/:token", asyncHandler(async (req, res) => {
@@ -186,18 +210,62 @@ router.get("/token/:token", asyncHandler(async (req, res) => {
     }
 }));
 // trouver à quelle moment le mot de passe doit être entrer et ou dirige le liende reinitialisation
-router.post("/passwordReset/", asyncHandler(async (req, res) => {
+router.post("/passwordReset", asyncHandler(async (req, res) => {
     const { id, token, password } = req.body;
+    console.log(id, token, password);
     resetPassword(id, token, password);
+    const user = await UserModel.findOne({ _id: id });
+    if (user) {
+        let transporter = nodemailer.createTransport({
+            host: process.env.EMAIL_HOST,
+            port: 465,
+            secure: true, // true for port 465, false for other ports
+            auth: {
+                user: process.env.EMAIL_USERNAME,
+                pass: process.env.EMAIL_PASSWORD
+            },
+        });
+        transporter.use("compile", hbs({
+            viewEngine: {
+                extname: '.handlebars',
+                partialsDir: './Utils/Emails/Template',
+                layoutsDir: './Utils/Emails/Template',
+                defaultLayout: 'resetPassword'
+            },
+            viewPath: "./Utils/Emails/Template/",
+            extName: '.handlebars'
+        }));
+        let info = {
+            from: 'Etokisana <contact@commercegestion.com>', // sender address
+            to: user.userEmail, // list of receivers
+            subject: "Réinitialisation du mot de passe", // Subject line
+            template: "baseMail",
+            context: {
+                name: user.userFirstname,
+            }
+        };
+        await transporter.sendMail(info, (error, info) => {
+            if (error) {
+                console.log(info);
+                console.log(error);
+                res.status(500).send('Error sendig mail:' + error);
+            }
+            else {
+                console.log("Email sent" + info.response);
+                res.status(200).send("Email sent successfully");
+            }
+        });
+    }
+    res.send('Password reseted');
 }));
 router.post("/requestResetPwd", asyncHandler(async (req, res) => {
-    const { email, userId } = req.body;
+    const { email } = req.body;
     // console.log(email+ " " + userId)
     const user = await UserModel.findOne({ userEmail: email });
     if (!user) {
         throw new Error("L'utilisateur n'existe pas");
     }
-    let token = await TokenModel.findOne({ _id: userId });
+    let token = await TokenModel.findOne({ _id: user._id });
     if (token) {
         await token.deleteOne();
     }
@@ -205,13 +273,52 @@ router.post("/requestResetPwd", asyncHandler(async (req, res) => {
     let resetToken = randomBytes(32).toString("hex");
     const hash = await bcrypt.hash(resetToken, Number(bcryptSalt));
     await new TokenModel({
-        id: user._id,
+        userId: user._id,
         token: hash,
-        createdAt: Date.now(),
+        // createdAt: Date.now(),
     }).save();
-    const link = `${clientURL}/passwordReset?token=${resetToken}&id=${user._id}`;
-    sendEmail(user.userEmail, "Password Reset Request", { name: user.userName, link: link }, "./template/requestResetPassword.handlebars");
-    res.send(link);
+    //on envoi le token non crypté pour le comparer avec le token crypté de la base de donnée
+    const link = `${clientURL}/#/passwordReset/${token}/${user._id}`;
+    let transporter = nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: 465,
+        secure: true, // true for port 465, false for other ports
+        auth: {
+            user: process.env.EMAIL_USERNAME,
+            pass: process.env.EMAIL_PASSWORD
+        },
+    });
+    transporter.use("compile", hbs({
+        viewEngine: {
+            extname: '.handlebars',
+            partialsDir: './Utils/Emails/Template',
+            layoutsDir: './Utils/Emails/Template',
+            defaultLayout: 'requestResetPassword'
+        },
+        viewPath: "./Utils/Emails/Template/",
+        extName: '.handlebars'
+    }));
+    let info = {
+        from: 'Etokisana <contact@commercegestion.com>', // sender address
+        to: user.userEmail, // list of receivers
+        subject: "Réinitialisation du mot de passe", // Subject line
+        template: "baseMail",
+        context: {
+            name: user.userFirstname,
+            link: link,
+        }
+    };
+    await transporter.sendMail(info, (error, info) => {
+        if (error) {
+            console.log(info);
+            console.log(error);
+            res.status(500).send('Error sendig mail:' + error);
+        }
+        else {
+            console.log("Email sent" + info.response);
+            res.status(200).send("Email sent successfully");
+        }
+    });
 }));
 router.get("", asyncHandler(async (req, res) => {
     const users = await UserModel.find();
@@ -238,7 +345,7 @@ router.post("/login", asyncHandler(async (req, res) => {
         res.status(404).send("User name or password is not valid!");
     }
 }));
-router.put("/update/:id", asyncHandler(async (req, res) => {
+router.patch("/update/:id", asyncHandler(async (req, res) => {
     const userId = req.params['id'];
     const { userName, userFirstname, userPassword, userEmail, userPhone, userDescritpion, userGender, userImage, userEnabled, userDateOfBirth, userTotalSolde, userLogo, userStatut, userManager, userNif, userRC, identityDocumentType, identityCardNumber, userAdmin, userAddress, userIdentityCode, } = req.body;
     await UserModel.updateOne({ _id: userId }, {

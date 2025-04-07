@@ -4,12 +4,13 @@ import { SiteModel } from "../models/site.model.js";
 // import { sample_Sites } from "../data";
 const router = Router();
 router.post("/add", expressAsyncHandler(async (req, res) => {
-    const { SiteName, SiteAddress, SiteLat, SiteLng, } = req.body;
+    const { siteName, siteAddress, siteLat, siteLng, siteUserId } = req.body;
     const newSite = {
-        SiteName,
-        SiteAddress,
-        SiteLat,
-        SiteLng,
+        siteName,
+        siteAddress,
+        siteLat,
+        siteLng,
+        siteUserId
     };
     await SiteModel.create(newSite);
     res.send(newSite);
@@ -18,9 +19,16 @@ router.get("/", expressAsyncHandler(async (req, res) => {
     const allSites = await SiteModel.find();
     res.send(allSites);
 }));
+router.get("/user/:userId", expressAsyncHandler(async (req, res) => {
+    const userId = req.params['userId'];
+    // console.log(userId);
+    const userSites = await SiteModel.find({ siteUserId: userId });
+    res.send(userSites);
+}));
 router.get("/:id", expressAsyncHandler(async (req, res) => {
-    const SiteId = req.params['id'];
-    const selectedSite = await SiteModel.findById(SiteId);
+    const siteId = req.params['id'];
+    // console.log(siteId);
+    const selectedSite = await SiteModel.findById({ _id: siteId });
     res.send(selectedSite);
 }));
 router.put("/update/:id", expressAsyncHandler(async (req, res) => {
@@ -34,8 +42,10 @@ router.put("/update/:id", expressAsyncHandler(async (req, res) => {
     });
     res.send(modifiedSite);
 }));
-router.delete("delete/:id", expressAsyncHandler(async (req, res) => {
-    res.status(200);
+router.delete("/delete/:id", expressAsyncHandler(async (req, res) => {
+    const siteId = req.params['id'];
+    await SiteModel.deleteOne({ _id: siteId });
+    res.status(200).send("Site effacer ! ");
 }));
 export default router;
 //# sourceMappingURL=site.router.js.map

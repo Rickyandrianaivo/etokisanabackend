@@ -10,6 +10,7 @@ export const ProductSchema = new Schema({
     productSource: { type: String },
     productOwner: { type: String },
     productImage: { type: String },
+    productValidation: { type: Boolean }
 }, {
     timestamps: true,
     toJSON: {
