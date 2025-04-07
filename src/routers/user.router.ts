@@ -352,7 +352,7 @@ router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
               res.status(500).send('Error sendig mail:'+ error)
           }   else{
               console.log("Email sent" + info.response);
-              res.status(200).send("Email sent successfully")
+              res.status(200).send('Email sent successfully')
           }
         })
 }))
