@@ -203,35 +203,33 @@ const resetPassword = async (userId : string, token :string, password :string) =
     const hash = await bcrypt.hash(password, Number(bcryptSalt));
     if (user) {
       const activatedUser = {
-      userName: user.userName,
-      userFirstname: user.userFirstname,
-      userPassword : hash,
-      userEmail : user.userEmail,
-      userPhone : user.userPhone,
-      userEnabled : user.userEnabled,
-      userType : user.userType,
-      userTotalSolde : user.userTotalSolde,
-      // userDescritpion : user.userDescritpion,
-      // userImage : user.userImage,
-      // userDateOfBirth : user.userDateOfBirth,
-      // userLogo : user.userLogo,
-      // userStatut : user.userStatut,
-      // userManager : user.userManager,
-      // userNif : user. userNif,
-      // userRC : user. userRC,
-      // identityDocumentType : user.identityDocumentType,
-      // identityCardNumber : user.identityCardNumber,
-      // userAdmin : user.userAdmin,
-      // userAddress : user.userAddress,
-      // userIdentityCode : user.userIdentityCode,
+        userName: user.userName,
+        userFirstname: user.userFirstname,
+        userPassword : hash,
+        userEmail : user.userEmail,
+        userPhone : user.userPhone,
+        userEnabled : user.userEnabled,
+        userType : user.userType,
+        userTotalSolde : user.userTotalSolde,
+        // userDescritpion : user.userDescritpion,
+        // userImage : user.userImage,
+        // userDateOfBirth : user.userDateOfBirth,
+        // userLogo : user.userLogo,
+        // userStatut : user.userStatut,
+        // userManager : user.userManager,
+        // userNif : user. userNif,
+        // userRC : user. userRC,
+        // identityDocumentType : user.identityDocumentType,
+        // identityCardNumber : user.identityCardNumber,
+        // userAdmin : user.userAdmin,
+        // userAddress : user.userAddress,
+        // userIdentityCode : user.userIdentityCode,
+      }
+      const updatePassword = await UserModel.updateOne({ _id: userId },{activatedUser});
+      if (updatePassword) {
+          await passwordResetToken.deleteOne({token : token});
+      }
     }
-    const updatePassword = await UserModel.updateOne({ _id: userId },{activatedUser});
-    if (updatePassword) {
-      await passwordResetToken.deleteOne({token : token});
-  }
-    }
-    
-    
     return true;
   };
 
