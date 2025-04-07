@@ -174,7 +174,7 @@ const resetPassword = async (userId, token, password) => {
         const activatedUser = {
             userName: user.userName,
             userFirstname: user.userFirstname,
-            userPassword: '',
+            userPassword: hash,
             userEmail: user.userEmail,
             userPhone: user.userPhone,
             userEnabled: user.userEnabled,
@@ -210,7 +210,7 @@ router.get("/token/:token", asyncHandler(async (req, res) => {
     }
 }));
 // trouver à quelle moment le mot de passe doit être entrer et ou dirige le liende reinitialisation
-router.post("/passwordReset", asyncHandler(async (req, res) => {
+router.put("/passwordReset", asyncHandler(async (req, res) => {
     const { id, token, password } = req.body;
     console.log(id, token, password);
     resetPassword(id, token, password);
