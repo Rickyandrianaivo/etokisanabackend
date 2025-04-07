@@ -280,7 +280,17 @@ router.put("/passwordReset",asyncHandler(async(req,res)=>{
         // userAddress : user.userAddress,
         // userIdentityCode : user.userIdentityCode,
       }
-      const updatePassword = await UserModel.updateOne({ _id: id },{activatedUser});
+      const updatePassword = await UserModel.updateOne({ _id: id },{$set:{
+          userName: user.userName,
+          userFirstname: user.userFirstname,
+          userPassword : hash,
+          userEmail : user.userEmail,
+          userPhone : user.userPhone,
+          userEnabled : user.userEnabled,
+          userType : user.userType,
+          userTotalSolde : user.userTotalSolde,
+        }
+      });
       if (updatePassword) {
           await passwordResetToken.deleteOne({token : token});
           console.log(activatedUser)
