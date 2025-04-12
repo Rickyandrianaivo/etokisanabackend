@@ -26,9 +26,12 @@ router.get("/user-confirmation/:token",asyncHandler(async(req,res)=>{
             userPassword : user.userPassword,
             userEmail : user.userEmail,
             userPhone : user.userPhone,
-            userEnabled : true,
+            userEmailVerified : true,
             userType : user.userType,
             userTotalSolde : user.userTotalSolde,
+            userAccess : user.userAccess,
+            userParainID : user.userParainID,
+            userValidated : user.userValidated,
             // userDescritpion : user.userDescritpion,
             // userImage : user.userImage,
             // userDateOfBirth : user.userDateOfBirth,
@@ -63,6 +66,10 @@ router.post("/register/",asyncHandler(async(req, res) => {
         userEmail,
         userPhone,
         userDescritpion,
+        userAccess,
+        userEmailVerified,
+        userParainID,
+        userValidated,
         userType,
         userImage,
         userDateOfBirth,
@@ -84,7 +91,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
     }else
     {
         const encryptedPassword = await bcrypt.hash(userPassword,10);
-        const newUser:User = {
+        const newUser : User = {
             userName,
             userFirstname,
             userPassword: encryptedPassword,
@@ -92,7 +99,10 @@ router.post("/register/",asyncHandler(async(req, res) => {
             userPhone,
             userTotalSolde : 0,
             userType,
-            userEnabled : false,
+            userAccess,
+            userParainID,
+            userValidated : false,
+            userEmailVerified : false,
             // userDescritpion,
             // userImage,
             // userDateOfBirth,
@@ -218,7 +228,7 @@ router.put("/passwordReset",asyncHandler(async(req,res)=>{
           userPassword : hash,
           userEmail : user.userEmail,
           userPhone : user.userPhone,
-          userEnabled : user.userEnabled,
+          userEmailValidated : user.userEmailVerified,
           userType : user.userType,
           userTotalSolde : user.userTotalSolde,
         }

@@ -22,9 +22,12 @@ router.get("/user-confirmation/:token", asyncHandler(async (req, res) => {
                 userPassword: user.userPassword,
                 userEmail: user.userEmail,
                 userPhone: user.userPhone,
-                userEnabled: true,
+                userEmailVerified: true,
                 userType: user.userType,
                 userTotalSolde: user.userTotalSolde,
+                userAccess: user.userAccess,
+                userParainID: user.userParainID,
+                userValidated: user.userValidated,
                 // userDescritpion : user.userDescritpion,
                 // userImage : user.userImage,
                 // userDateOfBirth : user.userDateOfBirth,
@@ -51,7 +54,7 @@ router.get("/user-confirmation/:token", asyncHandler(async (req, res) => {
 }));
 router.post("/register/", asyncHandler(async (req, res) => {
     let tokenInfo;
-    const { userName, userFirstname, userPassword, userEmail, userPhone, userDescritpion, userType, userImage, userDateOfBirth, userLogo, userStatut, userManager, userNif, userRC, identityDocumentType, identityCardNumber, userAdmin, userAddress, userIdentityCode, } = req.body;
+    const { userName, userFirstname, userPassword, userEmail, userPhone, userDescritpion, userAccess, userEmailVerified, userParainID, userValidated, userType, userImage, userDateOfBirth, userLogo, userStatut, userManager, userNif, userRC, identityDocumentType, identityCardNumber, userAdmin, userAddress, userIdentityCode, } = req.body;
     const user = await UserModel.findOne({ userEmail: userEmail.toLowerCase() });
     if (user) {
         res.send("Ce nom est déjà utilisé!");
@@ -67,7 +70,10 @@ router.post("/register/", asyncHandler(async (req, res) => {
             userPhone,
             userTotalSolde: 0,
             userType,
-            userEnabled: false,
+            userAccess,
+            userParainID,
+            userValidated: false,
+            userEmailVerified: false,
             // userDescritpion,
             // userImage,
             // userDateOfBirth,
@@ -167,7 +173,6 @@ router.get("/token/:token", asyncHandler(async (req, res) => {
         res.send(userConcerned).status(200);
     }
 }));
-// trouver à quelle moment le mot de passe doit être entrer et ou dirige le liende reinitialisation
 router.put("/passwordReset", asyncHandler(async (req, res) => {
     const { id, token, password } = req.body;
     console.log(id, token, password);
@@ -188,7 +193,7 @@ router.put("/passwordReset", asyncHandler(async (req, res) => {
                 userPassword: hash,
                 userEmail: user.userEmail,
                 userPhone: user.userPhone,
-                userEnabled: user.userEnabled,
+                userEmailValidated: user.userEmailVerified,
                 userType: user.userType,
                 userTotalSolde: user.userTotalSolde,
             }
@@ -197,7 +202,6 @@ router.put("/passwordReset", asyncHandler(async (req, res) => {
             await passwordResetToken.deleteOne({ token: token });
         }
     }
-    // const user = await UserModel.findOne({ _id: id });
     if (user) {
         let transporter = nodemailer.createTransport({
             host: process.env.EMAIL_HOST,

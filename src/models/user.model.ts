@@ -3,13 +3,16 @@ import { Schema, model } from "mongoose";
 export interface User{
     // id              : string,
     userName            : string;
-    userFirstname       :string;
+    userFirstname       : string;
     userPassword        : string;
     userEmail           : string;
     userPhone           : string;
     userType            : string;
-    userEnabled         : boolean;
     userTotalSolde      : number;
+    userAccess          : string;
+    userParainID        : string;
+    userValidated       : boolean;
+    userEmailVerified   : boolean;
     // userDescritpion     : string;
     // userImage           : string;
     // userDateOfBirth     : Date;
@@ -32,8 +35,11 @@ export const UserSchema = new Schema<User>({
     userEmail               : {type : String, required : true, unique:true},
     userPhone               : {type : String, required : true},
     userType                : {type : String, required : true},
+    userAccess              : {type : String, required : true},
     userTotalSolde          : {type : Number},
-    userEnabled             : {type : Boolean, },
+    userValidated           : {type : Boolean },
+    userParainID            : {type : String },
+    userEmailVerified       : {type : Boolean },
     // userDescritpion         : {type : String},
     // userImage               : {type : String},
     // userDateOfBirth         : {type : Date },
