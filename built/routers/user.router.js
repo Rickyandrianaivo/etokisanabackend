@@ -143,11 +143,9 @@ router.post("/register/", asyncHandler(async (req, res) => {
 }));
 router.get("/new", asyncHandler(async (req, res) => {
     const userNewList = await UserModel.find({ userValidated: false });
-    if (userNewList) {
-        res.status(200);
-    }
+    res.status(200).send(userNewList);
 }));
-router.get("/validate/:id", asyncHandler(async (req, res) => {
+router.patch("/validate/:id", asyncHandler(async (req, res) => {
     const userId = req.params['id'];
     await UserModel.updateOne({ _id: userId }, { $set: { userValidated: true } });
 }));

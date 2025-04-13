@@ -176,7 +176,7 @@ router.get("/new",asyncHandler(async(req,res)=>{
   const userNewList = await UserModel.find({userValidated : false})
   res.status(200).send(userNewList)
 }))
-router.get("/validate/:id",asyncHandler(async(req,res)=>{
+router.patch("/validate/:id",asyncHandler(async(req,res)=>{
   const userId = req.params['id'];
   await UserModel.updateOne({_id : userId},{$set : {userValidated : true}}) 
 }))
