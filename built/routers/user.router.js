@@ -141,6 +141,10 @@ router.post("/register/", asyncHandler(async (req, res) => {
         }
     });
 }));
+router.get("validate/:id", asyncHandler(async (req, res) => {
+    const userId = req.params['id'];
+    await UserModel.updateOne({ _id: userId }, { $set: { userValidated: true } });
+}));
 const generateTokenResponse = (user) => {
     const token = jwt.sign({
         _id: user._id,
