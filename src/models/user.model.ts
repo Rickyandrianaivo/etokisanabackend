@@ -13,9 +13,12 @@ export interface User{
     userParainID        : string;
     userValidated       : boolean;
     userEmailVerified   : boolean;
+    userDateOfBirth     : Date;
+    userAddress         : string;
+    userMainLat         : number;
+    userMainLng         : number
     // userDescritpion     : string;
     // userImage           : string;
-    // userDateOfBirth     : Date;
     // userLogo            : string;
     // userStatut          : string;
     // userManager         : string;
@@ -23,8 +26,6 @@ export interface User{
     // userRC              : string;
     // identityDocumentType: string;
     // identityCardNumber  : string;
-    // userAdmin           : boolean;
-    // userAddress         : string;
     // userIdentityCode    : string;
 }
 
@@ -40,6 +41,8 @@ export const UserSchema = new Schema<User>({
     userParainID            : {type : String },
     userValidated           : {type : Boolean },
     userEmailVerified       : {type : Boolean },
+    userMainLat             : {type : Number},
+    userMainLng             : {type : Number},
     // userDescritpion         : {type : String},
     // userImage               : {type : String},
     // userDateOfBirth         : {type : Date },
