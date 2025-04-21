@@ -11,6 +11,9 @@ export const UserSchema = new Schema({
     userParainID: { type: String },
     userValidated: { type: Boolean },
     userEmailVerified: { type: Boolean },
+    userMainLat: { type: Number },
+    userMainLng: { type: Number },
+    userID: { type: String, required: true, unique: true },
     // userDescritpion         : {type : String},
     // userImage               : {type : String},
     // userDateOfBirth         : {type : Date },
@@ -22,7 +25,6 @@ export const UserSchema = new Schema({
     // identityDocumentType    : {type : String},
     // identityCardNumber      : {type : String},
     // userAddress             : {type : String},
-    // userIdentityCode        : {type : String},
 }, {
     timestamps: true,
     toJSON: {

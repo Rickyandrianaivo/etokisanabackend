@@ -17,6 +17,7 @@ export interface User{
     userAddress         : string;
     userMainLat         : number;
     userMainLng         : number
+    userID              : string;
     // userDescritpion     : string;
     // userImage           : string;
     // userLogo            : string;
@@ -26,7 +27,6 @@ export interface User{
     // userRC              : string;
     // identityDocumentType: string;
     // identityCardNumber  : string;
-    // userIdentityCode    : string;
 }
 
 export const UserSchema = new Schema<User>({
@@ -43,6 +43,7 @@ export const UserSchema = new Schema<User>({
     userEmailVerified       : {type : Boolean },
     userMainLat             : {type : Number},
     userMainLng             : {type : Number},
+    userID                  : {type : String, required : true, unique : true},
     // userDescritpion         : {type : String},
     // userImage               : {type : String},
     // userDateOfBirth         : {type : Date },
@@ -54,7 +55,6 @@ export const UserSchema = new Schema<User>({
     // identityDocumentType    : {type : String},
     // identityCardNumber      : {type : String},
     // userAddress             : {type : String},
-    // userIdentityCode        : {type : String},
 },{
     timestamps : true,
     toJSON : {

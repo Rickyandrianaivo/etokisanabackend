@@ -97,7 +97,7 @@ router.post('/upload', upload.single('file'), (req, res) => {
         mimeType: req.file?.mimetype,
         sizeInBytes: req.file?.size
     };
-    // console.log(responseData);
+    console.log(responseData);
     if (req.file) {
         productImagePath = req.file.path;
     }

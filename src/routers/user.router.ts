@@ -72,6 +72,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         userAddress ,
         userMainLat,
         userMainLng,
+        userID,
         userDescritpion,
         userEmailVerified,
         userValidated,
@@ -84,7 +85,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         identityDocumentType,
         identityCardNumber,
         userAdmin,
-        userIdentityCode,} = req.body;
+      } = req.body;
     const user = await UserModel.findOne({userEmail : userEmail.toLowerCase()});
 
     if(user){
@@ -93,6 +94,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
     }else
     {
         const encryptedPassword = await bcrypt.hash(userPassword,10);
+        const generatedID = Math.random().toString(36).slice(2);
         const newUser : User = {
             userName,
             userFirstname,
@@ -109,6 +111,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
             userDateOfBirth,
             userMainLat,
             userMainLng,
+            userID:generatedID,
             // userDescritpion,
             // userImage,
             // userLogo,
@@ -119,7 +122,6 @@ router.post("/register/",asyncHandler(async(req, res) => {
             // identityDocumentType,
             // identityCardNumber,
             // userAdmin,
-            // userIdentityCode,
         }
         const userDb = await UserModel.create(newUser);
         tokenInfo = generateTokenResponse(userDb);
@@ -401,6 +403,7 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
         userAddress ,
         userMainLat,
         userMainLng,
+        userID,
         // userLogo,
         // userStatut,
         // userManager,
@@ -409,7 +412,6 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
         // identityDocumentType,
         // identityCardNumber,
         // userAdmin,
-        // userIdentityCode,
     } = req.body;
 
     await UserModel.updateOne({_id : userId}, {
@@ -427,6 +429,7 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
       userAddress ,
       userMainLat,
       userMainLng,
+      userID,
       // userLogo,
       // userStatut,
       // userManager,
@@ -435,7 +438,6 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
       // identityDocumentType,
       // identityCardNumber,
       // userAdmin,
-      // userIdentityCode,
       });
 
 }))

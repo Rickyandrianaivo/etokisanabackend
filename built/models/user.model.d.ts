@@ -11,6 +11,11 @@ export interface User {
     userParainID: string;
     userValidated: boolean;
     userEmailVerified: boolean;
+    userDateOfBirth: Date;
+    userAddress: string;
+    userMainLat: number;
+    userMainLng: number;
+    userID: string;
 }
 export declare const UserSchema: Schema<User, import("mongoose").Model<User, any, any, any, import("mongoose").Document<unknown, any, User> & User & {
     _id: import("mongoose").Types.ObjectId;
