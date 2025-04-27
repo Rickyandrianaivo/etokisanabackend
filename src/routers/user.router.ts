@@ -8,11 +8,26 @@ import {randomBytes} from"crypto";
 import { sendEmail } from "../Utils/Emails/sendEmail.js";
 import nodemailer from "nodemailer";
 import hbs from 'nodemailer-express-handlebars';
+import multer from 'multer';
 
 const bcryptSalt = process.env.BCRYPT_SALT;
 const clientURL = process.env.CLIENT_URL;
 const router = Router();
+const avatar = multer({
+  limits:{
+    fileSize:1000000,
+  },
+  fileFilter(req,file,cb){
+    if (file.originalname.match(/\.(jpg|png|JPG|PNG|JPEG|jpeg)$/)) {
+      return cb(new Error('This is not a correct format of the file'))
+    }
+    cb(null,true)
+  }
+})
 
+// router.post('/user-avatar/',avatar.single('avatar'),async(req,res)=>{
+//   userImage = req.file?.buffer
+// },(err,req,res,next) => res.status(404).send({error:err}))
 
 router.get("/user-confirmation/:token",asyncHandler(async(req,res)=>{
     const verified = await TokenModel.findOne({token:req.params['token']});
@@ -94,7 +109,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
     }else
     {
         const encryptedPassword = await bcrypt.hash(userPassword,10);
-        const generatedID = Math.random().toString(36).slice(2);
+        const generatedID = Math.random().toString(36).slice(2,10);
         const newUser : User = {
             userName,
             userFirstname,
@@ -112,8 +127,8 @@ router.post("/register/",asyncHandler(async(req, res) => {
             userMainLat,
             userMainLng,
             userID:generatedID,
+            userImage,
             // userDescritpion,
-            // userImage,
             // userLogo,
             // userStatut,
             // userManager,
