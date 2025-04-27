@@ -16,6 +16,7 @@ export interface User {
     userMainLat: number;
     userMainLng: number;
     userID: string;
+    userImage: Buffer;
 }
 export declare const UserSchema: Schema<User, import("mongoose").Model<User, any, any, any, import("mongoose").Document<unknown, any, User> & User & {
     _id: import("mongoose").Types.ObjectId;

@@ -4,7 +4,7 @@ export const SiteSchema = new Schema({
     siteAddress: { type: String },
     siteLat: { type: Number },
     siteLng: { type: Number },
-    siteUserId: { type: String },
+    siteUserID: { type: String },
 }, {
     timestamps: true,
     toJSON: {

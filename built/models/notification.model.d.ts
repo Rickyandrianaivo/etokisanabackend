@@ -14,3 +14,8 @@ export declare const NotificationSchema: Schema<INotification, import("mongoose"
 } & {
     __v: number;
 }>;
+export declare const NotificationModel: import("mongoose").Model<INotification, {}, {}, {}, import("mongoose").Document<unknown, {}, INotification> & INotification & {
+    _id: import("mongoose").Types.ObjectId;
+} & {
+    __v: number;
+}, any>;

@@ -4,13 +4,13 @@ import { SiteModel } from "../models/site.model.js";
 // import { sample_Sites } from "../data";
 const router = Router();
 router.post("/add", expressAsyncHandler(async (req, res) => {
-    const { siteName, siteAddress, siteLat, siteLng, siteUserId } = req.body;
+    const { siteName, siteAddress, siteLat, siteLng, siteUserID } = req.body;
     const newSite = {
         siteName,
         siteAddress,
         siteLat,
         siteLng,
-        siteUserId
+        siteUserID
     };
     await SiteModel.create(newSite);
     res.send(newSite);
@@ -22,7 +22,7 @@ router.get("/", expressAsyncHandler(async (req, res) => {
 router.get("/user/:userId", expressAsyncHandler(async (req, res) => {
     const userId = req.params['userId'];
     // console.log(userId);
-    const userSites = await SiteModel.find({ siteUserId: userId });
+    const userSites = await SiteModel.find({ siteUserID: userId });
     res.send(userSites);
 }));
 router.get("/:id", expressAsyncHandler(async (req, res) => {
@@ -32,13 +32,13 @@ router.get("/:id", expressAsyncHandler(async (req, res) => {
     res.send(selectedSite);
 }));
 router.put("/update/:id", expressAsyncHandler(async (req, res) => {
-    const { siteName, siteAddress, siteLat, siteLng, siteUserId, } = req.body;
+    const { siteName, siteAddress, siteLat, siteLng, siteUserID, } = req.body;
     const modifiedSite = await SiteModel.updateOne({ _id: req.params['id'] }, {
         siteName,
         siteAddress,
         siteLat,
         siteLng,
-        siteUserId
+        siteUserID
     });
     res.send(modifiedSite);
 }));

@@ -8,6 +8,7 @@ import productRouter from './routers/product.router.js';
 import categoryRouter from './routers/category.router.js';
 import { dbConnect } from './configs/database.config.js';
 import transactionRouter from './routers/transaction.router.js';
+import notificationRouter from './routers/notification.router.js';
 dbConnect();
 const app = express();
 app.use(express.json({ limit: '50mb' }));
@@ -22,6 +23,7 @@ app.use("/api/site", siteRouter);
 app.use("/api/product", productRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/transaction", transactionRouter);
+app.use("/api/notification", notificationRouter);
 const port = 3000;
 app.listen(port, () => {
     // console.log("Website served on http://ids-gescom.onrender.com:" + port);
