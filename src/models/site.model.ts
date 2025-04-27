@@ -5,7 +5,7 @@ export interface ISite {
     siteAddress:string;
     siteLat:number;
     siteLng:number;
-    siteUserId:string;
+    siteUserEmail:string;
 }
 
 export const SiteSchema = new Schema<ISite>({
@@ -13,7 +13,7 @@ export const SiteSchema = new Schema<ISite>({
     siteAddress :{type:String},
     siteLat     :{type:Number},
     siteLng     :{type:Number},
-    siteUserId  :{type:String},
+    siteUserEmail  :{type:String},
 },{
     timestamps : true,
     toJSON : {
