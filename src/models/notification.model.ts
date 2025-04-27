@@ -20,4 +20,4 @@ export const NotificationSchema = new Schema<INotification>({
         virtuals : true
     }
 })
-export const NotificationModel = model<INotification>('product',NotificationSchema)
+export const NotificationModel = model<INotification>('notification',NotificationSchema)
