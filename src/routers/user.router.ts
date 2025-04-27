@@ -109,7 +109,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
     }else
     {
         const encryptedPassword = await bcrypt.hash(userPassword,10);
-        const generatedID = Math.random().toString(36).slice(2,10);
+        
         const newUser : User = {
             userName,
             userFirstname,
@@ -120,13 +120,13 @@ router.post("/register/",asyncHandler(async(req, res) => {
             userType,
             userAccess,
             userParainID,
-            userValidated : false,
-            userEmailVerified : false,
+            userValidated,
+            userEmailVerified,
             userAddress ,
             userDateOfBirth,
             userMainLat,
             userMainLng,
-            userID:generatedID,
+            userID,
             userImage,
             // userDescritpion,
             // userLogo,

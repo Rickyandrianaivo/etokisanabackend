@@ -11,14 +11,14 @@ router.post("/add",expressAsyncHandler(async(req,res)=>{
         siteAddress,
         siteLat,
         siteLng,
-        siteUserEmail
+        siteUserID
     }= req.body;
     const newSite = {
         siteName,
         siteAddress,
         siteLat,
         siteLng,
-        siteUserEmail
+        siteUserID
     }
     await SiteModel.create(newSite);
     res.send(newSite);
@@ -30,7 +30,7 @@ router.get("/",expressAsyncHandler(async(req,res)=>{
 router.get("/user/:userId",expressAsyncHandler(async(req,res)=>{
     const userId = req.params['userId'];
     // console.log(userId);
-    const userSites = await SiteModel.find({siteUserEmail : userId});
+    const userSites = await SiteModel.find({siteUserID : userId});
     res.send(userSites);
 }))
 router.get("/:id",expressAsyncHandler(async(req,res)=>{
@@ -45,7 +45,7 @@ router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
         siteAddress,
         siteLat,
         siteLng,
-        siteUserEmail,
+        siteUserID,
     }= req.body;
     const modifiedSite = await SiteModel.updateOne({_id : req.params['id']},
     {
@@ -53,7 +53,7 @@ router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
         siteAddress,
         siteLat,
         siteLng,
-        siteUserEmail
+        siteUserID
     })
     res.send(modifiedSite);
 }))
