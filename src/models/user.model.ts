@@ -18,7 +18,7 @@ export interface User{
     userMainLat         : number;
     userMainLng         : number
     userID              : string;
-    userImage           : Buffer;
+    userImage           : string;
     // userDescritpion     : string;
     // userLogo            : string;
     // userStatut          : string;
@@ -44,9 +44,9 @@ export const UserSchema = new Schema<User>({
     userMainLat             : {type : Number},
     userMainLng             : {type : Number},
     userID                  : {type : String, required : true, unique : true},
-    userImage               : {type : Buffer},
+    userImage               : {type : String},
+    userDateOfBirth         : {type : Date },
     // userDescritpion         : {type : String},
-    // userDateOfBirth         : {type : Date },
     // userLogo                : {type : String},
     // userStatut              : {type : String},
     // userManager             : {type : String},
