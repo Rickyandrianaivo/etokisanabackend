@@ -375,6 +375,12 @@ router.get("/email/:email", asyncHandler(async(req, res) => {
     const user = await UserModel.findOne({userEmail : userEmail});
     res.send(user);
 }))
+router.get("/userId/:id", asyncHandler(async(req, res) => {
+  const userId = req.params['id'];
+  const user = await UserModel.findOne({userID : userId});
+  console.log(user);
+  res.send(user);
+}))
 
 router.post("/login",asyncHandler(async(req,res) => {
     const {userEmail,userPassword} = req.body;
