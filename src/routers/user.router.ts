@@ -55,7 +55,7 @@ router.get("/user-confirmation/:token",asyncHandler(async(req,res)=>{
             // userManager : user.userManager,
             // userNif : user. userNif,
             // userRC : user. userRC,
-            // identityDocumentType : user.identityDocumentType,
+            // identityFile : user.identityFile,
             // identityCardNumber : user.identityCardNumber,
             // userAdmin : user.userAdmin,
             // userAddress : user.userAddress,
@@ -88,18 +88,11 @@ router.post("/register/",asyncHandler(async(req, res) => {
         userMainLat,
         userMainLng,
         userID,
-        userDescritpion,
         userEmailVerified,
         userValidated,
         userImage,
-        userLogo,
-        userStatut,
-        userManager,
-        userNif ,
-        userRC ,
-        identityDocumentType,
+        identityFile,
         identityCardNumber,
-        userAdmin,
       } = req.body;
     const user = await UserModel.findOne({userEmail : userEmail.toLowerCase()});
 
@@ -128,15 +121,8 @@ router.post("/register/",asyncHandler(async(req, res) => {
             userMainLng,
             userID,
             userImage,
-            // userDescritpion,
-            // userLogo,
-            // userStatut,
-            // userManager,
-            // userNif ,
-            // userRC ,
-            // identityDocumentType,
-            // identityCardNumber,
-            // userAdmin,
+            identityFile,
+            identityCardNumber,
         }
         const userDb = await UserModel.create(newUser);
         tokenInfo = generateTokenResponse(userDb);
@@ -419,14 +405,8 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
         userMainLat,
         userMainLng,
         userID,
-        // userLogo,
-        // userStatut,
-        // userManager,
-        // userNif ,
-        // userRC ,
-        // identityDocumentType,
-        // identityCardNumber,
-        // userAdmin,
+        identityFile,
+        identityCardNumber,
     } = req.body;
 
     await UserModel.updateOne({_id : userId}, {
@@ -445,14 +425,8 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
       userMainLat,
       userMainLng,
       userID,
-      // userLogo,
-      // userStatut,
-      // userManager,
-      // userNif ,
-      // userRC ,
-      // identityDocumentType,
-      // identityCardNumber,
-      // userAdmin,
+      identityFile,
+      identityCardNumber,
       });
 
 }))
