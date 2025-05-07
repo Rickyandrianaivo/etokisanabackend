@@ -3,6 +3,7 @@ import expressAsyncHandler from "express-async-handler";
 import { ProductModel } from "../models/product.model.js";
 import { sample_products } from "../data.js";
 import multer from 'multer';
+import { StockElementModel } from "../models/stockElement.model.js";
 const router = Router();
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -86,6 +87,21 @@ router.get("/state/:state", expressAsyncHandler(async (req, res) => {
     const productState = req.params['state'];
     const productByState = await ProductModel.find({ productCategory: productState });
     res.send(productByState);
+}));
+router.get("/stock/:id", expressAsyncHandler(async (req, res) => {
+    const siteId = req.params['id'];
+    const productInStock = await StockElementModel.find({ siteId: siteId });
+    res.send(productInStock);
+}));
+router.post("/addstock", expressAsyncHandler(async (req, res) => {
+    const { depotId, productId, quantity } = req.body;
+    const newStockElement = {
+        depotId,
+        productId,
+        quantity
+    };
+    await StockElementModel.create(newStockElement);
+    res.send(newStockElement);
 }));
 // uplod des fichiers encore en cours de mainteannce
 //Upload essay 2

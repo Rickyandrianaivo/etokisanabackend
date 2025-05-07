@@ -119,12 +119,14 @@ router.get("/stock/:id",expressAsyncHandler(async(req,res)=>{
 }))
 router.post("/addstock",expressAsyncHandler(async(req,res)=>{
     const {
-        siteId,
-        productId
+        depotId,
+        productId,
+        quantity
     }=req.body;
     const newStockElement = {
-        siteId,
+        depotId,
         productId,
+        quantity
     }
     await StockElementModel.create(newStockElement);
     res.send(newStockElement);
