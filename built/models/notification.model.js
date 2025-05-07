@@ -13,5 +13,5 @@ export const NotificationSchema = new Schema({
         virtuals: true
     }
 });
-export const NotificationModel = model('product', NotificationSchema);
+export const NotificationModel = model('notification', NotificationSchema);
 //# sourceMappingURL=notification.model.js.map

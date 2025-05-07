@@ -62,6 +62,14 @@ router.delete("/delete/:id",expressAsyncHandler(async(req,res)=>{
     await SiteModel.deleteOne({_id : siteId});
     res.status(200).send("Site effacer ! ")
 }))
+router.post("/addStock",expressAsyncHandler(async(req,res)=>{
+    const {
+        depotId,
+        productId,
+        quantity
+    } = req.body;
+    
 
+}))
 
 export default router;

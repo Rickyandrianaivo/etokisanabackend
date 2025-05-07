@@ -51,7 +51,7 @@ router.get("/user-confirmation/:token", asyncHandler(async (req, res) => {
                 // userManager : user.userManager,
                 // userNif : user. userNif,
                 // userRC : user. userRC,
-                // identityDocumentType : user.identityDocumentType,
+                // identityFile : user.identityFile,
                 // identityCardNumber : user.identityCardNumber,
                 // userAdmin : user.userAdmin,
                 // userAddress : user.userAddress,
@@ -69,7 +69,7 @@ router.get("/user-confirmation/:token", asyncHandler(async (req, res) => {
 }));
 router.post("/register/", asyncHandler(async (req, res) => {
     let tokenInfo;
-    const { userName, userFirstname, userPassword, userEmail, userPhone, userAccess, userParainID, userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userID, userDescritpion, userEmailVerified, userValidated, userImage, userLogo, userStatut, userManager, userNif, userRC, identityDocumentType, identityCardNumber, userAdmin, } = req.body;
+    const { userName, userFirstname, userPassword, userEmail, userPhone, userAccess, userParainID, userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userID, userEmailVerified, userValidated, userImage, identityFile, identityCardNumber, } = req.body;
     const user = await UserModel.findOne({ userEmail: userEmail.toLowerCase() });
     if (user) {
         res.send("Ce nom est déjà utilisé!");
@@ -95,15 +95,8 @@ router.post("/register/", asyncHandler(async (req, res) => {
             userMainLng,
             userID,
             userImage,
-            // userDescritpion,
-            // userLogo,
-            // userStatut,
-            // userManager,
-            // userNif ,
-            // userRC ,
-            // identityDocumentType,
-            // identityCardNumber,
-            // userAdmin,
+            identityFile,
+            identityCardNumber,
         };
         const userDb = await UserModel.create(newUser);
         tokenInfo = generateTokenResponse(userDb);
@@ -347,6 +340,12 @@ router.get("/email/:email", asyncHandler(async (req, res) => {
     const user = await UserModel.findOne({ userEmail: userEmail });
     res.send(user);
 }));
+router.get("/userId/:id", asyncHandler(async (req, res) => {
+    const userId = req.params['id'];
+    const user = await UserModel.findOne({ userID: userId });
+    console.log(user);
+    res.send(user);
+}));
 router.post("/login", asyncHandler(async (req, res) => {
     const { userEmail, userPassword } = req.body;
     const user = await UserModel.findOne({ userEmail });
@@ -359,16 +358,7 @@ router.post("/login", asyncHandler(async (req, res) => {
 }));
 router.patch("/update/:id", asyncHandler(async (req, res) => {
     const userId = req.params['id'];
-    const { userName, userFirstname, userPassword, userEmail, userPhone, userDescritpion, userGender, userImage, userValidated, userDateOfBirth, userTotalSolde, userAddress, userMainLat, userMainLng, userID,
-    // userLogo,
-    // userStatut,
-    // userManager,
-    // userNif ,
-    // userRC ,
-    // identityDocumentType,
-    // identityCardNumber,
-    // userAdmin,
-     } = req.body;
+    const { userName, userFirstname, userPassword, userEmail, userPhone, userDescritpion, userGender, userImage, userValidated, userDateOfBirth, userTotalSolde, userAddress, userMainLat, userMainLng, userID, identityFile, identityCardNumber, } = req.body;
     await UserModel.updateOne({ _id: userId }, {
         userName,
         userFirstname,
@@ -385,14 +375,8 @@ router.patch("/update/:id", asyncHandler(async (req, res) => {
         userMainLat,
         userMainLng,
         userID,
-        // userLogo,
-        // userStatut,
-        // userManager,
-        // userNif ,
-        // userRC ,
-        // identityDocumentType,
-        // identityCardNumber,
-        // userAdmin,
+        identityFile,
+        identityCardNumber,
     });
 }));
 //reset tables{

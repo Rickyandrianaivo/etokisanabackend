@@ -7,10 +7,14 @@ export const ProductSchema = new Schema({
     productUnite: { type: String },
     productStock: { type: Number },
     productState: { type: String },
-    productSource: { type: String },
     productOwner: { type: String },
     productImage: { type: String },
-    productValidation: { type: Boolean }
+    productValidation: { type: Boolean },
+    productVolume: { type: Number },
+    productHauteur: { type: Number },
+    productLargeur: { type: Number },
+    productLongueur: { type: Number },
+    productPoids: { type: Number },
 }, {
     timestamps: true,
     toJSON: {

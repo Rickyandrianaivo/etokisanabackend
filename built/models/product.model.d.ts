@@ -7,10 +7,14 @@ export interface Product {
     productUnite: string;
     productStock: number;
     productState: string;
-    productSource: string;
     productOwner: string;
     productImage: string;
     productValidation: boolean;
+    productVolume: number;
+    productHauteur: number;
+    productLargeur: number;
+    productLongueur: number;
+    productPoids: number;
 }
 export declare const ProductSchema: Schema<Product, import("mongoose").Model<Product, any, any, any, import("mongoose").Document<unknown, any, Product> & Product & {
     _id: import("mongoose").Types.ObjectId;
