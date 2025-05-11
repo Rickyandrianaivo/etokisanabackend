@@ -20,7 +20,8 @@ export interface iCorporateUser{
     contactEmailVerified    : boolean,
     corporateUserValidated  : boolean,
     userTotalSolde          : number,
-    userAccess              : string, 
+    userAccess              : string,
+    userPassword            : string,
 }
 
 export const CorporateUser = new Schema<iCorporateUser>({
@@ -44,6 +45,7 @@ export const CorporateUser = new Schema<iCorporateUser>({
     corporateUserValidated  : { type : Boolean},
     userTotalSolde          : { type : Number},
     userAccess              : { type : String},
+    userPassword            : { type : String, required : true},
 },{
     timestamps : true,
     toJSON : {
