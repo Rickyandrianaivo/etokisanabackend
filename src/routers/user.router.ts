@@ -55,7 +55,7 @@ router.get("/user-confirmation/:token",asyncHandler(async(req,res)=>{
             // userManager : user.userManager,
             // userNif : user. userNif,
             // userRC : user. userRC,
-            // identityFile : user.identityFile,
+            // identityDocument : user.identityDocument,
             // identityCardNumber : user.identityCardNumber,
             // userAdmin : user.userAdmin,
             // userAddress : user.userAddress,
@@ -91,8 +91,9 @@ router.post("/register/",asyncHandler(async(req, res) => {
         userEmailVerified,
         userValidated,
         userImage,
-        identityFile,
+        identityDocument,
         identityCardNumber,
+        documentType,
       } = req.body;
     const user = await UserModel.findOne({userEmail : userEmail.toLowerCase()});
 
@@ -121,8 +122,9 @@ router.post("/register/",asyncHandler(async(req, res) => {
             userMainLng,
             userID,
             userImage,
-            identityFile,
+            identityDocument,
             identityCardNumber,
+            documentType,
         }
         const userDb = await UserModel.create(newUser);
         tokenInfo = generateTokenResponse(userDb);
@@ -411,7 +413,7 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
         userMainLat,
         userMainLng,
         userID,
-        identityFile,
+        identityDocument,
         identityCardNumber,
     } = req.body;
 
@@ -431,7 +433,7 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
       userMainLat,
       userMainLng,
       userID,
-      identityFile,
+      identityDocument,
       identityCardNumber,
       });
 

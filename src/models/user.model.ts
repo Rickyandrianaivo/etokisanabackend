@@ -20,7 +20,8 @@ export interface User{
     userID              : string;
     userImage           : string;
     identityCardNumber  : string; 
-    identityFile        : string;
+    identityDocument    : string;
+    documentType        : string;
 }
 
 export const UserSchema = new Schema<User>({
@@ -41,7 +42,8 @@ export const UserSchema = new Schema<User>({
     userImage               : {type : String},
     userDateOfBirth         : {type : Date },
     identityCardNumber      : {type : String},
-    identityFile            : {type : String},
+    identityDocument        : {type : String},
+    documentType            : {type : String},
 },{
     timestamps : true,
     toJSON : {
