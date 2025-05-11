@@ -29,7 +29,7 @@ export const UserSchema = new Schema<User>({
     userFirstname           : {type : String, required : true},
     userPassword            : {type : String, required : true},
     userEmail               : {type : String, required : true, unique:true},
-    userPhone               : {type : String, required : true},
+    userPhone               : {type : String},
     userType                : {type : String, required : true},
     userTotalSolde          : {type : Number},
     userAccess              : {type : String, required : true},
