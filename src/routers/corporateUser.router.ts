@@ -394,7 +394,7 @@ router.get("/userId/:id", asyncHandler(async(req, res) => {
 
 router.post("/login",asyncHandler(async(req,res) => {
     const {contactEmail,userPassword} = req.body;
-    const user = await CorporateUserModel.findOne({contactEmail})
+    const user = await CorporateUserModel.findOne({contactEmail : contactEmail})
     if (user && (await bcrypt.compare(userPassword,user.userPassword))) {
         res.send(generateTokenResponse(user));
         
