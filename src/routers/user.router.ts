@@ -87,13 +87,22 @@ router.post("/register/",asyncHandler(async(req, res) => {
         userAddress ,
         userMainLat,
         userMainLng,
-        userID,
+        userId,
         userEmailVerified,
         userValidated,
         userImage,
         identityDocument,
         identityCardNumber,
         documentType,
+        raisonSocial        ,
+        type                ,
+        rcs                 ,
+        carteStat           ,
+        nif                 ,
+        carteFiscal         ,
+        logo                ,
+        managerName         ,
+        managerEmail        ,
       } = req.body;
     const user = await UserModel.findOne({userEmail : userEmail.toLowerCase()});
 
@@ -120,11 +129,20 @@ router.post("/register/",asyncHandler(async(req, res) => {
             userDateOfBirth,
             userMainLat,
             userMainLng,
-            userID,
+            userId,
             userImage,
             identityDocument,
             identityCardNumber,
             documentType,
+            raisonSocial        ,
+            type                ,
+            rcs                 ,
+            carteStat           ,
+            nif                 ,
+            carteFiscal         ,
+            logo                ,
+            managerName         ,
+            managerEmail        ,
         }
         const userDb = await UserModel.create(newUser);
         tokenInfo = generateTokenResponse(userDb);
@@ -200,17 +218,19 @@ const generateTokenResponse = (user:any) =>{
     });
     return {
         _id             : user._id,
+        userId          : user.userId,
         userEmail       : user.userEmail,
         userName        : user.userName,
         userFirstname   : user.userFirstname,
         userPhone       : user.userPhone,
-        userDescritpion : user.userDescription,
-        userGender      : user.userGender,
         userTotalSolde  : user.userTotalSolde,
         userStatut      : user.userStatut,
-        userManager     : user.userManager,
-        userNif         : user.userNif,
-        userRC          : user.userRC ,
+        raisonSocial    : user.raisonSocial,
+        type            : user.type,
+        rcs             : user.rcs,
+        nif             : user.nif,
+        managerName     : user.managerName,
+        managerEmail    : user.managerEmail,
         token           : token
     };
 }
@@ -223,7 +243,7 @@ const generateTokenResponse = (user:any) =>{
     }
  }))
  
-router.put("/passwordReset",asyncHandler(async(req,res)=>{
+router.patch("/passwordReset",asyncHandler(async(req,res)=>{
     const {id,token,password} = req.body;
     console.log(id,token,password)
     let passwordResetToken = await TokenModel.findOne({ userId : id });
@@ -396,15 +416,13 @@ router.post("/login",asyncHandler(async(req,res) => {
 }))
 
 router.patch("/update/:id",asyncHandler(async(req,res) => {
-    const userId = req.params['id'];
+    const id = req.params['id'];
     const {
         userName,
         userFirstname,
         userPassword,
         userEmail,
         userPhone,
-        userDescritpion,
-        userGender,
         userImage,
         userValidated,
         userDateOfBirth,
@@ -412,19 +430,23 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
         userAddress ,
         userMainLat,
         userMainLng,
-        userID,
+        userId,
         identityDocument,
         identityCardNumber,
+        raisonSocial,
+        type,
+        rcs,
+        nif             ,
+        managerName     ,
+        managerEmail    ,
     } = req.body;
 
-    await UserModel.updateOne({_id : userId}, {
+    await UserModel.updateOne({_id : id}, {
       userName,
       userFirstname,
       userPassword,
       userEmail:userEmail.toLowerCase(),
       userPhone,
-      userDescritpion,
-      userGender,
       userImage,
       userValidated,
       userDateOfBirth,
@@ -432,9 +454,15 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
       userAddress ,
       userMainLat,
       userMainLng,
-      userID,
+      userId,
       identityDocument,
       identityCardNumber,
+      raisonSocial,
+      type,
+      rcs,
+      nif             ,
+      managerName     ,
+      managerEmail    ,
       });
 
 }))

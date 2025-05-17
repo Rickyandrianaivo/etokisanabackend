@@ -51,7 +51,7 @@ router.get("/user-confirmation/:token", asyncHandler(async (req, res) => {
                 // userManager : user.userManager,
                 // userNif : user. userNif,
                 // userRC : user. userRC,
-                // identityFile : user.identityFile,
+                // identityDocument : user.identityDocument,
                 // identityCardNumber : user.identityCardNumber,
                 // userAdmin : user.userAdmin,
                 // userAddress : user.userAddress,
@@ -69,7 +69,7 @@ router.get("/user-confirmation/:token", asyncHandler(async (req, res) => {
 }));
 router.post("/register/", asyncHandler(async (req, res) => {
     let tokenInfo;
-    const { userName, userFirstname, userPassword, userEmail, userPhone, userAccess, userParainID, userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userID, userEmailVerified, userValidated, userImage, identityFile, identityCardNumber, } = req.body;
+    const { userName, userFirstname, userPassword, userEmail, userPhone, userAccess, userParainID, userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userID, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, } = req.body;
     const user = await UserModel.findOne({ userEmail: userEmail.toLowerCase() });
     if (user) {
         res.send("Ce nom est déjà utilisé!");
@@ -95,8 +95,9 @@ router.post("/register/", asyncHandler(async (req, res) => {
             userMainLng,
             userID,
             userImage,
-            identityFile,
+            identityDocument,
             identityCardNumber,
+            documentType,
         };
         const userDb = await UserModel.create(newUser);
         tokenInfo = generateTokenResponse(userDb);
@@ -358,7 +359,7 @@ router.post("/login", asyncHandler(async (req, res) => {
 }));
 router.patch("/update/:id", asyncHandler(async (req, res) => {
     const userId = req.params['id'];
-    const { userName, userFirstname, userPassword, userEmail, userPhone, userDescritpion, userGender, userImage, userValidated, userDateOfBirth, userTotalSolde, userAddress, userMainLat, userMainLng, userID, identityFile, identityCardNumber, } = req.body;
+    const { userName, userFirstname, userPassword, userEmail, userPhone, userDescritpion, userGender, userImage, userValidated, userDateOfBirth, userTotalSolde, userAddress, userMainLat, userMainLng, userID, identityDocument, identityCardNumber, } = req.body;
     await UserModel.updateOne({ _id: userId }, {
         userName,
         userFirstname,
@@ -375,7 +376,7 @@ router.patch("/update/:id", asyncHandler(async (req, res) => {
         userMainLat,
         userMainLng,
         userID,
-        identityFile,
+        identityDocument,
         identityCardNumber,
     });
 }));

@@ -10,7 +10,6 @@ import categoryRouter from './routers/category.router.js';
 import { dbConnect } from './configs/database.config.js';
 import transactionRouter from './routers/transaction.router.js';
 import notificationRouter from './routers/notification.router.js';
-import corporateUserRouter from './routers/corporateUser.router.js';
 dbConnect();
 
 
@@ -32,7 +31,6 @@ app.use("/api/product", productRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/transaction", transactionRouter);
 app.use("/api/notification", notificationRouter);
-app.use("/api/corporate",corporateUserRouter);
 
 const port = 3000;
 app.listen(port, () =>{

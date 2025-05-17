@@ -17,16 +17,25 @@ export interface User{
     userAddress         : string;
     userMainLat         : number;
     userMainLng         : number
-    userID              : string;
+    userId              : string;
     userImage           : string;
     identityCardNumber  : string; 
     identityDocument    : string;
     documentType        : string;
+    raisonSocial        : string;
+    type                : string;
+    rcs                 : string;
+    carteStat           : string;
+    nif                 : string;
+    carteFiscal         : string;
+    logo                : string;
+    managerName         : string;
+    managerEmail        : string;
 }
 
 export const UserSchema = new Schema<User>({
     userName                : {type : String},
-    userFirstname           : {type : String, required : true},
+    userFirstname           : {type : String},
     userPassword            : {type : String, required : true},
     userEmail               : {type : String, required : true, unique:true},
     userPhone               : {type : String},
@@ -38,12 +47,21 @@ export const UserSchema = new Schema<User>({
     userEmailVerified       : {type : Boolean },
     userMainLat             : {type : Number},
     userMainLng             : {type : Number},
-    userID                  : {type : String, required : true, unique : true},
+    userId                  : {type : String, required : true, unique : true},
     userImage               : {type : String},
     userDateOfBirth         : {type : Date },
     identityCardNumber      : {type : String},
     identityDocument        : {type : String},
     documentType            : {type : String},
+    raisonSocial            : { type : String},
+    nif                     : { type : String},
+    rcs                     : { type : String},
+    type                    : { type : String},
+    managerName             : { type : String},
+    managerEmail            : { type : String},
+    logo                    : { type : String},
+    carteStat               : { type : String},
+    carteFiscal             : { type : String},
 },{
     timestamps : true,
     toJSON : {

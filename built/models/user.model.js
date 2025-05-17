@@ -4,7 +4,7 @@ export const UserSchema = new Schema({
     userFirstname: { type: String, required: true },
     userPassword: { type: String, required: true },
     userEmail: { type: String, required: true, unique: true },
-    userPhone: { type: String, required: true },
+    userPhone: { type: String },
     userType: { type: String, required: true },
     userTotalSolde: { type: Number },
     userAccess: { type: String, required: true },
@@ -17,7 +17,8 @@ export const UserSchema = new Schema({
     userImage: { type: String },
     userDateOfBirth: { type: Date },
     identityCardNumber: { type: String },
-    identityFile: { type: String },
+    identityDocument: { type: String },
+    documentType: { type: String },
 }, {
     timestamps: true,
     toJSON: {

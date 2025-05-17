@@ -89,8 +89,8 @@ router.get("/state/:state", expressAsyncHandler(async (req, res) => {
     res.send(productByState);
 }));
 router.get("/stock/:id", expressAsyncHandler(async (req, res) => {
-    const siteId = req.params['id'];
-    const productInStock = await StockElementModel.find({ siteId: siteId });
+    const depotId = req.params['id'];
+    const productInStock = await StockElementModel.find({ depotId: depotId });
     res.send(productInStock);
 }));
 router.post("/addstock", expressAsyncHandler(async (req, res) => {
