@@ -205,7 +205,8 @@ router.get("/new",asyncHandler(async(req,res)=>{
 }))
 router.get("/validate/:id",asyncHandler(async(req,res)=>{
   const userId = req.params['id'];
-  await UserModel.updateOne({_id : userId},{$set : {userValidated : true}}) 
+  await UserModel.updateOne({_id : userId},{$set : {userValidated : true}});
+  res.status(200).send(userId) ;
 }))
 
 const generateTokenResponse = (user:any) =>{
