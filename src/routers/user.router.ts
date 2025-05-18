@@ -200,7 +200,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
       })
 }))
 router.get("/new",asyncHandler(async(req,res)=>{
-  const userNewList = await UserModel.find({userValidated : false})
+  const userNewList = await UserModel.find({userValidated : false,userAccess:"Utilisateur"})
   res.status(200).send(userNewList)
 }))
 router.get("/validate/:id",asyncHandler(async(req,res)=>{
@@ -383,7 +383,7 @@ router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
 }))
 
 router.get("", asyncHandler(async(req, res) => {
-    const users = await UserModel.find();
+    const users = await UserModel.find({userAccess:"Utilisateur"});
     res.send(users);
 }))
 router.get("/id/:id", asyncHandler(async(req, res) => {
