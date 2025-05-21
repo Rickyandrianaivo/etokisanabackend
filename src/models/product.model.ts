@@ -10,7 +10,7 @@ export interface Product{
     productStock        :number;
     productState        :string;
     productOwner        :string;
-    productImage        :string;
+    productImage        :string[];
     productValidation   :boolean;
     productVolume       :number;
     productHauteur      :number;
@@ -28,7 +28,7 @@ export const ProductSchema = new Schema<Product>({
     productStock        : {type : Number},
     productState        : {type : String},
     productOwner        : {type : String},
-    productImage        : {type : String},
+    productImage        : {type : [String]},
     productValidation   : {type : Boolean},
     productVolume       : {type: Number},
     productHauteur      : {type:Number},
