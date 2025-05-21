@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 export const UserSchema = new Schema({
     userName: { type: String },
-    userFirstname: { type: String, required: true },
+    userFirstname: { type: String },
     userPassword: { type: String, required: true },
     userEmail: { type: String, required: true, unique: true },
     userPhone: { type: String },
@@ -13,12 +13,21 @@ export const UserSchema = new Schema({
     userEmailVerified: { type: Boolean },
     userMainLat: { type: Number },
     userMainLng: { type: Number },
-    userID: { type: String, required: true, unique: true },
+    userId: { type: String, required: true, unique: true },
     userImage: { type: String },
     userDateOfBirth: { type: Date },
     identityCardNumber: { type: String },
     identityDocument: { type: String },
     documentType: { type: String },
+    raisonSocial: { type: String },
+    nif: { type: String },
+    rcs: { type: String },
+    type: { type: String },
+    managerName: { type: String },
+    managerEmail: { type: String },
+    logo: { type: String },
+    carteStat: { type: String },
+    carteFiscal: { type: String },
 }, {
     timestamps: true,
     toJSON: {

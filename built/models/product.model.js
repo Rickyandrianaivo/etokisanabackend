@@ -8,7 +8,7 @@ export const ProductSchema = new Schema({
     productStock: { type: Number },
     productState: { type: String },
     productOwner: { type: String },
-    productImage: { type: String },
+    productImage: { type: [String] },
     productValidation: { type: Boolean },
     productVolume: { type: Number },
     productHauteur: { type: Number },

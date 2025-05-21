@@ -8,7 +8,7 @@ export interface Product {
     productStock: number;
     productState: string;
     productOwner: string;
-    productImage: string;
+    productImage: string[];
     productValidation: boolean;
     productVolume: number;
     productHauteur: number;

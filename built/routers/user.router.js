@@ -69,7 +69,7 @@ router.get("/user-confirmation/:token", asyncHandler(async (req, res) => {
 }));
 router.post("/register/", asyncHandler(async (req, res) => {
     let tokenInfo;
-    const { userName, userFirstname, userPassword, userEmail, userPhone, userAccess, userParainID, userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userID, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, } = req.body;
+    const { userName, userFirstname, userPassword, userEmail, userPhone, userAccess, userParainID, userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userId, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, } = req.body;
     const user = await UserModel.findOne({ userEmail: userEmail.toLowerCase() });
     if (user) {
         res.send("Ce nom est déjà utilisé!");
@@ -93,11 +93,20 @@ router.post("/register/", asyncHandler(async (req, res) => {
             userDateOfBirth,
             userMainLat,
             userMainLng,
-            userID,
+            userId,
             userImage,
             identityDocument,
             identityCardNumber,
             documentType,
+            raisonSocial,
+            type,
+            rcs,
+            carteStat,
+            nif,
+            carteFiscal,
+            logo,
+            managerName,
+            managerEmail,
         };
         const userDb = await UserModel.create(newUser);
         tokenInfo = generateTokenResponse(userDb);
@@ -153,12 +162,13 @@ router.post("/register/", asyncHandler(async (req, res) => {
     });
 }));
 router.get("/new", asyncHandler(async (req, res) => {
-    const userNewList = await UserModel.find({ userValidated: false });
+    const userNewList = await UserModel.find({ userValidated: false, userAccess: "Utilisateur" });
     res.status(200).send(userNewList);
 }));
-router.patch("/validate/:id", asyncHandler(async (req, res) => {
+router.get("/validate/:id", asyncHandler(async (req, res) => {
     const userId = req.params['id'];
     await UserModel.updateOne({ _id: userId }, { $set: { userValidated: true } });
+    res.status(200).send(userId);
 }));
 const generateTokenResponse = (user) => {
     const token = jwt.sign({
@@ -170,17 +180,19 @@ const generateTokenResponse = (user) => {
     });
     return {
         _id: user._id,
+        userId: user.userId,
         userEmail: user.userEmail,
         userName: user.userName,
         userFirstname: user.userFirstname,
         userPhone: user.userPhone,
-        userDescritpion: user.userDescription,
-        userGender: user.userGender,
         userTotalSolde: user.userTotalSolde,
         userStatut: user.userStatut,
-        userManager: user.userManager,
-        userNif: user.userNif,
-        userRC: user.userRC,
+        raisonSocial: user.raisonSocial,
+        type: user.type,
+        rcs: user.rcs,
+        nif: user.nif,
+        managerName: user.managerName,
+        managerEmail: user.managerEmail,
         token: token
     };
 };
@@ -192,7 +204,7 @@ router.get("/token/:token", asyncHandler(async (req, res) => {
         res.send(userConcerned).status(200);
     }
 }));
-router.put("/passwordReset", asyncHandler(async (req, res) => {
+router.patch("/passwordReset", asyncHandler(async (req, res) => {
     const { id, token, password } = req.body;
     console.log(id, token, password);
     let passwordResetToken = await TokenModel.findOne({ userId: id });
@@ -327,7 +339,7 @@ router.post("/requestResetPwd", asyncHandler(async (req, res) => {
     });
 }));
 router.get("", asyncHandler(async (req, res) => {
-    const users = await UserModel.find();
+    const users = await UserModel.find({ userAccess: "Utilisateur" });
     res.send(users);
 }));
 router.get("/id/:id", asyncHandler(async (req, res) => {
@@ -358,16 +370,14 @@ router.post("/login", asyncHandler(async (req, res) => {
     }
 }));
 router.patch("/update/:id", asyncHandler(async (req, res) => {
-    const userId = req.params['id'];
-    const { userName, userFirstname, userPassword, userEmail, userPhone, userDescritpion, userGender, userImage, userValidated, userDateOfBirth, userTotalSolde, userAddress, userMainLat, userMainLng, userID, identityDocument, identityCardNumber, } = req.body;
-    await UserModel.updateOne({ _id: userId }, {
+    const id = req.params['id'];
+    const { userName, userFirstname, userPassword, userEmail, userPhone, userImage, userValidated, userDateOfBirth, userTotalSolde, userAddress, userMainLat, userMainLng, userId, identityDocument, identityCardNumber, raisonSocial, type, rcs, nif, managerName, managerEmail, } = req.body;
+    await UserModel.updateOne({ _id: id }, {
         userName,
         userFirstname,
         userPassword,
         userEmail: userEmail.toLowerCase(),
         userPhone,
-        userDescritpion,
-        userGender,
         userImage,
         userValidated,
         userDateOfBirth,
@@ -375,9 +385,15 @@ router.patch("/update/:id", asyncHandler(async (req, res) => {
         userAddress,
         userMainLat,
         userMainLng,
-        userID,
+        userId,
         identityDocument,
         identityCardNumber,
+        raisonSocial,
+        type,
+        rcs,
+        nif,
+        managerName,
+        managerEmail,
     });
 }));
 //reset tables{
