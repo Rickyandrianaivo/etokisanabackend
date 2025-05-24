@@ -434,12 +434,16 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
         userId,
         identityDocument,
         identityCardNumber,
+        documentType,
         raisonSocial,
         type,
         rcs,
-        nif             ,
-        managerName     ,
-        managerEmail    ,
+        carteStat,
+        nif,
+        carteFiscal,
+        logo,
+        managerName,
+        managerEmail,
     } = req.body;
 
     await UserModel.updateOne({_id : id}, {

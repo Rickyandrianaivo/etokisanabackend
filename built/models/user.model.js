@@ -17,7 +17,7 @@ export const UserSchema = new Schema({
     userImage: { type: String },
     userDateOfBirth: { type: Date },
     identityCardNumber: { type: String },
-    identityDocument: { type: String },
+    identityDocument: { type: [String] },
     documentType: { type: String },
     raisonSocial: { type: String },
     nif: { type: String },
@@ -27,7 +27,7 @@ export const UserSchema = new Schema({
     managerEmail: { type: String },
     logo: { type: String },
     carteStat: { type: String },
-    carteFiscal: { type: String },
+    carteFiscal: { type: [String] },
 }, {
     timestamps: true,
     toJSON: {

@@ -20,14 +20,14 @@ export interface User{
     userId              : string;
     userImage           : string;
     identityCardNumber  : string; 
-    identityDocument    : string;
+    identityDocument    : string[];
     documentType        : string;
     raisonSocial        : string;
     type                : string;
     rcs                 : string;
     carteStat           : string;
     nif                 : string;
-    carteFiscal         : string;
+    carteFiscal         : string[];
     logo                : string;
     managerName         : string;
     managerEmail        : string;
@@ -51,7 +51,7 @@ export const UserSchema = new Schema<User>({
     userImage               : {type : String},
     userDateOfBirth         : {type : Date },
     identityCardNumber      : {type : String},
-    identityDocument        : {type : String},
+    identityDocument        : {type : [String]},
     documentType            : {type : String},
     raisonSocial            : { type : String},
     nif                     : { type : String},
@@ -61,7 +61,7 @@ export const UserSchema = new Schema<User>({
     managerEmail            : { type : String},
     logo                    : { type : String},
     carteStat               : { type : String},
-    carteFiscal             : { type : String},
+    carteFiscal             : { type : [String]},
 },{
     timestamps : true,
     toJSON : {
