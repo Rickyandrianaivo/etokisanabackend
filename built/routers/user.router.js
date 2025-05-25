@@ -276,6 +276,12 @@ router.patch("/passwordReset", asyncHandler(async (req, res) => {
     }
     res.send('Password reseted');
 }));
+router.delete("/delete/:id", asyncHandler(async (req, res) => {
+    const userId = req.params.id;
+    console.log(userId);
+    await UserModel.deleteOne({ _id: userId });
+    res.send("Utilisateur supprimé : " + userId);
+}));
 router.post("/requestResetPwd", asyncHandler(async (req, res) => {
     const { email } = req.body;
     // console.log(email+ " " + userId)
@@ -368,6 +374,14 @@ router.post("/login", asyncHandler(async (req, res) => {
     else {
         res.status(404).send("User name or password is not valid!");
     }
+}));
+router.get("userToAdmin/:id", asyncHandler(async (req, res) => {
+    const userId = req.params.id;
+    await UserModel.updateOne({ _id: userId }, { $set: { userAccess: "Admin" } });
+}));
+router.get("AdminToUser/:id", asyncHandler(async (req, res) => {
+    const userId = req.params.id;
+    await UserModel.updateOne({ _id: userId }, { $set: { userAccess: "Utilisateur" } });
 }));
 router.patch("/update/:id", asyncHandler(async (req, res) => {
     const id = req.params['id'];

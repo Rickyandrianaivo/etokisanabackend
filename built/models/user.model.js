@@ -9,6 +9,7 @@ export const UserSchema = new Schema({
     userTotalSolde: { type: Number },
     userAccess: { type: String, required: true },
     userParainID: { type: String },
+    userAddress: { type: String },
     userValidated: { type: Boolean },
     userEmailVerified: { type: Boolean },
     userMainLat: { type: Number },
