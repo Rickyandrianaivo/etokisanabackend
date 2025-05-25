@@ -319,8 +319,9 @@ router.patch("/passwordReset",asyncHandler(async(req,res)=>{
  }))
 router.delete("/delete/:id",asyncHandler(async(req,res)=>{
   const userId = req.params.id;
+  console.log(userId)
   await UserModel.deleteOne({_id : userId});
-  res.send(userId);
+  res.send("Utilisateur supprimé : " + userId);
 }))
 router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
     const {email} = req.body;
