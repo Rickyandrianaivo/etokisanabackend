@@ -72,6 +72,18 @@ router.get("/user-confirmation/:token",asyncHandler(async(req,res)=>{
     }
 }))
 
+
+router.post("/requestVerificationEmail",asyncHandler(async(req,res)=>{
+  let tokenInfo
+  const userInfos = req.body;
+  tokenInfo = generateTokenResponse(userInfos);
+  const tokenDB : Token = {
+          userId    : tokenInfo._id,
+          token : tokenInfo.token,
+        };
+  
+}))
+
 router.post("/register/",asyncHandler(async(req, res) => {
     let tokenInfo
     const {
@@ -177,16 +189,26 @@ router.post("/register/",asyncHandler(async(req, res) => {
         extName : '.handlebars'
     
       }))
-      let info = {
+      if(tokenInfo.type == "entreprise"){
+        let info = {
         from: 'Etokisana <contact@commercegestion.com>', // sender address
         to: userEmail, // list of receivers
         subject: "Bienvenue sur Etokisana", // Subject line
-        template: "welcome",
+        template: "welcomeEntreprise",
         context : {
-          name : userFirstname,
-          link : verificationLink,
+          name : raisonSocial,
         }
-      };
+      }
+    }else{
+        let info = {
+          from: 'Etokisana <contact@commercegestion.com>', // sender address
+          to: userEmail, // list of receivers
+          subject: "Bienvenue sur Etokisana", // Subject line
+          template: "welcome",
+          context : {
+            name : userFirstname,
+          }
+        };
 
       await transporter.sendMail(info,(error,info)=>{
         if (error) {
@@ -198,7 +220,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
             res.status(200).send("Email sent successfully")
         }
       })
-}))
+}}))
 router.get("/new",asyncHandler(async(req,res)=>{
   const userNewList = await UserModel.find({userValidated : false,userAccess:"Utilisateur"})
   res.status(200).send(userNewList)

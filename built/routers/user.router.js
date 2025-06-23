@@ -67,6 +67,15 @@ router.get("/user-confirmation/:token", asyncHandler(async (req, res) => {
         res.status(404).send("Token Introuvable");
     }
 }));
+router.post("/requestVerificationEmail", asyncHandler(async (req, res) => {
+    let tokenInfo;
+    const userInfos = req.body;
+    tokenInfo = generateTokenResponse(userInfos);
+    const tokenDB = {
+        userId: tokenInfo._id,
+        token: tokenInfo.token,
+    };
+}));
 router.post("/register/", asyncHandler(async (req, res) => {
     let tokenInfo;
     const { userName, userFirstname, userPassword, userEmail, userPhone, userAccess, userParainID, userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userId, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, } = req.body;
@@ -139,27 +148,39 @@ router.post("/register/", asyncHandler(async (req, res) => {
         viewPath: "./Utils/Emails/Template/",
         extName: '.handlebars'
     }));
-    let info = {
-        from: 'Etokisana <contact@commercegestion.com>', // sender address
-        to: userEmail, // list of receivers
-        subject: "Bienvenue sur Etokisana", // Subject line
-        template: "welcome",
-        context: {
-            name: userFirstname,
-            link: verificationLink,
-        }
-    };
-    await transporter.sendMail(info, (error, info) => {
-        if (error) {
-            console.log(info);
-            console.log(error);
-            res.status(500).send('Error sendig mail:' + error);
-        }
-        else {
-            console.log("Email sent" + info.response);
-            res.status(200).send("Email sent successfully");
-        }
-    });
+    if (tokenInfo.type == "entreprise") {
+        let info = {
+            from: 'Etokisana <contact@commercegestion.com>', // sender address
+            to: userEmail, // list of receivers
+            subject: "Bienvenue sur Etokisana", // Subject line
+            template: "welcomeEntreprise",
+            context: {
+                name: raisonSocial,
+            }
+        };
+    }
+    else {
+        let info = {
+            from: 'Etokisana <contact@commercegestion.com>', // sender address
+            to: userEmail, // list of receivers
+            subject: "Bienvenue sur Etokisana", // Subject line
+            template: "welcome",
+            context: {
+                name: userFirstname,
+            }
+        };
+        await transporter.sendMail(info, (error, info) => {
+            if (error) {
+                console.log(info);
+                console.log(error);
+                res.status(500).send('Error sendig mail:' + error);
+            }
+            else {
+                console.log("Email sent" + info.response);
+                res.status(200).send("Email sent successfully");
+            }
+        });
+    }
 }));
 router.get("/new", asyncHandler(async (req, res) => {
     const userNewList = await UserModel.find({ userValidated: false, userAccess: "Utilisateur" });
