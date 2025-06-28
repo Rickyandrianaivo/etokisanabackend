@@ -8,6 +8,7 @@ import { randomBytes } from "crypto";
 import nodemailer from "nodemailer";
 import hbs from 'nodemailer-express-handlebars';
 import multer from 'multer';
+import { NotificationModel } from "../models/notification.model.js";
 const bcryptSalt = process.env.BCRYPT_SALT;
 const clientURL = process.env.CLIENT_URL;
 const router = Router();
@@ -60,6 +61,13 @@ router.get("/user-confirmation/:token", asyncHandler(async (req, res) => {
             await UserModel.updateOne({ _id: verified.userId }, activatedUser);
             console.log();
             await TokenModel.deleteOne({ token: verified.token });
+            let newNotification = {
+                userId: verified.userId,
+                title: "Email vérifié",
+                message: "Féliicitations ! Votra Email a bien été vérifié",
+                states: "new",
+            };
+            await NotificationModel.create(newNotification);
             res.status(200).send("Token Effacer");
         }
     }
@@ -143,44 +151,50 @@ router.post("/register/", asyncHandler(async (req, res) => {
             extname: '.handlebars',
             partialsDir: './Utils/Emails/Template',
             layoutsDir: './Utils/Emails/Template',
-            defaultLayout: 'baseMail'
+            defaultLayout: 'baseMail',
         },
         viewPath: "./Utils/Emails/Template/",
-        extName: '.handlebars'
+        extName: '.handlebars',
     }));
-    if (tokenInfo.type == "entreprise") {
-        let info = {
-            from: 'Etokisana <contact@commercegestion.com>', // sender address
-            to: userEmail, // list of receivers
-            subject: "Bienvenue sur Etokisana", // Subject line
-            template: "welcomeEntreprise",
-            context: {
-                name: raisonSocial,
-            }
-        };
-    }
-    else {
-        let info = {
+    let info = {
+        from: 'Etokisana <contact@commercegestion.com>', // sender address
+        to: userEmail, // list of receivers
+        subject: "Bienvenue sur Etokisana", // Subject line
+        template: "welcomeEntreprise",
+        context: {
+            name: userFirstname,
+        }
+    };
+    if (tokenInfo.type == "Particulier") {
+        info = {
             from: 'Etokisana <contact@commercegestion.com>', // sender address
             to: userEmail, // list of receivers
             subject: "Bienvenue sur Etokisana", // Subject line
             template: "welcome",
             context: {
-                name: userFirstname,
+                name: raisonSocial,
             }
         };
-        await transporter.sendMail(info, (error, info) => {
-            if (error) {
-                console.log(info);
-                console.log(error);
-                res.status(500).send('Error sendig mail:' + error);
-            }
-            else {
-                console.log("Email sent" + info.response);
-                res.status(200).send("Email sent successfully");
-            }
-        });
     }
+    console.log(info);
+    let newNotification = {
+        userId: userId,
+        title: "Inscription en attente",
+        message: "Nous vous remercions de faire de patience pendant la validation de votre insciption au sein de nos administrateurs",
+        states: "new",
+    };
+    await NotificationModel.create(newNotification);
+    await transporter.sendMail(info, (error, info) => {
+        if (error) {
+            console.log(info);
+            console.log(error);
+            res.status(500).send('Error sendig mail:' + error);
+        }
+        else {
+            console.log("Email sent" + info.response);
+            res.status(200).send("Email sent successfully");
+        }
+    });
 }));
 router.get("/new", asyncHandler(async (req, res) => {
     const userNewList = await UserModel.find({ userValidated: false, userAccess: "Utilisateur" });
@@ -189,6 +203,13 @@ router.get("/new", asyncHandler(async (req, res) => {
 router.get("/validate/:id", asyncHandler(async (req, res) => {
     const userId = req.params['id'];
     await UserModel.updateOne({ _id: userId }, { $set: { userValidated: true } });
+    let newNotification = {
+        userId: userId,
+        title: "Inscritpion réussie !",
+        message: "Félicitations ! Vous faites maintenant partie de la grande famille de notre plateforme.",
+        states: "new",
+    };
+    await NotificationModel.create(newNotification);
     res.status(200).send(userId);
 }));
 const generateTokenResponse = (user) => {
