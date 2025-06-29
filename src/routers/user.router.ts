@@ -205,7 +205,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
           from: 'Etokisana <contact@commercegestion.com>', // sender address
           to: userEmail, // list of receivers
           subject: "Bienvenue sur Etokisana", // Subject line
-          template: "ValidationEntrepriseEmail",
+          template: "welcomeEntreprise",
           context : {
             name : raisonSocial,
           }
@@ -228,7 +228,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
           from: 'Etokisana <contact@commercegestion.com>', // sender address
           to: userEmail, // list of receivers
           subject: "Bienvenue sur Etokisana", // Subject line
-          template: "ValidationEmail",
+          template: "welcome",
           context : {
             name : userName,
           }
@@ -284,26 +284,41 @@ router.get("/validate/:id",asyncHandler(async(req,res)=>{
         extName : '.handlebars',
     
       }));
-      let info = {
-          from: 'Etokisana <contact@commercegestion.com>', // sender address
-          to: userById?.userEmail, // list of receivers
-          subject: "Bienvenue sur Etokisana", // Subject line
-          template: "welcome",
-          context : {
-            name : userById?.userName,
-          }
+      let info = {}
+      if (userById?.userType == "Entreprise") {
+        info = {
+        from: 'Etokisana <contact@commercegestion.com>', // sender address
+        to: userById?.userEmail, // list of receivers
+        subject: "Bienvenue sur Etokisana", // Subject line
+        template: "ValidationEmail",
+        context : {
+          name : userById?.userName,
         }
-        console.log(info)
-        await transporter.sendMail(info,(error,info)=>{
-        if (error) {
-            console.log(info);
-            console.log(error);
-            res.status(500).send('Error sendig mail:'+ error)
-        }else{
-            console.log("Email sent" + info.response);
-            res.status(200).send("Email sent successfully")
+      }
+      console.log(info)
+    }
+    if (userById?.userType == "Particulier") {
+      info = {
+        from: 'Etokisana <contact@commercegestion.com>', // sender address
+        to: userById?.userEmail, // list of receivers
+        subject: "Bienvenue sur Etokisana", // Subject line
+        template: "ValidationEntrepriseEmail",
+        context : {
+          name : userById?.userName,
         }
-      })
+      }
+      console.log(info)
+    }
+      await transporter.sendMail(info,(error,info)=>{
+      if (error) {
+          console.log(info);
+          console.log(error);
+          res.status(500).send('Error sendig mail:'+ error)
+      }else{
+          console.log("Email sent" + info.response);
+          res.status(200).send("Email sent successfully")
+      }
+    })
       
   // let newNotification = {
   //     userId  : userById?.userId,
