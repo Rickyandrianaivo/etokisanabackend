@@ -165,8 +165,9 @@ router.post("/register/",asyncHandler(async(req, res) => {
             managerName         ,
             managerEmail        ,
         }
-        const userDb = await UserModel.create(newUser);
-        tokenInfo = generateTokenResponse(userDb);
+        // const userDb = await UserModel.create(newUser);
+        // tokenInfo = generateTokenResponse(userDb);
+        tokenInfo = generateTokenResponse(tokenInfo);
         const tokenDB : Token = {
           userId    : tokenInfo._id,
           token : tokenInfo.token,
