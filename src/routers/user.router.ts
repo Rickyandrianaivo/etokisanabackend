@@ -10,6 +10,7 @@ import nodemailer from "nodemailer";
 import hbs from 'nodemailer-express-handlebars';
 import multer from 'multer';
 import { NotificationModel } from "../models/notification.model.js";
+import { Options } from "nodemailer/lib/smtp-pool/index.js";
 
 const bcryptSalt = process.env.BCRYPT_SALT;
 const clientURL = process.env.CLIENT_URL;
@@ -197,36 +198,18 @@ router.post("/register/",asyncHandler(async(req, res) => {
         extName : '.handlebars',
     
       }));
-      let info = {
+      if (tokenInfo.type == "Entreprise") {
+       let info = {
           from: 'Etokisana <contact@commercegestion.com>', // sender address
           to: userEmail, // list of receivers
           subject: "Bienvenue sur Etokisana", // Subject line
           template: "welcomeEntreprise",
           context : {
-            name : userFirstname,
-          }
-        }
-      if(tokenInfo.type == "Particulier")
-      {
-        info = {
-          from: 'Etokisana <contact@commercegestion.com>', // sender address
-          to: userEmail, // list of receivers
-          subject: "Bienvenue sur Etokisana", // Subject line
-          template: "welcome",
-          context : {
             name : raisonSocial,
           }
         }
-      }
-      console.log(info)
-      let newNotification ={
-        userId  : userId,
-        title   : "Inscription en attente",
-        message : "Nous vous remercions de faire de patience pendant la validation de votre insciption au sein de nos administrateurs",
-        states  : "new",
-      }
-      await NotificationModel.create(newNotification);
-      await transporter.sendMail(info,(error,info)=>{
+        console.log(info)
+        await transporter.sendMail(info,(error,info)=>{
         if (error) {
             console.log(info);
             console.log(error);
@@ -236,14 +219,48 @@ router.post("/register/",asyncHandler(async(req, res) => {
             res.status(200).send("Email sent successfully")
         }
       })
+      }
+      if(tokenInfo.type == "Particulier")
+      {
+        let info = {
+          from: 'Etokisana <contact@commercegestion.com>', // sender address
+          to: userEmail, // list of receivers
+          subject: "Bienvenue sur Etokisana", // Subject line
+          template: "welcome",
+          context : {
+            name : userName,
+          }
+        }
+        console.log(info)
+        await transporter.sendMail(info,(error,info)=>{
+        if (error) {
+            console.log(info);
+            console.log(error);
+            res.status(500).send('Error sendig mail:'+ error)
+        }else{
+            console.log("Email sent" + info.response);
+            res.status(200).send("Email sent successfully")
+        }
+      })
+      }
+      let newNotification ={
+        userId  : userId,
+        title   : "Inscription en attente",
+        message : "Nous vous remercions de faire de patience pendant la validation de votre insciption au sein de nos administrateurs",
+        states  : "new",
+      }
+      await NotificationModel.create(newNotification);
+      
 }))
+
 router.get("/new",asyncHandler(async(req,res)=>{
   const userNewList = await UserModel.find({userValidated : false,userAccess:"Utilisateur"})
   res.status(200).send(userNewList)
 }))
 router.get("/validate/:id",asyncHandler(async(req,res)=>{
-  const userId = req.params['id'];
-  await UserModel.updateOne({_id : userId},{$set : {userValidated : true}});
+  const userDBId = req.params['id'];
+  const userId = await UserModel.findById({_id:userDBId});
+  await UserModel.updateOne({_id : userDBId},{$set : {userValidated : true}});
   let newNotification = {
       userId  : userId,
       title   : "Inscritpion réussie !",

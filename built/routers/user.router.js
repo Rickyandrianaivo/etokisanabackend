@@ -156,27 +156,52 @@ router.post("/register/", asyncHandler(async (req, res) => {
         viewPath: "./Utils/Emails/Template/",
         extName: '.handlebars',
     }));
-    let info = {
-        from: 'Etokisana <contact@commercegestion.com>', // sender address
-        to: userEmail, // list of receivers
-        subject: "Bienvenue sur Etokisana", // Subject line
-        template: "welcomeEntreprise",
-        context: {
-            name: userFirstname,
-        }
-    };
+    if (tokenInfo.type == "Entreprise") {
+        let info = {
+            from: 'Etokisana <contact@commercegestion.com>', // sender address
+            to: userEmail, // list of receivers
+            subject: "Bienvenue sur Etokisana", // Subject line
+            template: "welcomeEntreprise",
+            context: {
+                name: raisonSocial,
+            }
+        };
+        console.log(info);
+        await transporter.sendMail(info, (error, info) => {
+            if (error) {
+                console.log(info);
+                console.log(error);
+                res.status(500).send('Error sendig mail:' + error);
+            }
+            else {
+                console.log("Email sent" + info.response);
+                res.status(200).send("Email sent successfully");
+            }
+        });
+    }
     if (tokenInfo.type == "Particulier") {
-        info = {
+        let info = {
             from: 'Etokisana <contact@commercegestion.com>', // sender address
             to: userEmail, // list of receivers
             subject: "Bienvenue sur Etokisana", // Subject line
             template: "welcome",
             context: {
-                name: raisonSocial,
+                name: userName,
             }
         };
+        console.log(info);
+        await transporter.sendMail(info, (error, info) => {
+            if (error) {
+                console.log(info);
+                console.log(error);
+                res.status(500).send('Error sendig mail:' + error);
+            }
+            else {
+                console.log("Email sent" + info.response);
+                res.status(200).send("Email sent successfully");
+            }
+        });
     }
-    console.log(info);
     let newNotification = {
         userId: userId,
         title: "Inscription en attente",
@@ -184,25 +209,15 @@ router.post("/register/", asyncHandler(async (req, res) => {
         states: "new",
     };
     await NotificationModel.create(newNotification);
-    await transporter.sendMail(info, (error, info) => {
-        if (error) {
-            console.log(info);
-            console.log(error);
-            res.status(500).send('Error sendig mail:' + error);
-        }
-        else {
-            console.log("Email sent" + info.response);
-            res.status(200).send("Email sent successfully");
-        }
-    });
 }));
 router.get("/new", asyncHandler(async (req, res) => {
     const userNewList = await UserModel.find({ userValidated: false, userAccess: "Utilisateur" });
     res.status(200).send(userNewList);
 }));
 router.get("/validate/:id", asyncHandler(async (req, res) => {
-    const userId = req.params['id'];
-    await UserModel.updateOne({ _id: userId }, { $set: { userValidated: true } });
+    const userDBId = req.params['id'];
+    const userId = await UserModel.findById({ _id: userDBId });
+    await UserModel.updateOne({ _id: userDBId }, { $set: { userValidated: true } });
     let newNotification = {
         userId: userId,
         title: "Inscritpion réussie !",
