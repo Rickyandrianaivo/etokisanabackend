@@ -156,12 +156,12 @@ router.post("/register/", asyncHandler(async (req, res) => {
         viewPath: "./Utils/Emails/Template/",
         extName: '.handlebars',
     }));
-    if (tokenInfo.type == "Entreprise") {
+    if (tokenInfo.type === "Entreprise") {
         let info = {
             from: 'Etokisana <contact@commercegestion.com>', // sender address
             to: userEmail, // list of receivers
             subject: "Bienvenue sur Etokisana", // Subject line
-            template: "welcomeEntreprise",
+            template: "ValidationEntrepriseEmail",
             context: {
                 name: raisonSocial,
             }
@@ -179,12 +179,12 @@ router.post("/register/", asyncHandler(async (req, res) => {
             }
         });
     }
-    if (tokenInfo.type == "Particulier") {
+    if (tokenInfo.type === "Particulier") {
         let info = {
             from: 'Etokisana <contact@commercegestion.com>', // sender address
             to: userEmail, // list of receivers
             subject: "Bienvenue sur Etokisana", // Subject line
-            template: "welcome",
+            template: "ValidationEmail",
             context: {
                 name: userName,
             }
@@ -216,16 +216,56 @@ router.get("/new", asyncHandler(async (req, res) => {
 }));
 router.get("/validate/:id", asyncHandler(async (req, res) => {
     const userDBId = req.params['id'];
-    const userId = await UserModel.findById({ _id: userDBId });
+    const userById = await UserModel.findById({ _id: userDBId });
     await UserModel.updateOne({ _id: userDBId }, { $set: { userValidated: true } });
+    let transporter = nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: 465,
+        secure: true, // true for port 465, false for other ports
+        auth: {
+            user: process.env.EMAIL_USERNAME,
+            pass: process.env.EMAIL_PASSWORD
+        },
+    });
+    transporter.use("compile", hbs({
+        viewEngine: {
+            extname: '.handlebars',
+            partialsDir: './Utils/Emails/Template',
+            layoutsDir: './Utils/Emails/Template',
+            defaultLayout: 'baseMail',
+        },
+        viewPath: "./Utils/Emails/Template/",
+        extName: '.handlebars',
+    }));
+    let info = {
+        from: 'Etokisana <contact@commercegestion.com>', // sender address
+        to: userById?.userEmail, // list of receivers
+        subject: "Bienvenue sur Etokisana", // Subject line
+        template: "welcome",
+        context: {
+            name: userById?.userName,
+        }
+    };
+    console.log(info);
+    await transporter.sendMail(info, (error, info) => {
+        if (error) {
+            console.log(info);
+            console.log(error);
+            res.status(500).send('Error sendig mail:' + error);
+        }
+        else {
+            console.log("Email sent" + info.response);
+            res.status(200).send("Email sent successfully");
+        }
+    });
     let newNotification = {
-        userId: userId,
+        userId: userById?.userId,
         title: "Inscritpion réussie !",
         message: "Félicitations ! Vous faites maintenant partie de la grande famille de notre plateforme.",
         states: "new",
     };
     await NotificationModel.create(newNotification);
-    res.status(200).send(userId);
+    res.status(200).send(userById?.userId);
 }));
 const generateTokenResponse = (user) => {
     const token = jwt.sign({

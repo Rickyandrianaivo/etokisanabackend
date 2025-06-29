@@ -198,7 +198,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         extName : '.handlebars',
     
       }));
-      if (tokenInfo.type == "Entreprise") {
+      if (tokenInfo.type === "Entreprise") {
        let info = {
           from: 'Etokisana <contact@commercegestion.com>', // sender address
           to: userEmail, // list of receivers
@@ -220,7 +220,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         }
       })
       }
-      if(tokenInfo.type == "Particulier")
+      if(tokenInfo.type === "Particulier")
       {
         let info = {
           from: 'Etokisana <contact@commercegestion.com>', // sender address
