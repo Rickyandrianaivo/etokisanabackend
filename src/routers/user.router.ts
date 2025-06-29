@@ -188,6 +188,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
           pass: process.env.EMAIL_PASSWORD
         },
       });
+      let info = {};
       transporter.use("compile",hbs({
         viewEngine: {
           extname:'.handlebars',
@@ -199,8 +200,8 @@ router.post("/register/",asyncHandler(async(req, res) => {
         extName : '.handlebars',
     
       }));
-      if (tokenInfo.type === "Entreprise") {
-       let info = {
+      if (userType == "Entreprise") {
+       info = {
           from: 'Etokisana <contact@commercegestion.com>', // sender address
           to: userEmail, // list of receivers
           subject: "Bienvenue sur Etokisana", // Subject line
@@ -221,9 +222,9 @@ router.post("/register/",asyncHandler(async(req, res) => {
         }
       })
       }
-      if(tokenInfo.type === "Particulier")
+      if(userType == "Particulier")
       {
-        let info = {
+        info = {
           from: 'Etokisana <contact@commercegestion.com>', // sender address
           to: userEmail, // list of receivers
           subject: "Bienvenue sur Etokisana", // Subject line
@@ -244,13 +245,13 @@ router.post("/register/",asyncHandler(async(req, res) => {
         }
       })
       }
-      let newNotification ={
-        userId  : userId,
-        title   : "Inscription en attente",
-        message : "Nous vous remercions de faire de patience pendant la validation de votre insciption au sein de nos administrateurs",
-        states  : "new",
-      }
-      await NotificationModel.create(newNotification);
+      // let newNotification ={
+      //   userId  : userId,
+      //   title   : "Inscription en attente",
+      //   message : "Nous vous remercions de faire de patience pendant la validation de votre insciption au sein de nos administrateurs",
+      //   states  : "new",
+      // }
+      // await NotificationModel.create(newNotification);
       
 }))
 
@@ -304,13 +305,13 @@ router.get("/validate/:id",asyncHandler(async(req,res)=>{
         }
       })
       
-  let newNotification = {
-      userId  : userById?.userId,
-      title   : "Inscritpion réussie !",
-      message : "Félicitations ! Vous faites maintenant partie de la grande famille de notre plateforme.",
-      states  : "new",
-  }
-  await NotificationModel.create(newNotification);
+  // let newNotification = {
+  //     userId  : userById?.userId,
+  //     title   : "Inscritpion réussie !",
+  //     message : "Félicitations ! Vous faites maintenant partie de la grande famille de notre plateforme.",
+  //     states  : "new",
+  // }
+  // await NotificationModel.create(newNotification);
   res.status(200).send(userById?.userId) ;
 }))
 
