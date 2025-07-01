@@ -150,11 +150,11 @@ router.post("/register/",asyncHandler(async(req, res) => {
             userDateOfBirth,
             userMainLat,
             userMainLng,
-            userId,
-            userImage,
-            identityDocument,
-            identityCardNumber,
-            documentType,
+            userId              ,
+            userImage           ,
+            identityDocument    ,
+            identityCardNumber  ,
+            documentType        ,
             raisonSocial        ,
             type                ,
             rcs                 ,
@@ -290,7 +290,7 @@ router.get("/validate/:id",asyncHandler(async(req,res)=>{
         from: 'Etokisana <contact@commercegestion.com>', // sender address
         to: userById?.userEmail, // list of receivers
         subject: "Bienvenue sur Etokisana", // Subject line
-        template: "ValidationEmail",
+        template: "ValidationEntrepriseEmail",
         context : {
           name : userById?.userName,
         }
@@ -302,7 +302,7 @@ router.get("/validate/:id",asyncHandler(async(req,res)=>{
         from: 'Etokisana <contact@commercegestion.com>', // sender address
         to: userById?.userEmail, // list of receivers
         subject: "Bienvenue sur Etokisana", // Subject line
-        template: "ValidationEntrepriseEmail",
+        template: "ValidationEmail",
         context : {
           name : userById?.userName,
         }
