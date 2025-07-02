@@ -132,51 +132,42 @@ router.post("/register/",asyncHandler(async(req, res) => {
         return;
     }else
     {
-        const encryptedPassword = await bcrypt.hash(userPassword,10);
-        
-        const newUser : User = {
-            userName,
-            userFirstname,
-            userPassword: encryptedPassword,
-            userEmail:userEmail.toLowerCase(),
-            userPhone,
-            userTotalSolde : 0,
-            userType,
-            userAccess,
-            userParainID,
-            userValidated,
-            userEmailVerified,
-            userAddress ,
-            userDateOfBirth,
-            userMainLat,
-            userMainLng,
-            userId              ,
-            userImage           ,
-            identityDocument    ,
-            identityCardNumber  ,
-            documentType        ,
-            raisonSocial        ,
-            type                ,
-            rcs                 ,
-            carteStat           ,
-            nif                 ,
-            carteFiscal         ,
-            logo                ,
-            managerName         ,
-            managerEmail        ,
-        }
-        const userDb = await UserModel.create(newUser);
-        tokenInfo = generateTokenResponse(userDb);
-        // tokenInfo = generateTokenResponse(tokenInfo);
-        const tokenDB : Token = {
-          userId    : tokenInfo._id,
-          token : tokenInfo.token,
-          // createdAt : new Date()
-        }
-        await TokenModel.create(tokenDB);        
+      const encryptedPassword = await bcrypt.hash(userPassword,10);
+      
+      const newUser : User = {
+          userName,
+          userFirstname,
+          userPassword: encryptedPassword,
+          userEmail:userEmail.toLowerCase(),
+          userPhone,
+          userTotalSolde : 0,
+          userType,
+          userAccess,
+          userParainID,
+          userValidated,
+          userEmailVerified,
+          userAddress ,
+          userDateOfBirth,
+          userMainLat,
+          userMainLng,
+          userId              ,
+          userImage           ,
+          identityDocument    ,
+          identityCardNumber  ,
+          documentType        ,
+          raisonSocial        ,
+          type                ,
+          rcs                 ,
+          carteStat           ,
+          nif                 ,
+          carteFiscal         ,
+          logo                ,
+          managerName         ,
+          managerEmail        ,
+      }
+      const userDb = await UserModel.create(newUser);        
     }
-    const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
-    // const verificationLink = "https://www.commercegestion.com/user-confirmation/"+ tokenInfo.token+'/'+tokenInfo._id
+    
     // Sending mail
 
     let transporter = nodemailer.createTransport({
@@ -245,13 +236,13 @@ router.post("/register/",asyncHandler(async(req, res) => {
         }
       })
       }
-      // let newNotification ={
-      //   userId  : userId,
-      //   title   : "Inscription en attente",
-      //   message : "Nous vous remercions de faire de patience pendant la validation de votre insciption au sein de nos administrateurs",
-      //   states  : "new",
-      // }
-      // await NotificationModel.create(newNotification);
+      let newNotification ={
+        userId  : userId,
+        title   : "Inscription en attente",
+        message : "Nous vous remercions de faire de patience pendant la validation de votre insciption au sein de nos administrateurs",
+        states  : "new",
+      }
+      await NotificationModel.create(newNotification);
       
 }))
 
@@ -264,6 +255,18 @@ router.get("/validate/:id",asyncHandler(async(req,res)=>{
   const userById = await UserModel.findById({_id:userDBId});
   await UserModel.updateOne({_id : userDBId},{$set : {userValidated : true}});
 
+
+ let tokenInfo = generateTokenResponse(userById);
+      // tokenInfo = generateTokenResponse(tokenInfo);
+      const tokenDB : Token = {
+        userId    : tokenInfo._id,
+        token : tokenInfo.token,
+        // createdAt : new Date()
+      }
+  await TokenModel.create(tokenDB);
+  const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
+
+
  let transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
         port: 465,
@@ -273,6 +276,7 @@ router.get("/validate/:id",asyncHandler(async(req,res)=>{
           pass: process.env.EMAIL_PASSWORD
         },
       });
+
       transporter.use("compile",hbs({
         viewEngine: {
           extname:'.handlebars',
@@ -293,6 +297,7 @@ router.get("/validate/:id",asyncHandler(async(req,res)=>{
         template: "ValidationEntrepriseEmail",
         context : {
           name : userById?.userName,
+          link : verificationLink,
         }
       }
       console.log(info)
@@ -305,6 +310,7 @@ router.get("/validate/:id",asyncHandler(async(req,res)=>{
         template: "ValidationEmail",
         context : {
           name : userById?.userName,
+          link : verificationLink,
         }
       }
       console.log(info)

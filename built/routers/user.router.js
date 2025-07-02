@@ -125,18 +125,8 @@ router.post("/register/", asyncHandler(async (req, res) => {
             managerName,
             managerEmail,
         };
-        // const userDb = await UserModel.create(newUser);
-        // tokenInfo = generateTokenResponse(userDb);
-        tokenInfo = generateTokenResponse(tokenInfo);
-        const tokenDB = {
-            userId: tokenInfo._id,
-            token: tokenInfo.token,
-            // createdAt : new Date()
-        };
-        await TokenModel.create(tokenDB);
+        const userDb = await UserModel.create(newUser);
     }
-    const verificationLink = "https://www.commercegestion.com/#/user-confirmation/" + tokenInfo.token;
-    // const verificationLink = "https://www.commercegestion.com/user-confirmation/"+ tokenInfo.token+'/'+tokenInfo._id
     // Sending mail
     let transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
@@ -163,7 +153,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
             from: 'Etokisana <contact@commercegestion.com>', // sender address
             to: userEmail, // list of receivers
             subject: "Bienvenue sur Etokisana", // Subject line
-            template: "ValidationEntrepriseEmail",
+            template: "welcomeEntreprise",
             context: {
                 name: raisonSocial,
             }
@@ -186,7 +176,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
             from: 'Etokisana <contact@commercegestion.com>', // sender address
             to: userEmail, // list of receivers
             subject: "Bienvenue sur Etokisana", // Subject line
-            template: "ValidationEmail",
+            template: "welcome",
             context: {
                 name: userName,
             }
@@ -204,13 +194,13 @@ router.post("/register/", asyncHandler(async (req, res) => {
             }
         });
     }
-    // let newNotification ={
-    //   userId  : userId,
-    //   title   : "Inscription en attente",
-    //   message : "Nous vous remercions de faire de patience pendant la validation de votre insciption au sein de nos administrateurs",
-    //   states  : "new",
-    // }
-    // await NotificationModel.create(newNotification);
+    let newNotification = {
+        userId: userId,
+        title: "Inscription en attente",
+        message: "Nous vous remercions de faire de patience pendant la validation de votre insciption au sein de nos administrateurs",
+        states: "new",
+    };
+    await NotificationModel.create(newNotification);
 }));
 router.get("/new", asyncHandler(async (req, res) => {
     const userNewList = await UserModel.find({ userValidated: false, userAccess: "Utilisateur" });
@@ -220,6 +210,15 @@ router.get("/validate/:id", asyncHandler(async (req, res) => {
     const userDBId = req.params['id'];
     const userById = await UserModel.findById({ _id: userDBId });
     await UserModel.updateOne({ _id: userDBId }, { $set: { userValidated: true } });
+    let tokenInfo = generateTokenResponse(userById);
+    // tokenInfo = generateTokenResponse(tokenInfo);
+    const tokenDB = {
+        userId: tokenInfo._id,
+        token: tokenInfo.token,
+        // createdAt : new Date()
+    };
+    await TokenModel.create(tokenDB);
+    const verificationLink = "https://www.commercegestion.com/#/user-confirmation/" + tokenInfo.token;
     let transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
         port: 465,
@@ -239,16 +238,33 @@ router.get("/validate/:id", asyncHandler(async (req, res) => {
         viewPath: "./Utils/Emails/Template/",
         extName: '.handlebars',
     }));
-    let info = {
-        from: 'Etokisana <contact@commercegestion.com>', // sender address
-        to: userById?.userEmail, // list of receivers
-        subject: "Bienvenue sur Etokisana", // Subject line
-        template: "welcome",
-        context: {
-            name: userById?.userName,
-        }
-    };
-    console.log(info);
+    let info = {};
+    if (userById?.userType == "Entreprise") {
+        info = {
+            from: 'Etokisana <contact@commercegestion.com>', // sender address
+            to: userById?.userEmail, // list of receivers
+            subject: "Bienvenue sur Etokisana", // Subject line
+            template: "ValidationEntrepriseEmail",
+            context: {
+                name: userById?.userName,
+                link: verificationLink,
+            }
+        };
+        console.log(info);
+    }
+    if (userById?.userType == "Particulier") {
+        info = {
+            from: 'Etokisana <contact@commercegestion.com>', // sender address
+            to: userById?.userEmail, // list of receivers
+            subject: "Bienvenue sur Etokisana", // Subject line
+            template: "ValidationEmail",
+            context: {
+                name: userById?.userName,
+                link: verificationLink,
+            }
+        };
+        console.log(info);
+    }
     await transporter.sendMail(info, (error, info) => {
         if (error) {
             console.log(info);
