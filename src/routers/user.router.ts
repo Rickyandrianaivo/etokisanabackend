@@ -205,9 +205,10 @@ router.post("/register/",asyncHandler(async(req, res) => {
           from: 'Etokisana <contact@commercegestion.com>', // sender address
           to: userEmail, // list of receivers
           subject: "Bienvenue sur Etokisana", // Subject line
-          template: "welcomeEntreprise",
+          template: "ValidationEntrepriseEmail",
           context : {
             name : raisonSocial,
+            link : verificationLink,
           }
         }
         console.log(info)
@@ -228,9 +229,10 @@ router.post("/register/",asyncHandler(async(req, res) => {
           from: 'Etokisana <contact@commercegestion.com>', // sender address
           to: userEmail, // list of receivers
           subject: "Bienvenue sur Etokisana", // Subject line
-          template: "welcome",
+          template: "ValidationEmail",
           context : {
             name : userName,
+            link : verificationLink,
           }
         }
         console.log(info)
@@ -290,7 +292,7 @@ router.get("/validate/:id",asyncHandler(async(req,res)=>{
         from: 'Etokisana <contact@commercegestion.com>', // sender address
         to: userById?.userEmail, // list of receivers
         subject: "Bienvenue sur Etokisana", // Subject line
-        template: "ValidationEmail",
+        template: "welcome",
         context : {
           name : userById?.userName,
         }
@@ -302,7 +304,7 @@ router.get("/validate/:id",asyncHandler(async(req,res)=>{
         from: 'Etokisana <contact@commercegestion.com>', // sender address
         to: userById?.userEmail, // list of receivers
         subject: "Bienvenue sur Etokisana", // Subject line
-        template: "ValidationEntrepriseEmail",
+        template: "welcomeEntreprise",
         context : {
           name : userById?.userName,
         }
