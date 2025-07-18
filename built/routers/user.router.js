@@ -153,9 +153,10 @@ router.post("/register/", asyncHandler(async (req, res) => {
             from: 'Etokisana <contact@commercegestion.com>', // sender address
             to: userEmail, // list of receivers
             subject: "Bienvenue sur Etokisana", // Subject line
-            template: "welcomeEntreprise",
+            template: "ValidationEntrepriseEmail",
             context: {
                 name: raisonSocial,
+                // link : verificationLink,
             }
         };
         console.log(info);
@@ -176,9 +177,10 @@ router.post("/register/", asyncHandler(async (req, res) => {
             from: 'Etokisana <contact@commercegestion.com>', // sender address
             to: userEmail, // list of receivers
             subject: "Bienvenue sur Etokisana", // Subject line
-            template: "welcome",
+            template: "ValidationEmail",
             context: {
                 name: userName,
+                // link : verificationLink,
             }
         };
         console.log(info);
@@ -218,7 +220,7 @@ router.get("/validate/:id", asyncHandler(async (req, res) => {
         // createdAt : new Date()
     };
     await TokenModel.create(tokenDB);
-    const verificationLink = "https://www.commercegestion.com/#/user-confirmation/" + tokenInfo.token;
+    // const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
     let transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
         port: 465,
@@ -244,10 +246,10 @@ router.get("/validate/:id", asyncHandler(async (req, res) => {
             from: 'Etokisana <contact@commercegestion.com>', // sender address
             to: userById?.userEmail, // list of receivers
             subject: "Bienvenue sur Etokisana", // Subject line
-            template: "ValidationEntrepriseEmail",
+            template: "welcome",
             context: {
                 name: userById?.userName,
-                link: verificationLink,
+                // link : verificationLink,
             }
         };
         console.log(info);
@@ -257,10 +259,10 @@ router.get("/validate/:id", asyncHandler(async (req, res) => {
             from: 'Etokisana <contact@commercegestion.com>', // sender address
             to: userById?.userEmail, // list of receivers
             subject: "Bienvenue sur Etokisana", // Subject line
-            template: "ValidationEmail",
+            template: "ValidationEntrepriseEmail",
             context: {
                 name: userById?.userName,
-                link: verificationLink,
+                // link : verificationLink,
             }
         };
         console.log(info);
