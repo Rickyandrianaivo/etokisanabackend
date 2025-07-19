@@ -541,7 +541,6 @@ router.get("/email/:email", asyncHandler(async(req, res) => {
 router.get("/userId/:id", asyncHandler(async(req, res) => {
   const userId = req.params['id'];
   const user = await UserModel.findOne({userID : userId});
-  console.log(user);
   res.send(user);
 }))
 
@@ -562,7 +561,8 @@ router.get("userToAdmin/:id",asyncHandler(async(req,res)=>{
 
 router.get("AdminToUser/:id",asyncHandler(async(req,res)=>{
   const userId = req.params.id;
-  await UserModel.updateOne({_id:userId},{$set : {userAccess : "Utilisateur"}})
+  await UserModel.updateOne({_id:userId},{$set : {userAccess : "Utilisateur"}});
+  
 }))
 
 router.patch("/update/:id",asyncHandler(async(req,res) => {
@@ -618,6 +618,16 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
       managerName     ,
       managerEmail    ,
       });
+      const updatedUser = await UserModel.findOne({_id:id})
+      console.log(updatedUser?._id);
+      console.log(updatedUser?.userId);
+      console.log(updatedUser?.userName);
+      console.log(updatedUser?.userFirstname);
+      console.log(updatedUser?.raisonSocial);
+      console.log(updatedUser?.userEmail);
+      console.log(updatedUser?.userAccess);
+      console.log(updatedUser?.userValidated);
+      console.log(updatedUser?.userEmailVerified);
 
 }))
 
