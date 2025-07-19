@@ -557,12 +557,13 @@ router.post("/login",asyncHandler(async(req,res) => {
 router.get("userToAdmin/:id",asyncHandler(async(req,res)=>{
   const userId = req.params.id;
   await UserModel.updateOne({_id:userId},{$set : {userAccess : "Admin"}})
+  res.send(userId);
 }))
 
 router.get("AdminToUser/:id",asyncHandler(async(req,res)=>{
   const userId = req.params.id;
   await UserModel.updateOne({_id:userId},{$set : {userAccess : "Utilisateur"}});
-  
+  res.send(userId);
 }))
 
 router.patch("/update/:id",asyncHandler(async(req,res) => {
