@@ -527,6 +527,12 @@ router.get("/id/:id", asyncHandler(async(req, res) => {
     console.log(user);
     res.send(user);
 }))
+router.get("/userId/:id", asyncHandler(async(req, res) => {
+    const userId = req.params['id'];
+    const user = await UserModel.findOne({userID : userId});
+    console.log(user);
+    res.send(user);
+}))
 router.get("/email/:email", asyncHandler(async(req, res) => {
     const userEmail = req.params['email'];
     const user = await UserModel.findOne({userEmail : userEmail});
@@ -593,7 +599,7 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
       userName,
       userFirstname,
       userPassword,
-      userEmail:userEmail.toLowerCase(),
+      userEmail,
       userPhone,
       userImage,
       userValidated,
