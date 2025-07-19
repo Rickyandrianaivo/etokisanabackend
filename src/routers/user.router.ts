@@ -95,6 +95,7 @@ router.post("/requestVerificationEmail",asyncHandler(async(req,res)=>{
 
 router.post("/register/",asyncHandler(async(req, res) => {
     let tokenInfo
+    let userDb
     const {
         userName,
         userFirstname,
@@ -165,11 +166,19 @@ router.post("/register/",asyncHandler(async(req, res) => {
           managerName         ,
           managerEmail        ,
       }
-      const userDb = await UserModel.create(newUser);        
+       userDb = await UserModel.create(newUser);        
     }
+    tokenInfo = generateTokenResponse(userDb);
+      // tokenInfo = generateTokenResponse(tokenInfo);
+      const tokenDB : Token = {
+        userId    : tokenInfo._id,
+        token : tokenInfo.token,
+        // createdAt : new Date()
+      }
+  await TokenModel.create(tokenDB);
     
     // Sending mail
-
+    const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
     let transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
         port: 465,
@@ -199,7 +208,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
           template: "ValidationEntrepriseEmail",
           context : {
             name : raisonSocial,
-            // link : verificationLink,
+            link : verificationLink,
           }
         }
         console.log(info)
@@ -223,7 +232,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
           template: "ValidationEmail",
           context : {
             name : userName,
-            // link : verificationLink,
+            link : verificationLink,
           }
         }
         console.log(info)
@@ -257,15 +266,6 @@ router.get("/validate/:id",asyncHandler(async(req,res)=>{
   const userById = await UserModel.findById({_id:userDBId});
   await UserModel.updateOne({_id : userDBId},{$set : {userValidated : true}});
 
-
- let tokenInfo = generateTokenResponse(userById);
-      // tokenInfo = generateTokenResponse(tokenInfo);
-      const tokenDB : Token = {
-        userId    : tokenInfo._id,
-        token : tokenInfo.token,
-        // createdAt : new Date()
-      }
-  await TokenModel.create(tokenDB);
   // const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
 
 
@@ -295,8 +295,8 @@ router.get("/validate/:id",asyncHandler(async(req,res)=>{
         info = {
         from: 'Etokisana <contact@commercegestion.com>', // sender address
         to: userById?.userEmail, // list of receivers
-        subject: "Bienvenue sur Etokisana", // Subject line
-        template: "welcome",
+        subject: "Inscription terminée", // Subject line
+        template: "welcomeEntreprise",
         context : {
           name : userById?.userName,
           // link : verificationLink,
@@ -308,8 +308,8 @@ router.get("/validate/:id",asyncHandler(async(req,res)=>{
       info = {
         from: 'Etokisana <contact@commercegestion.com>', // sender address
         to: userById?.userEmail, // list of receivers
-        subject: "Bienvenue sur Etokisana", // Subject line
-        template: "ValidationEntrepriseEmail",
+        subject: "Inscription terminée", // Subject line
+        template: "welcome",
         context : {
           name : userById?.userName,
           // link : verificationLink,
