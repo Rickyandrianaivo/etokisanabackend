@@ -86,6 +86,7 @@ router.post("/requestVerificationEmail", asyncHandler(async (req, res) => {
 }));
 router.post("/register/", asyncHandler(async (req, res) => {
     let tokenInfo;
+    let userDb;
     const { userName, userFirstname, userPassword, userEmail, userPhone, userAccess, userParainID, userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userId, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, } = req.body;
     const user = await UserModel.findOne({ userEmail: userEmail.toLowerCase() });
     if (user) {
@@ -125,9 +126,18 @@ router.post("/register/", asyncHandler(async (req, res) => {
             managerName,
             managerEmail,
         };
-        const userDb = await UserModel.create(newUser);
+        userDb = await UserModel.create(newUser);
     }
+    tokenInfo = generateTokenResponse(userDb);
+    // tokenInfo = generateTokenResponse(tokenInfo);
+    const tokenDB = {
+        userId: tokenInfo._id,
+        token: tokenInfo.token,
+        // createdAt : new Date()
+    };
+    await TokenModel.create(tokenDB);
     // Sending mail
+    const verificationLink = "https://www.commercegestion.com/#/user-confirmation/" + tokenInfo.token;
     let transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
         port: 465,
@@ -156,7 +166,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
             template: "ValidationEntrepriseEmail",
             context: {
                 name: raisonSocial,
-                // link : verificationLink,
+                link: verificationLink,
             }
         };
         console.log(info);
@@ -180,7 +190,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
             template: "ValidationEmail",
             context: {
                 name: userName,
-                // link : verificationLink,
+                link: verificationLink,
             }
         };
         console.log(info);
@@ -212,14 +222,6 @@ router.get("/validate/:id", asyncHandler(async (req, res) => {
     const userDBId = req.params['id'];
     const userById = await UserModel.findById({ _id: userDBId });
     await UserModel.updateOne({ _id: userDBId }, { $set: { userValidated: true } });
-    let tokenInfo = generateTokenResponse(userById);
-    // tokenInfo = generateTokenResponse(tokenInfo);
-    const tokenDB = {
-        userId: tokenInfo._id,
-        token: tokenInfo.token,
-        // createdAt : new Date()
-    };
-    await TokenModel.create(tokenDB);
     // const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
     let transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
@@ -245,8 +247,8 @@ router.get("/validate/:id", asyncHandler(async (req, res) => {
         info = {
             from: 'Etokisana <contact@commercegestion.com>', // sender address
             to: userById?.userEmail, // list of receivers
-            subject: "Bienvenue sur Etokisana", // Subject line
-            template: "welcome",
+            subject: "Inscription terminée", // Subject line
+            template: "welcomeEntreprise",
             context: {
                 name: userById?.userName,
                 // link : verificationLink,
@@ -258,8 +260,8 @@ router.get("/validate/:id", asyncHandler(async (req, res) => {
         info = {
             from: 'Etokisana <contact@commercegestion.com>', // sender address
             to: userById?.userEmail, // list of receivers
-            subject: "Bienvenue sur Etokisana", // Subject line
-            template: "ValidationEntrepriseEmail",
+            subject: "Inscription terminée", // Subject line
+            template: "welcome",
             context: {
                 name: userById?.userName,
                 // link : verificationLink,
@@ -471,6 +473,12 @@ router.get("/id/:id", asyncHandler(async (req, res) => {
     console.log(user);
     res.send(user);
 }));
+router.get("/userId/:id", asyncHandler(async (req, res) => {
+    const userId = req.params['id'];
+    const user = await UserModel.findOne({ userID: userId });
+    console.log(user);
+    res.send(user);
+}));
 router.get("/email/:email", asyncHandler(async (req, res) => {
     const userEmail = req.params['email'];
     const user = await UserModel.findOne({ userEmail: userEmail });
@@ -479,7 +487,6 @@ router.get("/email/:email", asyncHandler(async (req, res) => {
 router.get("/userId/:id", asyncHandler(async (req, res) => {
     const userId = req.params['id'];
     const user = await UserModel.findOne({ userID: userId });
-    console.log(user);
     res.send(user);
 }));
 router.post("/login", asyncHandler(async (req, res) => {
@@ -493,12 +500,14 @@ router.post("/login", asyncHandler(async (req, res) => {
     }
 }));
 router.get("userToAdmin/:id", asyncHandler(async (req, res) => {
-    const userId = req.params.id;
+    const userId = req.params['id'];
     await UserModel.updateOne({ _id: userId }, { $set: { userAccess: "Admin" } });
+    res.send(userId);
 }));
 router.get("AdminToUser/:id", asyncHandler(async (req, res) => {
     const userId = req.params.id;
     await UserModel.updateOne({ _id: userId }, { $set: { userAccess: "Utilisateur" } });
+    res.send(userId);
 }));
 router.patch("/update/:id", asyncHandler(async (req, res) => {
     const id = req.params['id'];
@@ -507,7 +516,7 @@ router.patch("/update/:id", asyncHandler(async (req, res) => {
         userName,
         userFirstname,
         userPassword,
-        userEmail: userEmail.toLowerCase(),
+        userEmail,
         userPhone,
         userImage,
         userValidated,
@@ -526,6 +535,16 @@ router.patch("/update/:id", asyncHandler(async (req, res) => {
         managerName,
         managerEmail,
     });
+    const updatedUser = await UserModel.findOne({ _id: id });
+    console.log(updatedUser?._id);
+    console.log(updatedUser?.userId);
+    console.log(updatedUser?.userName);
+    console.log(updatedUser?.userFirstname);
+    console.log(updatedUser?.raisonSocial);
+    console.log(updatedUser?.userEmail);
+    console.log(updatedUser?.userAccess);
+    console.log(updatedUser?.userValidated);
+    console.log(updatedUser?.userEmailVerified);
 }));
 //reset tables{
 // router.get("/resetTable",asyncHandler(async(req,res)=>{
