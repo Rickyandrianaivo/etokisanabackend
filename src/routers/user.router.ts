@@ -518,7 +518,9 @@ router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
 }))
 
 router.get("", asyncHandler(async(req, res) => {
-    const users = await UserModel.find({userAccess:"Utilisateur"});
+    const users = await UserModel.find(
+      // {userAccess:"Utilisateur"}
+    );
     res.send(users);
 }))
 router.get("/id/:id", asyncHandler(async(req, res) => {
