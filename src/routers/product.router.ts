@@ -28,53 +28,63 @@ router.post("/seed",expressAsyncHandler(async(req,res)=>{
 }))
 router.post("/add/",expressAsyncHandler(async(req,res)=>{
     const {
+        codeCPC,
         productName,
         productDescription,
-        productPrice,
         productCategory,
-        productUnite,
-        productStock,
         productState,
-        productSource,
-        productOwner,
-        productImage
+        productImage,
+        productValidation,
+        productVolume,
+        productHauteur,
+        productLargeur,
+        productLongueur,
+        productPoids,
     }= req.body;
     const newProduct = {
+        codeCPC,
         productName,
         productDescription,
-        productPrice,
         productCategory,
-        productUnite,
-        productStock,
         productState,
-        productSource,
-        productOwner,
-        productImage: productImage,
+        productImage,
+        productValidation,
+        productVolume,
+        productHauteur,
+        productLargeur,
+        productLongueur,
+        productPoids,
     }
     await ProductModel.create(newProduct);
     res.send(newProduct);
 }))
 router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
     const {
+        codeCPC,
         productName,
         productDescription,
-        productPrice,
         productCategory,
-        productUnite,
-        productStock,
         productState,
-        productSource
+        productValidation,
+        productVolume,
+        productHauteur,
+        productLargeur,
+        productLongueur,
+        productPoids,
     }= req.body;
     const modifiedProduct = await ProductModel.updateOne({_id : req.params['id']},
     {
+        codeCPC,
         productName,
         productDescription,
-        productPrice,
         productCategory,
-        productUnite,
-        productStock,
         productState,
-        productSource
+        productValidation,
+        productVolume,
+        productHauteur,
+        productLargeur,
+        productLongueur,
+        productPoids,
     })
     res.send(modifiedProduct);
 }))
