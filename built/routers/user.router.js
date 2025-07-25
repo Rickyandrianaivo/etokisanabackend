@@ -464,19 +464,21 @@ router.post("/requestResetPwd", asyncHandler(async (req, res) => {
     });
 }));
 router.get("", asyncHandler(async (req, res) => {
-    const users = await UserModel.find({ userAccess: "Utilisateur" });
+    const users = await UserModel.find(
+    // {userAccess:"Utilisateur"}
+    );
     res.send(users);
 }));
 router.get("/id/:id", asyncHandler(async (req, res) => {
     const userId = req.params['id'];
     const user = await UserModel.findOne({ _id: userId });
-    console.log(user);
+    // console.log(user);
     res.send(user);
 }));
 router.get("/userId/:id", asyncHandler(async (req, res) => {
     const userId = req.params['id'];
     const user = await UserModel.findOne({ userID: userId });
-    console.log(user);
+    // console.log(user);
     res.send(user);
 }));
 router.get("/email/:email", asyncHandler(async (req, res) => {
@@ -499,95 +501,80 @@ router.post("/login", asyncHandler(async (req, res) => {
         res.status(404).send("User name or password is not valid!");
     }
 }));
-router.get("userToAdmin/:id", asyncHandler(async (req, res) => {
-    const userId = req.params['id'];
-    await UserModel.updateOne({ _id: userId }, { $set: { userAccess: "Admin" } });
-    res.send(userId);
-}));
-router.get("AdminToUser/:id", asyncHandler(async (req, res) => {
-    const userId = req.params.id;
-    await UserModel.updateOne({ _id: userId }, { $set: { userAccess: "Utilisateur" } });
-    res.send(userId);
-}));
+// router.patch("userToAdmin/:id",asyncHandler(async(req,res)=>{
+//   const userId = req.params['id'];
+//   const userChange = 
+//   await UserModel.updateOne({_id:userId},{$set : {userAccess : "Admin"}})
+//   res.send(userId);
+// }))
+// router.get("AdminToUser/:id",asyncHandler(async(req,res)=>{
+//   const userId = req.params.id;
+//   await UserModel.updateOne({_id:userId},{$set : {userAccess : "Utilisateur"}});
+//   res.send(userId);
+// }))
 router.patch("/update/:id", asyncHandler(async (req, res) => {
     const id = req.params['id'];
-    const { userName, userFirstname, userPassword, userEmail, userPhone, userImage, userValidated, userDateOfBirth, userTotalSolde, userAddress, userMainLat, userMainLng, userId, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, } = req.body;
-    await UserModel.updateOne({ _id: id }, {
-        userName,
-        userFirstname,
-        userPassword,
-        userEmail,
-        userPhone,
-        userImage,
-        userValidated,
-        userDateOfBirth,
-        userTotalSolde,
-        userAddress,
-        userMainLat,
-        userMainLng,
-        userId,
-        identityDocument,
-        identityCardNumber,
-        raisonSocial,
-        type,
-        rcs,
-        nif,
-        managerName,
-        managerEmail,
-    });
-    const updatedUser = await UserModel.findOne({ _id: id });
-    console.log(updatedUser?._id);
-    console.log(updatedUser?.userId);
-    console.log(updatedUser?.userName);
-    console.log(updatedUser?.userFirstname);
-    console.log(updatedUser?.raisonSocial);
-    console.log(updatedUser?.userEmail);
-    console.log(updatedUser?.userAccess);
-    console.log(updatedUser?.userValidated);
-    console.log(updatedUser?.userEmailVerified);
+    // const {
+    //     userName,
+    //     userFirstname,
+    //     userPassword,
+    //     userEmail,
+    //     userPhone,
+    //     userImage,
+    //     userValidated,
+    //     userDateOfBirth,
+    //     userTotalSolde,
+    //     userAddress ,
+    //     userMainLat,
+    //     userMainLng,
+    //     userId,
+    //     identityDocument,
+    //     identityCardNumber,
+    //     documentType,
+    //     raisonSocial,
+    //     type,
+    //     rcs,
+    //     carteStat,
+    //     nif,
+    //     carteFiscal,
+    //     logo,
+    //     managerName,
+    //     managerEmail,
+    // } = req.body;
+    await UserModel.updateOne({ _id: id }, { $set: req.body });
+    // await UserModel.updateOne({_id : id}, {
+    //   userName,
+    //   userFirstname,
+    //   userPassword,
+    //   userEmail,
+    //   userPhone,
+    //   userImage,
+    //   userValidated,
+    //   userDateOfBirth,
+    //   userTotalSolde,
+    //   userAddress ,
+    //   userMainLat,
+    //   userMainLng,
+    //   userId,
+    //   identityDocument,
+    //   identityCardNumber,
+    //   raisonSocial,
+    //   type,
+    //   rcs,
+    //   nif             ,
+    //   managerName     ,
+    //   managerEmail    ,
+    //   });
+    //   const updatedUser = await UserModel.findOne({_id:id})
+    //   console.log(updatedUser?._id);
+    //   console.log(updatedUser?.userId);
+    //   console.log(updatedUser?.userName);
+    //   console.log(updatedUser?.userFirstname);
+    //   console.log(updatedUser?.raisonSocial);
+    //   console.log(updatedUser?.userEmail);
+    //   console.log(updatedUser?.userAccess);
+    //   console.log(updatedUser?.userValidated);
+    //   console.log(updatedUser?.userEmailVerified);
 }));
-//reset tables{
-// router.get("/resetTable",asyncHandler(async(req,res)=>{
-//     const factureVenteCount = await FactureVenteModel.countDocuments()
-//     const factureVenteDetailsCount = await FactureVenteDetailsModel.countDocuments()
-//     const bonEntreeCount = await BonEntreeModel.countDocuments()
-//     const bonEntreeDetailsCount = await BonEntreeDetailsModel.countDocuments()
-//     const bonSortiesCount = await BonSortiesModel.countDocuments()
-//     const bonSortiesDetailsCount = await BonSortiesDetailsModel.countDocuments()
-//     const inventaireDetailCount = await InventaireDetailModel.countDocuments()
-//     const inventaireCount = await InventaireModel.countDocuments()
-//     const mouvementStockCount = await MouvementStockModel.countDocuments()
-//     if (factureVenteCount > 0 ||
-//         factureVenteDetailsCount >0 ||
-//         bonEntreeCount > 0 || 
-//         bonEntreeDetailsCount > 0||
-//         bonSortiesCount > 0 ||
-//         bonSortiesDetailsCount > 0||
-//         inventaireDetailCount > 0||
-//         inventaireCount > 0 ||
-//         mouvementStockCount > 0) 
-//     {
-//         await FactureVenteModel.deleteMany({})
-//         await FactureVenteDetailsModel.deleteMany({})
-//         await BonEntreeModel.deleteMany({})
-//         await BonEntreeDetailsModel.deleteMany({})
-//         await BonSortiesModel.deleteMany({})
-//         await BonSortiesDetailsModel.deleteMany({})
-//         await InventaireDetailModel.deleteMany({})
-//         await InventaireModel.deleteMany({})
-//         await MouvementStockModel.deleteMany({})
-//         await PointDeVenteModel.updateOne({},{
-//             $set : {
-//                 numeroBE:1,
-//                 numeroBS:1,
-//                 numeroInventaire:1,
-//                 numeroMouvementStock:1,
-//                 numeroVente:1
-//             }})
-//         res.status(200).send("reset is done !")
-//     }else{
-//         res.send("No item to delete")
-//     }
-// }))
 export default router;
 //# sourceMappingURL=user.router.js.map

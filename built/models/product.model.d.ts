@@ -1,13 +1,10 @@
 import { Schema } from "mongoose";
 export interface Product {
+    codeCPC: string;
     productName: string;
     productDescription: string;
-    productPrice: number;
     productCategory: string;
-    productUnite: string;
-    productStock: number;
     productState: string;
-    productOwner: string;
     productImage: string[];
     productValidation: boolean;
     productVolume: number;

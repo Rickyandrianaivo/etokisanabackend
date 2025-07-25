@@ -2,14 +2,11 @@ import { Schema, model } from "mongoose";
 
 export interface Product{
     // id              : string,
+    codeCPC             :string;
     productName         :string;
     productDescription  :string;
-    productPrice        :number;
     productCategory     :string;
-    productUnite        :string;
-    productStock        :number;
     productState        :string;
-    productOwner        :string;
     productImage        :string[];
     productValidation   :boolean;
     productVolume       :number;
@@ -20,14 +17,11 @@ export interface Product{
 }
 
 export const ProductSchema = new Schema<Product>({
+    codeCPC             : {type : String},
     productName         : {type : String},
     productDescription  : {type : String},
-    productPrice        : {type : Number},
     productCategory     : {type : String},
-    productUnite        : {type : String},
-    productStock        : {type : Number},
     productState        : {type : String},
-    productOwner        : {type : String},
     productImage        : {type : [String]},
     productValidation   : {type : Boolean},
     productVolume       : {type: Number},
