@@ -90,7 +90,7 @@ router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
 }))
 router.delete("/delete/:id",expressAsyncHandler(async(req,res)=>{
     await ProductModel.deleteOne({_id : req.params['id']})
-    res.status(200)
+    res.status(200).send("suppression réussie !");
 }))
 
 router.get("/",expressAsyncHandler(async(req,res)=>{
