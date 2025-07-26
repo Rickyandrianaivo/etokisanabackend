@@ -63,7 +63,7 @@ router.get("/:id", expressAsyncHandler(async (req, res) => {
 }));
 router.get("/owner/:id", expressAsyncHandler(async (req, res) => {
     const ownerId = req.params['id'];
-    const selectedProduct = await ProductModel.find({ productOwner: ownerId });
+    const selectedProduct = await ProductModel.find({ productOwnerId: ownerId });
     res.send(selectedProduct);
 }));
 router.get("/email/:email", expressAsyncHandler(async (req, res) => {
