@@ -1,4 +1,4 @@
-import mongoose, { Decimal128, Double, Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 
 export interface Product{
     // id              : string,
@@ -10,11 +10,11 @@ export interface Product{
     productImage        :string[];
     productOwnerId      :string;
     productValidation   :boolean;
-    productVolume       :Decimal128;
-    productHauteur      :Decimal128;
-    productLargeur      :Decimal128;
-    productLongueur     :Decimal128;
-    productPoids        :Decimal128;
+    productVolume       :string;
+    productHauteur      :string;
+    productLargeur      :string;
+    productLongueur     :string;
+    productPoids        :string;
 }
 
 export const ProductSchema = new Schema<Product>({
@@ -26,11 +26,11 @@ export const ProductSchema = new Schema<Product>({
     productImage        : {type : [String]},
     productOwnerId      : {type : String},
     productValidation   : {type : Boolean},
-    productVolume       : {type: mongoose.Types.Decimal128},
-    productHauteur      : {type: mongoose.Types.Decimal128},
-    productLargeur      : {type: mongoose.Types.Decimal128},
-    productLongueur     : {type: mongoose.Types.Decimal128},
-    productPoids        : {type: mongoose.Types.Decimal128},
+    productVolume       : {type: String},
+    productHauteur      : {type: String},
+    productLargeur      : {type: String},
+    productLongueur     : {type: String},
+    productPoids        : {type: String},
 },{
     timestamps : true,
     toJSON : {
