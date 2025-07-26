@@ -25,7 +25,7 @@ router.post("/seed", expressAsyncHandler(async (req, res) => {
     res.send("Seed is done!!");
 }));
 router.post("/add/", expressAsyncHandler(async (req, res) => {
-    const { codeCPC, productName, productDescription, productCategory, productState, productImage, productValidation, productVolume, productHauteur, productLargeur, productLongueur, productPoids, } = req.body;
+    const { codeCPC, productName, productDescription, productCategory, productState, productImage, productValidation, productVolume, productHauteur, productLargeur, productLongueur, productPoids, productOwnerId, } = req.body;
     const newProduct = {
         codeCPC,
         productName,
@@ -39,25 +39,13 @@ router.post("/add/", expressAsyncHandler(async (req, res) => {
         productLargeur,
         productLongueur,
         productPoids,
+        productOwnerId,
     };
     await ProductModel.create(newProduct);
     res.send(newProduct);
 }));
-router.put("/update/:id", expressAsyncHandler(async (req, res) => {
-    const { codeCPC, productName, productDescription, productCategory, productState, productValidation, productVolume, productHauteur, productLargeur, productLongueur, productPoids, } = req.body;
-    const modifiedProduct = await ProductModel.updateOne({ _id: req.params['id'] }, {
-        codeCPC,
-        productName,
-        productDescription,
-        productCategory,
-        productState,
-        productValidation,
-        productVolume,
-        productHauteur,
-        productLargeur,
-        productLongueur,
-        productPoids,
-    });
+router.patch("/update/:id", expressAsyncHandler(async (req, res) => {
+    const modifiedProduct = await ProductModel.updateOne({ _id: req.params['id'] }, { $set: req.body });
     res.send(modifiedProduct);
 }));
 router.delete("/delete/:id", expressAsyncHandler(async (req, res) => {

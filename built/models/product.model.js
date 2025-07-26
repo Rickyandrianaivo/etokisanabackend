@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 export const ProductSchema = new Schema({
     codeCPC: { type: String },
     productName: { type: String },
@@ -6,12 +6,13 @@ export const ProductSchema = new Schema({
     productCategory: { type: String },
     productState: { type: String },
     productImage: { type: [String] },
+    productOwnerId: { type: String },
     productValidation: { type: Boolean },
-    productVolume: { type: Number },
-    productHauteur: { type: Number },
-    productLargeur: { type: Number },
-    productLongueur: { type: Number },
-    productPoids: { type: Number },
+    productVolume: { type: mongoose.Types.Decimal128 },
+    productHauteur: { type: mongoose.Types.Decimal128 },
+    productLargeur: { type: mongoose.Types.Decimal128 },
+    productLongueur: { type: mongoose.Types.Decimal128 },
+    productPoids: { type: mongoose.Types.Decimal128 },
 }, {
     timestamps: true,
     toJSON: {
