@@ -542,7 +542,7 @@ router.get("/email/:email", asyncHandler(async(req, res) => {
 }))
 router.get("/userId/:id", asyncHandler(async(req, res) => {
   const userId = req.params['id'];
-  const user = await UserModel.findOne({userID : userId});
+  const user = await UserModel.findOne({userId : userId});
   res.send(user);
 }))
 
