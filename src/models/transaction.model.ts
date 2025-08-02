@@ -1,26 +1,23 @@
-import { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
+import { ICartItem } from "./cartItem.model";
 
 export interface ITransaction{
     userId      : string ;
-    tiersId     : string ;
-    codeProduit : string ;
+    siteDepartId: string ;
+    siteArriveId: string ;
     typeES      : string ; 
-    produitId   : string ;
-    libelle     : string ;
-    montant     : number ;
+    montantTotal: number ;
     statut      : string ;
-    siteId      : string ;
+    productList : [object] ;
 }
 export const TransactionSchema = new Schema<ITransaction>({
     userId      :{ type:String, required:true },
-    tiersId     :{ type:String, required:true },
-    codeProduit :{ type:String },
-    produitId   :{ type:String },
-    libelle     :{ type:String },
-    montant     :{ type:Number, required:true },
-    statut      :{ type:String },
-    siteId      :{ type:String },
+    siteDepartId:{ type:String},
+    siteArriveId:{ type:String, required:true},
     typeES      :{ type:String, required : true },
+    montantTotal:{ type:Number, required:true },
+    statut      :{ type:String },
+    productList :{ type: [Object] },
 },{
     timestamps : true,
     toJSON : {

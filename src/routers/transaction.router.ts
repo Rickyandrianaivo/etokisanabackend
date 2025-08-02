@@ -11,25 +11,21 @@ const router = Router();
 router.post("/add",expressAsyncHandler(async(req,res)=>{
     const {
         userId,
-        tiersId,
-        codeProduit,
+        siteDepartId,
+        siteArriveId,
         typeES,
-        produitId,
-        libelle,
-        montant,
+        montantTotal,
         statut,
-        siteId
+        productList,
     } = req.body;
     const newTransaction = {
         userId,
-        tiersId,
-        codeProduit,
+        siteDepartId,
+        siteArriveId,
         typeES,
-        produitId,
-        libelle,
-        montant,
+        montantTotal,
         statut,
-        siteId
+        productList,
     }
     const currentUser = await UserModel.findOne({_id : userId})
 
@@ -62,7 +58,7 @@ router.post("/add",expressAsyncHandler(async(req,res)=>{
                     template: "Deposit",
                     context : {
                     name : currentUser?.userFirstname,
-                    montant : montant,
+                    montant : montantTotal,
                     }
                 };
             }
@@ -74,7 +70,7 @@ router.post("/add",expressAsyncHandler(async(req,res)=>{
                     template: "Withdraw",
                     context : {
                     name : currentUser?.userFirstname,
-                    montant : montant,
+                    montant : montantTotal,
                     }
                 };
     
@@ -102,29 +98,8 @@ router.get("/user/:id", expressAsyncHandler(async(req,res)=>{
     res.send(transactions).status(200);
     
 }))
-router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
-    const {
-        userId,
-        tiersId,
-        codeProduit,
-        typeES,
-        produitId,
-        libelle,
-        montant,
-        statut,
-        siteId
-    } = req.body;
-    const updatedTransaction = await TransactionModel.updateOne({_id : req.params['id']},{
-        userId,
-        tiersId,
-        codeProduit,
-        typeES,
-        produitId,
-        libelle,
-        montant,
-        statut,
-        siteId
-    })
+router.patch("/update/:id",expressAsyncHandler(async(req,res)=>{
+    const updatedTransaction = await TransactionModel.updateOne({_id : req.params['id']},{$set : req.body})
     res.send(updatedTransaction)
 }))
 router.delete("/delete/:id",expressAsyncHandler(async(req,res)=>{
