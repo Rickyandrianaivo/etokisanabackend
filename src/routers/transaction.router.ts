@@ -93,7 +93,7 @@ router.get("/", expressAsyncHandler(async(req,res)=>{
     res.send(transactions).status(200);
     
 }))
-router.get("id/:id", expressAsyncHandler(async(req,res)=>{
+router.get("/id/:id", expressAsyncHandler(async(req,res)=>{
     const transaction = await TransactionModel.findOne({_id : req.params['id']});
     res.send(transaction).status(200);
     
