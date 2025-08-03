@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 
 export interface User{
     // id              : string,
+    userNickName        :string;
     userName            : string;
     userFirstname       : string;
     userPassword        : string;
@@ -34,26 +35,27 @@ export interface User{
 }
 
 export const UserSchema = new Schema<User>({
-    userName                : {type : String},
-    userFirstname           : {type : String},
-    userPassword            : {type : String, required : true},
-    userEmail               : {type : String, required : true, unique:true},
-    userPhone               : {type : String},
-    userType                : {type : String, required : true},
-    userTotalSolde          : {type : Number},
-    userAccess              : {type : String, required : true},
-    userParainID            : {type : String },
-    userAddress             : {type : String},
-    userValidated           : {type : Boolean },
-    userEmailVerified       : {type : Boolean },
-    userMainLat             : {type : Number},
-    userMainLng             : {type : Number},
-    userId                  : {type : String, required : true, unique : true},
-    userImage               : {type : String},
-    userDateOfBirth         : {type : Date },
-    identityCardNumber      : {type : String},
-    identityDocument        : {type : [String]},
-    documentType            : {type : String},
+    userNickName            : { type : String},
+    userName                : { type : String},
+    userFirstname           : { type : String},
+    userPassword            : { type : String, required : true},
+    userEmail               : { type : String, required : true, unique:true},
+    userPhone               : { type : String},
+    userType                : { type : String, required : true},
+    userTotalSolde          : { type : Number},
+    userAccess              : { type : String, required : true},
+    userParainID            : { type : String},
+    userAddress             : { type : String},
+    userValidated           : { type : Boolean},
+    userEmailVerified       : { type : Boolean},
+    userMainLat             : { type : Number},
+    userMainLng             : { type : Number},
+    userId                  : { type : String, required : true, unique : true},
+    userImage               : { type : String},
+    userDateOfBirth         : { type : Date},
+    identityCardNumber      : { type : String},
+    identityDocument        : { type : [String]},
+    documentType            : { type : String},
     raisonSocial            : { type : String},
     nif                     : { type : String},
     rcs                     : { type : String},

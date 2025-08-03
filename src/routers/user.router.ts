@@ -97,35 +97,36 @@ router.post("/register/",asyncHandler(async(req, res) => {
     let tokenInfo
     let userDb
     const {
-        userName,
-        userFirstname,
-        userPassword,
-        userEmail,
-        userPhone,
-        userAccess,
-        userParainID,
-        userType,
-        userDateOfBirth,
-        userAddress ,
-        userMainLat,
-        userMainLng,
-        userId,
-        userEmailVerified,
-        userValidated,
-        userImage,
-        identityDocument,
-        identityCardNumber,
-        documentType,
-        raisonSocial        ,
-        type                ,
-        rcs                 ,
-        carteStat           ,
-        nif                 ,
-        carteFiscal         ,
-        logo                ,
-        managerName         ,
-        managerEmail        ,
-      } = req.body;
+      userNickName,
+      userName,
+      userFirstname,
+      userPassword,
+      userEmail,
+      userPhone,
+      userAccess,
+      userParainID,
+      userType,
+      userDateOfBirth,
+      userAddress ,
+      userMainLat,
+      userMainLng,
+      userId,
+      userEmailVerified,
+      userValidated,
+      userImage,
+      identityDocument,
+      identityCardNumber,
+      documentType,
+      raisonSocial        ,
+      type                ,
+      rcs                 ,
+      carteStat           ,
+      nif                 ,
+      carteFiscal         ,
+      logo                ,
+      managerName         ,
+      managerEmail        ,
+    } = req.body;
     const user = await UserModel.findOne({userEmail : userEmail.toLowerCase()});
 
     if(user){
@@ -136,6 +137,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
       const encryptedPassword = await bcrypt.hash(userPassword,10);
       
       const newUser : User = {
+          userNickName,
           userName,
           userFirstname,
           userPassword: encryptedPassword,
@@ -348,6 +350,7 @@ const generateTokenResponse = (user:any) =>{
     });
     return {
         _id             : user._id,
+        userNickName    : user.userNickName,
         userId          : user.userId,
         userEmail       : user.userEmail,
         userName        : user.userName,

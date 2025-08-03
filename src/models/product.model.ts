@@ -15,6 +15,7 @@ export interface Product{
     productLargeur      :string;
     productLongueur     :string;
     productPoids        :string;
+    isStocker           :boolean;
 }
 
 export const ProductSchema = new Schema<Product>({
@@ -31,6 +32,7 @@ export const ProductSchema = new Schema<Product>({
     productLargeur      : {type: String},
     productLongueur     : {type: String},
     productPoids        : {type: String},
+    isStocker           : {type: Boolean},
 },{
     timestamps : true,
     toJSON : {
