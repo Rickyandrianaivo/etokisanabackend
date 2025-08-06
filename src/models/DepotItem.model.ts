@@ -23,4 +23,4 @@ export const DepotItemSchema = new Schema<IDepotItem>({
     }
 });
 
-export const CategoryModel = model<IDepotItem>('depotItem',DepotItemSchema)
+export const DepotItemModel = model<IDepotItem>('depotItem',DepotItemSchema)

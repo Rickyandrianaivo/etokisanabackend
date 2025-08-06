@@ -4,6 +4,7 @@ import { ProductModel } from "../models/product.model.js";
 import { sample_products } from "../data.js";
 import multer from 'multer';
 import { StockElementModel } from "../models/stockElement.model.js";
+import { DepotItemModel } from "../models/DepotItem.model.js";
 
 const router = Router();
 const storage = multer.diskStorage({
@@ -133,7 +134,18 @@ router.post('/upload',upload.single('file'),(req,res)=>{
         }
         res.status(200).json(responseData)
 })
-
+router.get('/getAllStock',expressAsyncHandler(async(req,res)=>{
+    const allproduct = await DepotItemModel.find();
+    res.send(allproduct).status(200);
+}))
+router.post('/addDepotItem',expressAsyncHandler(async(req,res)=>{
+    const newDepotItem = await DepotItemModel.create(req.body);
+    res.send(newDepotItem).status(200);
+}))
+router.patch('/modifyDepotItem',expressAsyncHandler(async(req,res)=>{
+    const newDepotItem = await DepotItemModel.updateOne({_id:req.params.id},{$set:req.body});
+    res.send(newDepotItem).status(200);
+}))
 
 //Upload essay 1
 // router.post("/product/imageupload", async(req,res)=>{
