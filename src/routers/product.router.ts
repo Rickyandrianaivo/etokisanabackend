@@ -33,7 +33,7 @@ router.post('/upload-image',upload.single('file'),async(req:MulterRequest,res:Re
         return res.status(400).json({success: false, error : "Aucun fichier fourni"})
     }
     const  localPath = req.file.path; // chemin temporaire
-    const remotePath = '/httpdocs/images/$req.file.originalname'; // destination
+    const remotePath = `/httpdocs/images/${req.file.originalname}`; // destination
 
     const client = new ftp.Client();
     client.ftp.verbose = true;
