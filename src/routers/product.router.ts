@@ -49,7 +49,7 @@ router.post('/upload-image',upload.single('file'),async(req:MulterRequest,res:Re
 
         // Envoi du fichier
         await client.uploadFrom(localPath,remotePath);
-        const imageUrl = `https://commercegestion.mg/images/${req.file.originalname}`
+        const imageUrl = `https://www.commercegestion.com/images/${req.file.originalname}`
 
         //Supprimer le fichier local après upload
         fs.unlinkSync(localPath);
