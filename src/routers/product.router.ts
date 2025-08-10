@@ -62,6 +62,7 @@ router.post('/upload-image',upload.single('file'),async(req:MulterRequest,res:Re
             sizeInBytes : req.file?.size,
             url : imageUrl
         } 
+        console.log(imageUrl);
        return res.json({responseData});
     }catch(error){
         console.error("Erreur FTP:",error);
