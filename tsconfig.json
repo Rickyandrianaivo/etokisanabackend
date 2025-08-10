@@ -17,6 +17,7 @@
         "target": "es2022",
         "module": "es2020",
         "emitDeclarationOnly": false,
+        "esModuleInterop": true,
         // "allowImportingTsExtensions": true,
         "noEmit": false,
         "lib": [

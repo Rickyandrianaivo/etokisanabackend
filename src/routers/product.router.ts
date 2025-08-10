@@ -1,22 +1,78 @@
-import { Router } from "express"
+import { Router, Request,Response } from "express"
 import expressAsyncHandler from "express-async-handler";
 import { ProductModel } from "../models/product.model.js";
 import { sample_products } from "../data.js";
 import multer from 'multer';
 import { StockElementModel } from "../models/stockElement.model.js";
 import { DepotItemModel } from "../models/DepotItem.model.js";
+import  ftp from "basic-ftp";
+import fs from "fs";
 
 const router = Router();
-const storage = multer.diskStorage({
-    destination: function(req,file,cb){
-        cb(null,__dirname + '/../uploads');
-    },
-    filename: function (req, file, cb){
-        cb(null, file.originalname);
-    },
+// const storage = multer.diskStorage({
+//     destination: function(req,file,cb){
+//         cb(null,__dirname + '/../uploads');
+//     },
+//     filename: function (req, file, cb){
+//         cb(null, file.originalname);
+//     },
+// });
+const upload = multer({dest:"uploads/"}); // stockage temporaire
+
+//Interface pour multer afin de typer req.file
+interface MulterRequest extends Request{
+    file?:Express.Multer.File;
+}
+
+// const upload = multer({storage:storage,limits:{fieldSize: 50*1024*1024}})
+
+
+
+router.post('/upload',upload.single('file'),async(req:MulterRequest,res:Response)=>{
+    if(!req.file){
+        return res.status(400).json({success: false, error : "Aucun fichier fourni"})
+    }
+    const  localPath = req.file.path; // chemin temporaire
+    const remotePath = '/httpdocs/images/$req.file.originalname'; // destination
+
+    const client = new ftp.Client();
+    client.ftp.verbose = true;
+
+    try{
+        //Connextion FTP
+        await client.access({
+            host : "87.98.244.42",
+            user : "serge_radert",
+            password : "Rzh398aNVtFZUu4",
+            secure : false // mettre true si FTPS
+        });
+
+        // Envoi du fichier
+        await client.uploadFrom(localPath,remotePath);
+        const imageUrl = `https://commercegestion.mg/images/${req.file.originalname}`
+
+        //Supprimer le fichier local après upload
+        fs.unlinkSync(localPath);
+        
+        const responseData = {
+            succes: true,
+            message : "Fichier uploadé avec succès !",
+            originalFileName : req.file?.originalname,
+            mimeType : req.file?.mimetype,
+            sizeInBytes : req.file?.size,
+            url : imageUrl
+        } 
+       return res.json({responseData});
+    }catch(error){
+        console.error("Erreur FTP:",error);
+        return res.status(500).json({success : false, error: "Erreur lors de l'upload"});
+    }finally{
+        client.close();
+        return res.json({message: "Processus d'upload terminé"});
+    }
+  
 });
-const upload = multer({storage:storage,limits:{fieldSize: 50*1024*1024}})
-let productImagePath:string = "";
+
 
 router.post("/seed",expressAsyncHandler(async(req,res)=>{
         const productCounts = await ProductModel.countDocuments();
@@ -118,22 +174,7 @@ router.post("/addstock",expressAsyncHandler(async(req,res)=>{
     await StockElementModel.create(newStockElement);
     res.send(newStockElement);
 }))
-// uplod des fichiers encore en cours de mainteannce
-//Upload essay 2
-router.post('/upload',upload.single('file'),(req,res)=>{
-    // router.post('/imageUpload',expressAsyncHandler(async(req,res)=>{
-    const responseData = {
-        message : "Fichier uploadé avec succès !",
-        originalFileName : req.file?.originalname,
-        mimeType : req.file?.mimetype,
-        sizeInBytes : req.file?.size
-    }    
-    console.log(responseData);
-        if (req.file) {
-            productImagePath = req.file.path
-        }
-        res.status(200).json(responseData)
-})
+
 router.get('/getAllStock',expressAsyncHandler(async(req,res)=>{
     const allproduct = await DepotItemModel.find();
     res.send(allproduct).status(200);
