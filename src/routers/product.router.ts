@@ -28,7 +28,7 @@ interface MulterRequest extends Request{
 
 
 
-router.post('/upload',upload.single('file'),async(req:MulterRequest,res:Response)=>{
+router.post('/upload-image',upload.single('file'),async(req:MulterRequest,res:Response)=>{
     if(!req.file){
         return res.status(400).json({success: false, error : "Aucun fichier fourni"})
     }
