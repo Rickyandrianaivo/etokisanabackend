@@ -69,7 +69,7 @@ router.post('/upload-image',upload.single('file'),async(req:MulterRequest,res:Re
         return res.status(500).json({success : false, error: "Erreur lors de l'upload"});
     }finally{
         client.close();
-        return res.json({message: "Processus d'upload terminé"});
+        // return res.json({message: "Processus d'upload terminé"});
     }
   
 });
