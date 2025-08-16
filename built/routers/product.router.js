@@ -2,19 +2,103 @@ import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { ProductModel } from "../models/product.model.js";
 import { sample_products } from "../data.js";
+import nodemailer from "nodemailer";
+import hbs from 'nodemailer-express-handlebars';
 import multer from 'multer';
 import { StockElementModel } from "../models/stockElement.model.js";
+import { DepotItemModel } from "../models/DepotItem.model.js";
+import ftp from "basic-ftp";
+import fs from "fs";
+import { UserModel } from "../models/user.model.js";
+import { SiteModel } from "../models/site.model.js";
 const router = Router();
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, __dirname + '/../uploads');
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);
-    },
+// const storage = multer.diskStorage({
+//     destination: function(req,file,cb){
+//         cb(null,__dirname + '/../uploads');
+//     },
+//     filename: function (req, file, cb){
+//         cb(null, file.originalname);
+//     },
+// });
+const upload = multer({ dest: "uploads/" }); // stockage temporaire
+// const upload = multer({storage:storage,limits:{fieldSize: 50*1024*1024}})
+const SendEmail = (defaultLayout, templateName, destinataireEmail, subjectEmail, contextObject) => {
+    let transporter = nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: 465,
+        secure: true, // true for port 465, false for other ports
+        auth: {
+            user: process.env.EMAIL_USERNAME,
+            pass: process.env.EMAIL_PASSWORD
+        },
+    });
+    transporter.use("compile", hbs({
+        viewEngine: {
+            extname: '.handlebars',
+            partialsDir: './Utils/Emails/Template',
+            layoutsDir: './Utils/Emails/Template',
+            defaultLayout: defaultLayout
+        },
+        viewPath: "./Utils/Emails/Template/",
+        extName: '.handlebars'
+    }));
+    let info = {
+        from: 'Etokisana <contact@commercegestion.com>', // sender address
+        to: destinataireEmail, // list of receivers
+        subject: subjectEmail, // Subject line
+        template: templateName,
+        context: contextObject
+    };
+    transporter.sendMail(info, (error, info) => {
+        if (error) {
+            console.log(info);
+            console.log(error);
+        }
+        else {
+            console.log("Email sent" + info.response);
+        }
+    });
+};
+router.post('/upload-image', upload.single('file'), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ success: false, error: "Aucun fichier fourni" });
+    }
+    const localPath = req.file.path; // chemin temporaire
+    const remotePath = `/httpdocs/images/${req.file.originalname}`; // destination
+    const client = new ftp.Client();
+    client.ftp.verbose = true;
+    try {
+        //Connextion FTP
+        await client.access({
+            host: process.env.FTP_HOST,
+            user: process.env.FTP_USER,
+            password: process.env.FTP_PWD,
+            secure: false // mettre true si FTPS
+        });
+        // Envoi du fichier
+        await client.uploadFrom(localPath, remotePath);
+        const imageUrl = `https://www.commercegestion.com/images/${req.file.originalname}`;
+        //Supprimer le fichier local après upload
+        fs.unlinkSync(localPath);
+        const responseData = {
+            succes: true,
+            message: "Fichier uploadé avec succès !",
+            originalFileName: req.file?.originalname,
+            mimeType: req.file?.mimetype,
+            sizeInBytes: req.file?.size,
+            url: imageUrl
+        };
+        return res.json({ responseData });
+    }
+    catch (error) {
+        console.error("Erreur FTP:", error);
+        return res.status(500).json({ success: false, error: "Erreur lors de l'upload" });
+    }
+    finally {
+        client.close();
+        // return res.json({message: "Processus d'upload terminé"});
+    }
 });
-const upload = multer({ storage: storage, limits: { fieldSize: 50 * 1024 * 1024 } });
-let productImagePath = "";
 router.post("/seed", expressAsyncHandler(async (req, res) => {
     const productCounts = await ProductModel.countDocuments();
     if (productCounts > 4) {
@@ -96,22 +180,76 @@ router.post("/addstock", expressAsyncHandler(async (req, res) => {
     await StockElementModel.create(newStockElement);
     res.send(newStockElement);
 }));
-// uplod des fichiers encore en cours de mainteannce
-//Upload essay 2
-router.post('/upload', upload.single('file'), (req, res) => {
-    // router.post('/imageUpload',expressAsyncHandler(async(req,res)=>{
-    const responseData = {
-        message: "Fichier uploadé avec succès !",
-        originalFileName: req.file?.originalname,
-        mimeType: req.file?.mimetype,
-        sizeInBytes: req.file?.size
+router.get('/getAllStock', expressAsyncHandler(async (req, res) => {
+    const allproduct = await DepotItemModel.find();
+    res.send(allproduct).status(200);
+}));
+router.post('/addDepotItem', expressAsyncHandler(async (req, res) => {
+    const { productId, stock, prix, lastUpdate, currentDepotId, } = req.body;
+    let newDepotItemData = {
+        productId,
+        stock,
+        prix,
+        lastUpdate,
+        currentDepotId,
     };
-    console.log(responseData);
-    if (req.file) {
-        productImagePath = req.file.path;
+    const newDepotItem = await DepotItemModel.create(newDepotItemData);
+    const currentSite = await SiteModel.findOne({ _id: currentDepotId });
+    if (currentSite) {
+        const currentUser = await UserModel.findOne({ userId: currentSite.siteUserID });
+        if (currentUser) {
+            let contexteEmail = {
+                name: currentUser.userNickName,
+            };
+            SendEmail("baseMail", "Deposit", currentUser.userEmail, "Nouveau produit mis en stock", contexteEmail);
+        }
     }
-    res.status(200).json(responseData);
-});
+    // let transporter = nodemailer.createTransport({
+    // host: process.env.EMAIL_HOST,
+    // port: 465,
+    // secure: true, // true for port 465, false for other ports
+    // auth: {
+    //     user: process.env.EMAIL_USERNAME,
+    //     pass: process.env.EMAIL_PASSWORD
+    // },
+    // });
+    // transporter.use("compile",hbs({
+    // viewEngine: {
+    //     extname:'.handlebars',
+    //     partialsDir:'./Utils/Emails/Template',
+    //     layoutsDir:'./Utils/Emails/Template',
+    //     defaultLayout: 'baseMail'
+    // },
+    // viewPath : "./Utils/Emails/Template/",
+    // extName : '.handlebars'
+    // }))
+    // let info = {};
+    // info = {
+    //         from: 'Etokisana <contact@commercegestion.com>', // sender address
+    //         to: currentUser?.userEmail, // list of receivers
+    //         subject: "Bienvenue sur Etokisana", // Subject line
+    //         template: "produitValider",
+    //         context : {
+    //         name : currentUser?.userFirstname,
+    //         montant : montantTotal,
+    //         }
+    //     };
+    // await transporter.sendMail(info,(error,info)=>{
+    //     if (error) {
+    //         console.log(info);
+    //         console.log(error);
+    //     //   res.status(500).send('Error sendig mail:'+ error)
+    //     }   else{
+    //         console.log("Email sent" + info.response);
+    //     //   res.status(200).send("Email sent successfully")
+    //     }
+    // })
+    res.send(newDepotItem).status(200);
+}));
+router.patch('/modifyDepotItem', expressAsyncHandler(async (req, res) => {
+    const newDepotItem = await DepotItemModel.updateOne({ _id: req.params.id }, { $set: req.body });
+    res.send(newDepotItem).status(200);
+}));
 //Upload essay 1
 // router.post("/product/imageupload", async(req,res)=>{
 //     try{

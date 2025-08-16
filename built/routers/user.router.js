@@ -87,7 +87,7 @@ router.post("/requestVerificationEmail", asyncHandler(async (req, res) => {
 router.post("/register/", asyncHandler(async (req, res) => {
     let tokenInfo;
     let userDb;
-    const { userName, userFirstname, userPassword, userEmail, userPhone, userAccess, userParainID, userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userId, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, } = req.body;
+    const { userNickName, userName, userFirstname, userPassword, userEmail, userPhone, userAccess, userParainID, userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userId, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, } = req.body;
     const user = await UserModel.findOne({ userEmail: userEmail.toLowerCase() });
     if (user) {
         res.send("Ce nom est déjà utilisé!");
@@ -96,6 +96,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
     else {
         const encryptedPassword = await bcrypt.hash(userPassword, 10);
         const newUser = {
+            userNickName,
             userName,
             userFirstname,
             userPassword: encryptedPassword,
@@ -299,6 +300,7 @@ const generateTokenResponse = (user) => {
     });
     return {
         _id: user._id,
+        userNickName: user.userNickName,
         userId: user.userId,
         userEmail: user.userEmail,
         userName: user.userName,
@@ -475,12 +477,6 @@ router.get("/id/:id", asyncHandler(async (req, res) => {
     // console.log(user);
     res.send(user);
 }));
-router.get("/userId/:id", asyncHandler(async (req, res) => {
-    const userId = req.params['id'];
-    const user = await UserModel.findOne({ userID: userId });
-    // console.log(user);
-    res.send(user);
-}));
 router.get("/email/:email", asyncHandler(async (req, res) => {
     const userEmail = req.params['email'];
     const user = await UserModel.findOne({ userEmail: userEmail });
@@ -488,7 +484,7 @@ router.get("/email/:email", asyncHandler(async (req, res) => {
 }));
 router.get("/userId/:id", asyncHandler(async (req, res) => {
     const userId = req.params['id'];
-    const user = await UserModel.findOne({ userID: userId });
+    const user = await UserModel.findOne({ userId: userId });
     res.send(user);
 }));
 router.post("/login", asyncHandler(async (req, res) => {

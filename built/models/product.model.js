@@ -13,6 +13,7 @@ export const ProductSchema = new Schema({
     productLargeur: { type: String },
     productLongueur: { type: String },
     productPoids: { type: String },
+    isStocker: { type: Boolean },
 }, {
     timestamps: true,
     toJSON: {

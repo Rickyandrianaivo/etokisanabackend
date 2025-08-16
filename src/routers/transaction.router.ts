@@ -79,10 +79,10 @@ router.post("/add",expressAsyncHandler(async(req,res)=>{
               if (error) {
                   console.log(info);
                   console.log(error);
-                  res.status(500).send('Error sendig mail:'+ error)
+                //   res.status(500).send('Error sendig mail:'+ error)
               }   else{
                   console.log("Email sent" + info.response);
-                  res.status(200).send("Email sent successfully")
+                //   res.status(200).send("Email sent successfully")
               }
             })
     await TransactionModel.create(newTransaction);

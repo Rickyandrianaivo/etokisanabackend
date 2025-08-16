@@ -1,14 +1,12 @@
 import { model, Schema } from "mongoose";
 export const TransactionSchema = new Schema({
     userId: { type: String, required: true },
-    tiersId: { type: String, required: true },
-    codeProduit: { type: String },
-    produitId: { type: String },
-    libelle: { type: String },
-    montant: { type: Number, required: true },
-    statut: { type: String },
-    siteId: { type: String },
+    siteDepartId: { type: String },
+    siteArriveId: { type: String, required: true },
     typeES: { type: String, required: true },
+    montantTotal: { type: Number, required: true },
+    statut: { type: String },
+    productList: { type: [Object] },
 }, {
     timestamps: true,
     toJSON: {

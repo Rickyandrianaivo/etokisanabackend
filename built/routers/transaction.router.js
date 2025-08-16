@@ -6,17 +6,15 @@ import hbs from 'nodemailer-express-handlebars';
 import { UserModel } from "../models/user.model.js";
 const router = Router();
 router.post("/add", expressAsyncHandler(async (req, res) => {
-    const { userId, tiersId, codeProduit, typeES, produitId, libelle, montant, statut, siteId } = req.body;
+    const { userId, siteDepartId, siteArriveId, typeES, montantTotal, statut, productList, } = req.body;
     const newTransaction = {
         userId,
-        tiersId,
-        codeProduit,
+        siteDepartId,
+        siteArriveId,
         typeES,
-        produitId,
-        libelle,
-        montant,
+        montantTotal,
         statut,
-        siteId
+        productList,
     };
     const currentUser = await UserModel.findOne({ _id: userId });
     let transporter = nodemailer.createTransport({
@@ -47,7 +45,7 @@ router.post("/add", expressAsyncHandler(async (req, res) => {
             template: "Deposit",
             context: {
                 name: currentUser?.userFirstname,
-                montant: montant,
+                montant: montantTotal,
             }
         };
     }
@@ -59,7 +57,7 @@ router.post("/add", expressAsyncHandler(async (req, res) => {
             template: "Withdraw",
             context: {
                 name: currentUser?.userFirstname,
-                montant: montant,
+                montant: montantTotal,
             }
         };
     }
@@ -67,11 +65,11 @@ router.post("/add", expressAsyncHandler(async (req, res) => {
         if (error) {
             console.log(info);
             console.log(error);
-            res.status(500).send('Error sendig mail:' + error);
+            //   res.status(500).send('Error sendig mail:'+ error)
         }
         else {
             console.log("Email sent" + info.response);
-            res.status(200).send("Email sent successfully");
+            //   res.status(200).send("Email sent successfully")
         }
     });
     await TransactionModel.create(newTransaction);
@@ -81,24 +79,17 @@ router.get("/", expressAsyncHandler(async (req, res) => {
     const transactions = await TransactionModel.find();
     res.send(transactions).status(200);
 }));
+router.get("/id/:id", expressAsyncHandler(async (req, res) => {
+    const transaction = await TransactionModel.findOne({ _id: req.params['id'] });
+    res.send(transaction).status(200);
+}));
 router.get("/user/:id", expressAsyncHandler(async (req, res) => {
     const transactions = await TransactionModel.find({ userId: req.params['id'] });
     res.send(transactions).status(200);
 }));
-router.put("/update/:id", expressAsyncHandler(async (req, res) => {
-    const { userId, tiersId, codeProduit, typeES, produitId, libelle, montant, statut, siteId } = req.body;
-    const updatedTransaction = await TransactionModel.updateOne({ _id: req.params['id'] }, {
-        userId,
-        tiersId,
-        codeProduit,
-        typeES,
-        produitId,
-        libelle,
-        montant,
-        statut,
-        siteId
-    });
-    res.send(updatedTransaction);
+router.patch("/update/:id", expressAsyncHandler(async (req, res) => {
+    const updatedTransaction = await TransactionModel.updateOne({ _id: req.params['id'] }, { $set: req.body });
+    res.send(updatedTransaction).status(200);
 }));
 router.delete("/delete/:id", expressAsyncHandler(async (req, res) => {
     res.send().status(200);
