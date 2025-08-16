@@ -377,7 +377,7 @@ const generateTokenResponse = (user:any) =>{
  }))
  
 router.patch("/passwordReset",asyncHandler(async(req,res)=>{
-    const {id,token,password} = req.body;
+    const {token,id,password} = req.body;
     console.log(id,token,password)
     let passwordResetToken = await TokenModel.findOne({ userId : id });
     let user = await UserModel.findOne({_id:id})
@@ -389,23 +389,16 @@ router.patch("/passwordReset",asyncHandler(async(req,res)=>{
       throw new Error("Invalid or expired password reset token");
     }
     const hash = await bcrypt.hash(password, Number(bcryptSalt));
-    if (user) {
+    if (user && passwordResetToken) {
       const updatePassword = await UserModel.updateOne({ _id: id },{$set:{
-          userName: user.userName,
-          userFirstname: user.userFirstname,
           userPassword : hash,
-          userEmail : user.userEmail,
-          userPhone : user.userPhone,
-          userEmailValidated : user.userEmailVerified,
-          userType : user.userType,
-          userTotalSolde : user.userTotalSolde,
         }
       });
       if (updatePassword) {
           await passwordResetToken.deleteOne({token : token});
       }
     }
-    if (user) {
+    if (isValid && user) {
       let transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: 465,
@@ -449,12 +442,7 @@ router.patch("/passwordReset",asyncHandler(async(req,res)=>{
     }
     res.send('Password reseted')   
  }))
-router.delete("/delete/:id",asyncHandler(async(req,res)=>{
-  const userId = req.params.id;
-  console.log(userId)
-  await UserModel.deleteOne({_id : userId});
-  res.send("Utilisateur supprimé : " + userId);
-}))
+
 router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
     const {email} = req.body;
     // console.log(email+ " " + userId)
@@ -553,6 +541,12 @@ router.post("/login",asyncHandler(async(req,res) => {
         res.status(404).send("User name or password is not valid!")
     }
 }))
+router.delete("/delete/:id",asyncHandler(async(req,res)=>{
+  const userId = req.params.id;
+  console.log(userId)
+  await UserModel.deleteOne({_id : userId});
+  res.send("Utilisateur supprimé : " + userId);
+}))
 // router.patch("userToAdmin/:id",asyncHandler(async(req,res)=>{
 //   const userId = req.params['id'];
 //   const userChange = 
@@ -629,6 +623,6 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
     //   console.log(updatedUser?.userAccess);
     //   console.log(updatedUser?.userValidated);
     //   console.log(updatedUser?.userEmailVerified);
-
+    res.send(id).status(200);
 }))
 export default router;
