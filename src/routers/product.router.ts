@@ -312,7 +312,7 @@ router.patch('/modifyDepotItem',expressAsyncHandler(async(req,res)=>{
     const newDepotItem = await DepotItemModel.updateOne({_id:req.params.id},{$set:req.body});
     res.send(newDepotItem).status(200);
 }))
-router.get('/getDepotItemByProductId',expressAsyncHandler(async(req,res)=>{
+router.get('/getDepotItemByProductId/:id',expressAsyncHandler(async(req,res)=>{
     const allDepotItemByProductId = await DepotItemModel.find({_id : req.params['id']})
     res.status(200).send(allDepotItemByProductId);
 }))
