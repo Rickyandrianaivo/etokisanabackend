@@ -12,67 +12,12 @@ import multer from 'multer';
 import fs from "fs";
 
 const router = Router();
-// const storage = multer.diskStorage({
-//     destination: function(req,file,cb){
-//         cb(null,__dirname + '/../uploads');
-//     },
-//     filename: function (req, file, cb){
-//         cb(null, file.originalname);
-//     },
-// });
 const upload = multer({dest:"uploads/"}); // stockage temporaire
 
 //Interface pour multer afin de typer req.file
 interface MulterRequest extends Request{
     file?:Express.Multer.File;
 }
-
-// const upload = multer({storage:storage,limits:{fieldSize: 50*1024*1024}})
-
-/**SendEmail function */
-// const SendEmail =  (
-//     defaultLayout:string,
-//     templateName:string,
-//     destinataireEmail : string,
-//     subjectEmail:string,
-//     contextObject:any)=>{
-//     let transporter = nodemailer.createTransport({
-//           host: process.env.EMAIL_HOST,
-//           port: 465,
-//           secure: true, // true for port 465, false for other ports
-//           auth: {
-//             user: process.env.EMAIL_USERNAME,
-//             pass: process.env.EMAIL_PASSWORD
-//           },
-//         });
-//         transporter.use("compile",hbs({
-//           viewEngine: {
-//             extname:'.handlebars',
-//             partialsDir:'./Utils/Emails/Template',
-//             layoutsDir:'./Utils/Emails/Template',
-//             defaultLayout: defaultLayout
-//           },
-//           viewPath : "./Utils/Emails/Template/",
-//           extName : '.handlebars'
-      
-//         }))
-//         let info = {
-//           from: 'Etokisana <contact@commercegestion.com>', // sender address
-//           to: destinataireEmail, // list of receivers
-//           subject: subjectEmail, // Subject line
-//           template: templateName,
-//           context : contextObject
-//         };
-    
-//         transporter.sendMail(info,(error,info)=>{
-//           if (error) {
-//               console.log(info);
-//               console.log(error);
-//           }   else{
-//               console.log("Email sent" + info.response);
-//           }
-//         })
-// }
 
 
 
@@ -227,6 +172,7 @@ router.post("/addstock",expressAsyncHandler(async(req,res)=>{
 
 router.get('/getAllStock',expressAsyncHandler(async(req,res)=>{
     const allproduct = await DepotItemModel.find();
+    console.log(allproduct);
     if (allproduct.length>0) {
         res.status(200).send(allproduct);
     }else{
