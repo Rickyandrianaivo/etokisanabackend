@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 
 export interface Product{
-    // id              : string,
+    _id                 : string,
     codeCPC             :string;
     productName         :string;
     productDescription  :string;
@@ -19,6 +19,7 @@ export interface Product{
 }
 
 export const ProductSchema = new Schema<Product>({
+    _id                 : {type : String},
     codeCPC             : {type : String},
     productName         : {type : String},
     productDescription  : {type : String},
@@ -27,12 +28,12 @@ export const ProductSchema = new Schema<Product>({
     productImage        : {type : [String]},
     productOwnerId      : {type : String},
     productValidation   : {type : Boolean},
-    productVolume       : {type: String},
-    productHauteur      : {type: String},
-    productLargeur      : {type: String},
-    productLongueur     : {type: String},
-    productPoids        : {type: String},
-    isStocker           : {type: Boolean},
+    productVolume       : {type : String},
+    productHauteur      : {type : String},
+    productLargeur      : {type : String},
+    productLongueur     : {type : String},
+    productPoids        : {type : String},
+    isStocker           : {type : Boolean},
 },{
     timestamps : true,
     toJSON : {
