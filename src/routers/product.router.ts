@@ -1,17 +1,15 @@
 import { Router, Request,Response } from "express"
 import expressAsyncHandler from "express-async-handler";
 import { ProductModel } from "../models/product.model.js";
-import { sample_products } from "../data.js";
-import nodemailer from "nodemailer";
-import hbs from 'nodemailer-express-handlebars';
-import multer from 'multer';
 import { StockElementModel } from "../models/stockElement.model.js";
 import { DepotItemModel } from "../models/DepotItem.model.js";
-import  ftp from "basic-ftp";
-import fs from "fs";
-import { UserModel } from "../models/user.model.js";
-import { sendEmail } from "../Utils/Emails/sendEmail.js";
+import { SendEmail } from "../Utils/Emails/sendEmail.js";
 import { SiteModel } from "../models/site.model.js";
+import { UserModel } from "../models/user.model.js";
+import { sample_products } from "../data.js";
+import  ftp from "basic-ftp";
+import multer from 'multer';
+import fs from "fs";
 
 const router = Router();
 // const storage = multer.diskStorage({
@@ -31,50 +29,50 @@ interface MulterRequest extends Request{
 
 // const upload = multer({storage:storage,limits:{fieldSize: 50*1024*1024}})
 
-
-const SendEmail =  (
-    defaultLayout:string,
-    templateName:string,
-    destinataireEmail : string,
-    subjectEmail:string,
-    contextObject:any)=>{
-    let transporter = nodemailer.createTransport({
-          host: process.env.EMAIL_HOST,
-          port: 465,
-          secure: true, // true for port 465, false for other ports
-          auth: {
-            user: process.env.EMAIL_USERNAME,
-            pass: process.env.EMAIL_PASSWORD
-          },
-        });
-        transporter.use("compile",hbs({
-          viewEngine: {
-            extname:'.handlebars',
-            partialsDir:'./Utils/Emails/Template',
-            layoutsDir:'./Utils/Emails/Template',
-            defaultLayout: defaultLayout
-          },
-          viewPath : "./Utils/Emails/Template/",
-          extName : '.handlebars'
+/**SendEmail function */
+// const SendEmail =  (
+//     defaultLayout:string,
+//     templateName:string,
+//     destinataireEmail : string,
+//     subjectEmail:string,
+//     contextObject:any)=>{
+//     let transporter = nodemailer.createTransport({
+//           host: process.env.EMAIL_HOST,
+//           port: 465,
+//           secure: true, // true for port 465, false for other ports
+//           auth: {
+//             user: process.env.EMAIL_USERNAME,
+//             pass: process.env.EMAIL_PASSWORD
+//           },
+//         });
+//         transporter.use("compile",hbs({
+//           viewEngine: {
+//             extname:'.handlebars',
+//             partialsDir:'./Utils/Emails/Template',
+//             layoutsDir:'./Utils/Emails/Template',
+//             defaultLayout: defaultLayout
+//           },
+//           viewPath : "./Utils/Emails/Template/",
+//           extName : '.handlebars'
       
-        }))
-        let info = {
-          from: 'Etokisana <contact@commercegestion.com>', // sender address
-          to: destinataireEmail, // list of receivers
-          subject: subjectEmail, // Subject line
-          template: templateName,
-          context : contextObject
-        };
+//         }))
+//         let info = {
+//           from: 'Etokisana <contact@commercegestion.com>', // sender address
+//           to: destinataireEmail, // list of receivers
+//           subject: subjectEmail, // Subject line
+//           template: templateName,
+//           context : contextObject
+//         };
     
-        transporter.sendMail(info,(error,info)=>{
-          if (error) {
-              console.log(info);
-              console.log(error);
-          }   else{
-              console.log("Email sent" + info.response);
-          }
-        })
-}
+//         transporter.sendMail(info,(error,info)=>{
+//           if (error) {
+//               console.log(info);
+//               console.log(error);
+//           }   else{
+//               console.log("Email sent" + info.response);
+//           }
+//         })
+// }
 
 
 
@@ -248,7 +246,6 @@ router.post('/addDepotItem',expressAsyncHandler(async(req,res)=>{
     
     const currentSite = await SiteModel.findOne({_id:currentDepotId})
 
-
     if(currentSite){
         const currentUser = await UserModel.findOne({userId:currentSite.siteUserID})
         if (currentUser) {
@@ -264,47 +261,6 @@ router.post('/addDepotItem',expressAsyncHandler(async(req,res)=>{
             )            
         }
     }
-    // let transporter = nodemailer.createTransport({
-    // host: process.env.EMAIL_HOST,
-    // port: 465,
-    // secure: true, // true for port 465, false for other ports
-    // auth: {
-    //     user: process.env.EMAIL_USERNAME,
-    //     pass: process.env.EMAIL_PASSWORD
-    // },
-    // });
-    // transporter.use("compile",hbs({
-    // viewEngine: {
-    //     extname:'.handlebars',
-    //     partialsDir:'./Utils/Emails/Template',
-    //     layoutsDir:'./Utils/Emails/Template',
-    //     defaultLayout: 'baseMail'
-    // },
-    // viewPath : "./Utils/Emails/Template/",
-    // extName : '.handlebars'
-
-    // }))
-    // let info = {};
-    // info = {
-    //         from: 'Etokisana <contact@commercegestion.com>', // sender address
-    //         to: currentUser?.userEmail, // list of receivers
-    //         subject: "Bienvenue sur Etokisana", // Subject line
-    //         template: "produitValider",
-    //         context : {
-    //         name : currentUser?.userFirstname,
-    //         montant : montantTotal,
-    //         }
-    //     };
-    // await transporter.sendMail(info,(error,info)=>{
-    //     if (error) {
-    //         console.log(info);
-    //         console.log(error);
-    //     //   res.status(500).send('Error sendig mail:'+ error)
-    //     }   else{
-    //         console.log("Email sent" + info.response);
-    //     //   res.status(200).send("Email sent successfully")
-    //     }
-    // })
     res.send(newDepotItem).status(200);
 
 }))
@@ -313,40 +269,17 @@ router.patch('/modifyDepotItem',expressAsyncHandler(async(req,res)=>{
     res.send(newDepotItem).status(200);
 }))
 router.get('/getDepotItemByProductId/:id',expressAsyncHandler(async(req,res)=>{
-    const allDepotItemByProductId = await DepotItemModel.find({_id : req.params['id']})
+    const allDepotItemByProductId = await DepotItemModel.find({productId : req.params['id']})
     res.status(200).send(allDepotItemByProductId);
 }))
 
-//Upload essay 1
-// router.post("/product/imageupload", async(req,res)=>{
-//     try{
-//         let sampleFile : UploadedFile;
-//         let uploadPath;
-//         if (!req.files || Object.keys(req.files).length === 0) {
-//             return res.status(400).send('No files were uploaded.');
-//         }
-        
-//         // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-//         sampleFile = req.files!.productImageFile as UploadedFile;
-//         uploadPath = __dirname + '/product/' + sampleFile.name;
-        
-//         // Use the mv() method to place the file somewhere on your server
-//         await sampleFile.mv(uploadPath)
-//         sampleFile.mv(uploadPath,async(err)=> {
-//             if(err)
-//             {
-//                 return res.status(404).send('file not moved!');
-//             }
-//             return res.status(200).send('File uploaded!');   
-//         })
-//         return res.status(200).send('File uploaded!');
-//         }catch(e){
-//         console.log('Error occured too file upload: ' + e);
-//         return res.status(400).send({'Error':e});
-//     }
-// })
+
 // à faire searchterm
+
+
 // filtre par prix croissant & décroissant ou fourchette
+
+
 // prévoir combinaison de filtre localisation, provenance, prix 
 
 export default router;

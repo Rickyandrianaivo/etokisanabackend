@@ -1,9 +1,8 @@
 import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { TransactionModel } from "../models/transaction.model.js";
-import nodemailer from "nodemailer";
-import hbs from 'nodemailer-express-handlebars';
 import { UserModel } from "../models/user.model.js";
+import { SendEmail } from "../Utils/Emails/sendEmail.js";
 
 const router = Router();
 
@@ -28,63 +27,22 @@ router.post("/add",expressAsyncHandler(async(req,res)=>{
         productList,
     }
     const currentUser = await UserModel.findOne({_id : userId})
-
-    let transporter = nodemailer.createTransport({
-            host: process.env.EMAIL_HOST,
-            port: 465,
-            secure: true, // true for port 465, false for other ports
-            auth: {
-              user: process.env.EMAIL_USERNAME,
-              pass: process.env.EMAIL_PASSWORD
-            },
-          });
-          transporter.use("compile",hbs({
-            viewEngine: {
-              extname:'.handlebars',
-              partialsDir:'./Utils/Emails/Template',
-              layoutsDir:'./Utils/Emails/Template',
-              defaultLayout: 'baseMail'
-            },
-            viewPath : "./Utils/Emails/Template/",
-            extName : '.handlebars'
-        
-          }))
-          let info = {};
-            if (typeES == "Dépôt") {
-            info = {
-                    from: 'Etokisana <contact@commercegestion.com>', // sender address
-                    to: currentUser?.userEmail, // list of receivers
-                    subject: "Bienvenue sur Etokisana", // Subject line
-                    template: "Deposit",
-                    context : {
-                    name : currentUser?.userFirstname,
-                    montant : montantTotal,
-                    }
-                };
-            }
-            if (typeES == "Retrait") {
-            info = {
-                    from: 'Etokisana <contact@commercegestion.com>', // sender address
-                    to: currentUser?.userEmail, // list of receivers
-                    subject: "Bienvenue sur Etokisana", // Subject line
-                    template: "Withdraw",
-                    context : {
-                    name : currentUser?.userFirstname,
-                    montant : montantTotal,
-                    }
-                };
-    
-            }
-            await transporter.sendMail(info,(error,info)=>{
-              if (error) {
-                  console.log(info);
-                  console.log(error);
-                //   res.status(500).send('Error sendig mail:'+ error)
-              }   else{
-                  console.log("Email sent" + info.response);
-                //   res.status(200).send("Email sent successfully")
-              }
-            })
+    if (currentUser && typeES == "Dépôt") {
+      SendEmail("baseMail","Deposit",currentUser.userEmail,"Transaction réussie",
+        {
+          name : currentUser.userFirstname,
+          montant : montantTotal,
+        }
+      )
+    }
+    if (currentUser && typeES == "Retrait") {
+      SendEmail("baseMail","Withdraw",currentUser.userEmail,"Transaction réussie",
+        {
+          name : currentUser.userFirstname,
+          montant : montantTotal,
+        }
+      )
+    }
     await TransactionModel.create(newTransaction);
     res.send(newTransaction).status(200)
 }))
