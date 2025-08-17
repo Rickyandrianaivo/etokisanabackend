@@ -95,6 +95,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
     let tokenInfo
     let userDb
     const {
+      _id,
       userNickName,
       userName,
       userFirstname,
@@ -135,6 +136,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
       const encryptedPassword = await bcrypt.hash(userPassword,10);
       
       const newUser : User = {
+          _id,
           userNickName,
           userName,
           userFirstname,

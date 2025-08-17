@@ -9,22 +9,24 @@ const router = Router();
 
 router.post("/add",expressAsyncHandler(async(req,res)=>{
     const {
-        userId,
-        siteDepartId,
-        siteArriveId,
-        typeES,
-        montantTotal,
-        statut,
-        productList,
+      _id,
+      userId,
+      siteDepartId,
+      siteArriveId,
+      typeES,
+      montantTotal,
+      statut,
+      productList,
     } = req.body;
     const newTransaction = {
-        userId,
-        siteDepartId,
-        siteArriveId,
-        typeES,
-        montantTotal,
-        statut,
-        productList,
+      _id,
+      userId,
+      siteDepartId,
+      siteArriveId,
+      typeES,
+      montantTotal,
+      statut,
+      productList,
     }
     const currentUser = await UserModel.findOne({_id : userId})
     if (currentUser && typeES == "Dépôt") {

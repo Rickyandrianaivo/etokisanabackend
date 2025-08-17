@@ -133,6 +133,7 @@ router.post("/seed",expressAsyncHandler(async(req,res)=>{
 }))
 router.post("/add/",expressAsyncHandler(async(req,res)=>{
     const {
+        _id,
         codeCPC,
         productName,
         productDescription,
@@ -148,6 +149,7 @@ router.post("/add/",expressAsyncHandler(async(req,res)=>{
         productOwnerId,
     }= req.body;
     const newProduct = {
+        _id,
         codeCPC,
         productName,
         productDescription,
@@ -230,7 +232,8 @@ router.get('/getAllStock',expressAsyncHandler(async(req,res)=>{
     }
 }))
 router.post('/addDepotItem',expressAsyncHandler(async(req,res)=>{
-    const {     
+    const {    
+        _id, 
         productId ,
         stock,
         prix,
@@ -238,6 +241,7 @@ router.post('/addDepotItem',expressAsyncHandler(async(req,res)=>{
         currentDepotId,
     }= req.body;
     let newDepotItemData= {
+        _id,
         productId ,
         stock,
         prix,
