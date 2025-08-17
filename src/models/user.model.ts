@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 
 export interface User{
-    // id              : string,
+    _id              : string,
     userNickName        :string;
     userName            : string;
     userFirstname       : string;
@@ -35,6 +35,7 @@ export interface User{
 }
 
 export const UserSchema = new Schema<User>({
+    _id                     : { type : String},
     userNickName            : { type : String},
     userName                : { type : String},
     userFirstname           : { type : String},
