@@ -228,7 +228,9 @@ router.post("/addstock",expressAsyncHandler(async(req,res)=>{
 router.get('/getAllStock',expressAsyncHandler(async(req,res)=>{
     const allproduct = await DepotItemModel.find();
     if (allproduct.length>0) {
-        res.status(200);
+        res.status(200).send(allproduct);
+    }else{
+        console.log("There is no depotItem Available")
     }
 }))
 router.post('/addDepotItem',expressAsyncHandler(async(req,res)=>{
