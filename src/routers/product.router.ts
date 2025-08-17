@@ -264,8 +264,8 @@ router.post('/addDepotItem',expressAsyncHandler(async(req,res)=>{
     res.send(newDepotItem).status(200);
 
 }))
-router.patch('/modifyDepotItem',expressAsyncHandler(async(req,res)=>{
-    const newDepotItem = await DepotItemModel.updateOne({_id:req.params.id},{$set:req.body});
+router.patch('/modifyDepotItem/:id',expressAsyncHandler(async(req,res)=>{
+    const newDepotItem = await DepotItemModel.updateOne({_id:req.params['id']},{$set:req.body});
     res.send(newDepotItem).status(200);
 }))
 router.get('/getDepotItemByProductId/:id',expressAsyncHandler(async(req,res)=>{
