@@ -9,6 +9,7 @@ import categoryRouter from './routers/category.router.js';
 import { dbConnect } from './configs/database.config.js';
 import transactionRouter from './routers/transaction.router.js';
 import notificationRouter from './routers/notification.router.js';
+import depotItemRouter from './routers/depotItem.router.js';
 dbConnect();
 const app = express();
 app.use(express.json({ limit: '50mb' }));
@@ -25,6 +26,7 @@ app.use(cors(
 app.use("/api/users", userRouter);
 app.use("/api/site", siteRouter);
 app.use("/api/product", productRouter);
+app.use("/api/depotItem", depotItemRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/transaction", transactionRouter);
 app.use("/api/notification", notificationRouter);

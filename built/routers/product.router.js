@@ -1,64 +1,17 @@
 import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { ProductModel } from "../models/product.model.js";
-import { sample_products } from "../data.js";
-import nodemailer from "nodemailer";
-import hbs from 'nodemailer-express-handlebars';
-import multer from 'multer';
 import { StockElementModel } from "../models/stockElement.model.js";
 import { DepotItemModel } from "../models/DepotItem.model.js";
-import ftp from "basic-ftp";
-import fs from "fs";
-import { UserModel } from "../models/user.model.js";
+import { SendEmail } from "../Utils/Emails/sendEmail.js";
 import { SiteModel } from "../models/site.model.js";
+import { UserModel } from "../models/user.model.js";
+import { sample_products } from "../data.js";
+import ftp from "basic-ftp";
+import multer from 'multer';
+import fs from "fs";
 const router = Router();
-// const storage = multer.diskStorage({
-//     destination: function(req,file,cb){
-//         cb(null,__dirname + '/../uploads');
-//     },
-//     filename: function (req, file, cb){
-//         cb(null, file.originalname);
-//     },
-// });
 const upload = multer({ dest: "uploads/" }); // stockage temporaire
-// const upload = multer({storage:storage,limits:{fieldSize: 50*1024*1024}})
-const SendEmail = (defaultLayout, templateName, destinataireEmail, subjectEmail, contextObject) => {
-    let transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: 465,
-        secure: true, // true for port 465, false for other ports
-        auth: {
-            user: process.env.EMAIL_USERNAME,
-            pass: process.env.EMAIL_PASSWORD
-        },
-    });
-    transporter.use("compile", hbs({
-        viewEngine: {
-            extname: '.handlebars',
-            partialsDir: './Utils/Emails/Template',
-            layoutsDir: './Utils/Emails/Template',
-            defaultLayout: defaultLayout
-        },
-        viewPath: "./Utils/Emails/Template/",
-        extName: '.handlebars'
-    }));
-    let info = {
-        from: 'Etokisana <contact@commercegestion.com>', // sender address
-        to: destinataireEmail, // list of receivers
-        subject: subjectEmail, // Subject line
-        template: templateName,
-        context: contextObject
-    };
-    transporter.sendMail(info, (error, info) => {
-        if (error) {
-            console.log(info);
-            console.log(error);
-        }
-        else {
-            console.log("Email sent" + info.response);
-        }
-    });
-};
 router.post('/upload-image', upload.single('file'), async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ success: false, error: "Aucun fichier fourni" });
@@ -109,8 +62,9 @@ router.post("/seed", expressAsyncHandler(async (req, res) => {
     res.send("Seed is done!!");
 }));
 router.post("/add/", expressAsyncHandler(async (req, res) => {
-    const { codeCPC, productName, productDescription, productCategory, productState, productImage, productValidation, productVolume, productHauteur, productLargeur, productLongueur, productPoids, productOwnerId, } = req.body;
+    const { _id, codeCPC, productName, productDescription, productCategory, productState, productImage, productValidation, productVolume, productHauteur, productLargeur, productLongueur, productPoids, productOwnerId, } = req.body;
     const newProduct = {
+        _id,
         codeCPC,
         productName,
         productDescription,
@@ -182,11 +136,18 @@ router.post("/addstock", expressAsyncHandler(async (req, res) => {
 }));
 router.get('/getAllStock', expressAsyncHandler(async (req, res) => {
     const allproduct = await DepotItemModel.find();
-    res.send(allproduct).status(200);
+    console.log(allproduct);
+    if (allproduct.length > 0) {
+        res.status(200).send(allproduct);
+    }
+    else {
+        console.log("There is no depotItem Available");
+    }
 }));
 router.post('/addDepotItem', expressAsyncHandler(async (req, res) => {
-    const { productId, stock, prix, lastUpdate, currentDepotId, } = req.body;
+    const { _id, productId, stock, prix, lastUpdate, currentDepotId, } = req.body;
     let newDepotItemData = {
+        _id,
         productId,
         stock,
         prix,
@@ -204,78 +165,16 @@ router.post('/addDepotItem', expressAsyncHandler(async (req, res) => {
             SendEmail("baseMail", "Deposit", currentUser.userEmail, "Nouveau produit mis en stock", contexteEmail);
         }
     }
-    // let transporter = nodemailer.createTransport({
-    // host: process.env.EMAIL_HOST,
-    // port: 465,
-    // secure: true, // true for port 465, false for other ports
-    // auth: {
-    //     user: process.env.EMAIL_USERNAME,
-    //     pass: process.env.EMAIL_PASSWORD
-    // },
-    // });
-    // transporter.use("compile",hbs({
-    // viewEngine: {
-    //     extname:'.handlebars',
-    //     partialsDir:'./Utils/Emails/Template',
-    //     layoutsDir:'./Utils/Emails/Template',
-    //     defaultLayout: 'baseMail'
-    // },
-    // viewPath : "./Utils/Emails/Template/",
-    // extName : '.handlebars'
-    // }))
-    // let info = {};
-    // info = {
-    //         from: 'Etokisana <contact@commercegestion.com>', // sender address
-    //         to: currentUser?.userEmail, // list of receivers
-    //         subject: "Bienvenue sur Etokisana", // Subject line
-    //         template: "produitValider",
-    //         context : {
-    //         name : currentUser?.userFirstname,
-    //         montant : montantTotal,
-    //         }
-    //     };
-    // await transporter.sendMail(info,(error,info)=>{
-    //     if (error) {
-    //         console.log(info);
-    //         console.log(error);
-    //     //   res.status(500).send('Error sendig mail:'+ error)
-    //     }   else{
-    //         console.log("Email sent" + info.response);
-    //     //   res.status(200).send("Email sent successfully")
-    //     }
-    // })
     res.send(newDepotItem).status(200);
 }));
-router.patch('/modifyDepotItem', expressAsyncHandler(async (req, res) => {
-    const newDepotItem = await DepotItemModel.updateOne({ _id: req.params.id }, { $set: req.body });
+router.patch('/modifyDepotItem/:id', expressAsyncHandler(async (req, res) => {
+    const newDepotItem = await DepotItemModel.updateOne({ _id: req.params['id'] }, { $set: req.body });
     res.send(newDepotItem).status(200);
 }));
-//Upload essay 1
-// router.post("/product/imageupload", async(req,res)=>{
-//     try{
-//         let sampleFile : UploadedFile;
-//         let uploadPath;
-//         if (!req.files || Object.keys(req.files).length === 0) {
-//             return res.status(400).send('No files were uploaded.');
-//         }
-//         // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-//         sampleFile = req.files!.productImageFile as UploadedFile;
-//         uploadPath = __dirname + '/product/' + sampleFile.name;
-//         // Use the mv() method to place the file somewhere on your server
-//         await sampleFile.mv(uploadPath)
-//         sampleFile.mv(uploadPath,async(err)=> {
-//             if(err)
-//             {
-//                 return res.status(404).send('file not moved!');
-//             }
-//             return res.status(200).send('File uploaded!');   
-//         })
-//         return res.status(200).send('File uploaded!');
-//         }catch(e){
-//         console.log('Error occured too file upload: ' + e);
-//         return res.status(400).send({'Error':e});
-//     }
-// })
+router.get('/getDepotItemByProductId/:id', expressAsyncHandler(async (req, res) => {
+    const allDepotItemByProductId = await DepotItemModel.find({ productId: req.params['id'] });
+    res.status(200).send(allDepotItemByProductId);
+}));
 // à faire searchterm
 // filtre par prix croissant & décroissant ou fourchette
 // prévoir combinaison de filtre localisation, provenance, prix 

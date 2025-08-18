@@ -1,5 +1,6 @@
 import { Schema } from "mongoose";
 export interface User {
+    _id: string;
     userNickName: string;
     userName: string;
     userFirstname: string;
@@ -31,17 +32,17 @@ export interface User {
     managerName: string;
     managerEmail: string;
 }
-export declare const UserSchema: Schema<User, import("mongoose").Model<User, any, any, any, import("mongoose").Document<unknown, any, User, any, {}> & User & {
-    _id: import("mongoose").Types.ObjectId;
-} & {
+export declare const UserSchema: Schema<User, import("mongoose").Model<User, any, any, any, import("mongoose").Document<unknown, any, User, any, {}> & User & Required<{
+    _id: string;
+}> & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, User, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<User>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<User> & {
-    _id: import("mongoose").Types.ObjectId;
-} & {
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, User, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<User>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<User> & Required<{
+    _id: string;
+}> & {
     __v: number;
 }>;
-export declare const UserModel: import("mongoose").Model<User, {}, {}, {}, import("mongoose").Document<unknown, {}, User, {}, {}> & User & {
-    _id: import("mongoose").Types.ObjectId;
-} & {
+export declare const UserModel: import("mongoose").Model<User, {}, {}, {}, import("mongoose").Document<unknown, {}, User, {}, {}> & User & Required<{
+    _id: string;
+}> & {
     __v: number;
 }, any>;

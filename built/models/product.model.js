@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 export const ProductSchema = new Schema({
+    _id: { type: String },
     codeCPC: { type: String },
     productName: { type: String },
     productDescription: { type: String },

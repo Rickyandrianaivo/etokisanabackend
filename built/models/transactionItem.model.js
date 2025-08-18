@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
 export const TransactionItemSchema = new Schema({
+    _id: { type: String },
     transactionProduct: { type: String },
     transactionPrice: { type: Number },
     transactionQuantity: { type: Number },

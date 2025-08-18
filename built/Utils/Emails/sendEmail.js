@@ -1,9 +1,7 @@
 import nodemailer from 'nodemailer';
 import winston from 'winston';
 import dotenv from "dotenv";
-import fs from "fs";
-import path from "path";
-import handlebars from 'handlebars';
+import hbs from 'nodemailer-express-handlebars';
 dotenv.config();
 const logger = winston.createLogger({
     level: 'debug',
@@ -11,31 +9,40 @@ const logger = winston.createLogger({
     transports: [new winston.transports.Console()]
 });
 // export const sendEmail = async (from: string, to: string, subject: string, html: string) => {
-export const sendEmail = async (email, subject, payload, template) => {
-    const transporter = nodemailer.createTransport({
-        host: process.env.MAIL_HOST,
+export const SendEmail = async (defaultLayout, templateName, destinataireEmail, subjectEmail, contextObject) => {
+    let transporter = nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
         port: 465,
-        secure: true, // true for port 465, false for others
+        secure: true, // true for port 465, false for other ports
         auth: {
             user: process.env.EMAIL_USERNAME,
             pass: process.env.EMAIL_PASSWORD
-        }
+        },
     });
-    const source = fs.readFileSync(path.join(__dirname, template), "utf8");
-    const compiledTemplate = handlebars.compile(source);
-    const mailOptions = {
-        from: process.env.FROM_EMAIL,
-        to: email,
-        subject: subject,
-        html: compiledTemplate(payload)
+    transporter.use("compile", hbs({
+        viewEngine: {
+            extname: '.handlebars',
+            partialsDir: './Utils/Emails/Template',
+            layoutsDir: './Utils/Emails/Template',
+            defaultLayout: defaultLayout
+        },
+        viewPath: "./Utils/Emails/Template/",
+        extName: '.handlebars'
+    }));
+    let info = {
+        from: 'Etokisana <contact@commercegestion.com>', // sender address
+        to: destinataireEmail, // list of receivers
+        subject: subjectEmail, // Subject line
+        template: templateName,
+        context: contextObject
     };
-    logger.info(`Sending mail to - ${email}`);
-    transporter.sendMail(mailOptions, (error, info) => {
+    transporter.sendMail(info, (error, info) => {
         if (error) {
-            logger.error(error);
+            console.log(info);
+            console.log(error);
         }
         else {
-            logger.info('Email sent: ' + info.response);
+            console.log("Email sent" + info.response);
         }
     });
 };

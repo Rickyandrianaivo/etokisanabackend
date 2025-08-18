@@ -1,22 +1,23 @@
 import { Schema } from "mongoose";
 export interface IDepotItem {
+    _id: string;
     productId: string;
     stock: number;
     prix: number;
     lastUpdate: Date;
     currentDepotId: string;
 }
-export declare const DepotItemSchema: Schema<IDepotItem, import("mongoose").Model<IDepotItem, any, any, any, import("mongoose").Document<unknown, any, IDepotItem, any, {}> & IDepotItem & {
-    _id: import("mongoose").Types.ObjectId;
-} & {
+export declare const DepotItemSchema: Schema<IDepotItem, import("mongoose").Model<IDepotItem, any, any, any, import("mongoose").Document<unknown, any, IDepotItem, any, {}> & IDepotItem & Required<{
+    _id: string;
+}> & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, IDepotItem, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<IDepotItem>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<IDepotItem> & {
-    _id: import("mongoose").Types.ObjectId;
-} & {
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, IDepotItem, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<IDepotItem>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<IDepotItem> & Required<{
+    _id: string;
+}> & {
     __v: number;
 }>;
-export declare const DepotItemModel: import("mongoose").Model<IDepotItem, {}, {}, {}, import("mongoose").Document<unknown, {}, IDepotItem, {}, {}> & IDepotItem & {
-    _id: import("mongoose").Types.ObjectId;
-} & {
+export declare const DepotItemModel: import("mongoose").Model<IDepotItem, {}, {}, {}, import("mongoose").Document<unknown, {}, IDepotItem, {}, {}> & IDepotItem & Required<{
+    _id: string;
+}> & {
     __v: number;
 }, any>;

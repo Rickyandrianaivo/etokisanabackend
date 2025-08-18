@@ -5,8 +5,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { TokenModel } from "../models/token.models.js";
 import { randomBytes } from "crypto";
-import nodemailer from "nodemailer";
-import hbs from 'nodemailer-express-handlebars';
+import { SendEmail } from "../Utils/Emails/sendEmail.js";
 import multer from 'multer';
 import { NotificationModel } from "../models/notification.model.js";
 const bcryptSalt = process.env.BCRYPT_SALT;
@@ -87,7 +86,7 @@ router.post("/requestVerificationEmail", asyncHandler(async (req, res) => {
 router.post("/register/", asyncHandler(async (req, res) => {
     let tokenInfo;
     let userDb;
-    const { userNickName, userName, userFirstname, userPassword, userEmail, userPhone, userAccess, userParainID, userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userId, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, } = req.body;
+    const { _id, userNickName, userName, userFirstname, userPassword, userEmail, userPhone, userAccess, userParainID, userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userId, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, } = req.body;
     const user = await UserModel.findOne({ userEmail: userEmail.toLowerCase() });
     if (user) {
         res.send("Ce nom est déjà utilisé!");
@@ -96,6 +95,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
     else {
         const encryptedPassword = await bcrypt.hash(userPassword, 10);
         const newUser = {
+            _id,
             userNickName,
             userName,
             userFirstname,
@@ -139,72 +139,16 @@ router.post("/register/", asyncHandler(async (req, res) => {
     await TokenModel.create(tokenDB);
     // Sending mail
     const verificationLink = "https://www.commercegestion.com/#/user-confirmation/" + tokenInfo.token;
-    let transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: 465,
-        secure: true, // true for port 465, false for other ports
-        auth: {
-            user: process.env.EMAIL_USERNAME,
-            pass: process.env.EMAIL_PASSWORD
-        },
-    });
-    let info = {};
-    transporter.use("compile", hbs({
-        viewEngine: {
-            extname: '.handlebars',
-            partialsDir: './Utils/Emails/Template',
-            layoutsDir: './Utils/Emails/Template',
-            defaultLayout: 'baseMail',
-        },
-        viewPath: "./Utils/Emails/Template/",
-        extName: '.handlebars',
-    }));
     if (userType == "Entreprise") {
-        info = {
-            from: 'Etokisana <contact@commercegestion.com>', // sender address
-            to: userEmail, // list of receivers
-            subject: "Bienvenue sur Etokisana", // Subject line
-            template: "ValidationEntrepriseEmail",
-            context: {
-                name: raisonSocial,
-                link: verificationLink,
-            }
-        };
-        console.log(info);
-        await transporter.sendMail(info, (error, info) => {
-            if (error) {
-                console.log(info);
-                console.log(error);
-                res.status(500).send('Error sendig mail:' + error);
-            }
-            else {
-                console.log("Email sent" + info.response);
-                res.status(200).send("Email sent successfully");
-            }
+        SendEmail("baseMail", "ValidationEntrepriseEmail", userEmail, "Bienvenue sur Etokisana", {
+            name: raisonSocial,
+            link: verificationLink,
         });
     }
     if (userType == "Particulier") {
-        info = {
-            from: 'Etokisana <contact@commercegestion.com>', // sender address
-            to: userEmail, // list of receivers
-            subject: "Bienvenue sur Etokisana", // Subject line
-            template: "ValidationEmail",
-            context: {
-                name: userName,
-                link: verificationLink,
-            }
-        };
-        console.log(info);
-        await transporter.sendMail(info, (error, info) => {
-            if (error) {
-                console.log(info);
-                console.log(error);
-                res.status(500).send('Error sendig mail:' + error);
-            }
-            else {
-                console.log("Email sent" + info.response);
-                res.status(200).send("Email sent successfully");
-            }
+        SendEmail("baseMail", "ValidationEmail", userEmail, "Bienvenue sur Etokisana", {
+            name: raisonSocial,
+            link: verificationLink,
         });
     }
     let newNotification = {
@@ -223,64 +167,16 @@ router.get("/validate/:id", asyncHandler(async (req, res) => {
     const userDBId = req.params['id'];
     const userById = await UserModel.findById({ _id: userDBId });
     await UserModel.updateOne({ _id: userDBId }, { $set: { userValidated: true } });
-    // const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
-    let transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: 465,
-        secure: true, // true for port 465, false for other ports
-        auth: {
-            user: process.env.EMAIL_USERNAME,
-            pass: process.env.EMAIL_PASSWORD
-        },
-    });
-    transporter.use("compile", hbs({
-        viewEngine: {
-            extname: '.handlebars',
-            partialsDir: './Utils/Emails/Template',
-            layoutsDir: './Utils/Emails/Template',
-            defaultLayout: 'baseMail',
-        },
-        viewPath: "./Utils/Emails/Template/",
-        extName: '.handlebars',
-    }));
-    let info = {};
     if (userById?.userType == "Entreprise") {
-        info = {
-            from: 'Etokisana <contact@commercegestion.com>', // sender address
-            to: userById?.userEmail, // list of receivers
-            subject: "Inscription terminée", // Subject line
-            template: "welcomeEntreprise",
-            context: {
-                name: userById?.userName,
-                // link : verificationLink,
-            }
-        };
-        console.log(info);
+        SendEmail("baseMail", "welcome", userById.userEmail, "Inscription terminée", {
+            name: userById.userName,
+        });
     }
-    if (userById?.userType == "Particulier") {
-        info = {
-            from: 'Etokisana <contact@commercegestion.com>', // sender address
-            to: userById?.userEmail, // list of receivers
-            subject: "Inscription terminée", // Subject line
-            template: "welcome",
-            context: {
-                name: userById?.userName,
-                // link : verificationLink,
-            }
-        };
-        console.log(info);
+    if (userById && userById.userType == "Particulier") {
+        SendEmail("baseMail", "welcome", userById.userEmail, "Inscription terminée", {
+            name: userById.userName,
+        });
     }
-    await transporter.sendMail(info, (error, info) => {
-        if (error) {
-            console.log(info);
-            console.log(error);
-            res.status(500).send('Error sendig mail:' + error);
-        }
-        else {
-            console.log("Email sent" + info.response);
-            res.status(200).send("Email sent successfully");
-        }
-    });
     // let newNotification = {
     //     userId  : userById?.userId,
     //     title   : "Inscritpion réussie !",
@@ -348,51 +244,13 @@ router.patch("/passwordReset", asyncHandler(async (req, res) => {
         }
     }
     if (isValid && user) {
-        let transporter = nodemailer.createTransport({
-            host: process.env.EMAIL_HOST,
-            port: 465,
-            secure: true, // true for port 465, false for other ports
-            auth: {
-                user: process.env.EMAIL_USERNAME,
-                pass: process.env.EMAIL_PASSWORD
-            },
-        });
-        transporter.use("compile", hbs({
-            viewEngine: {
-                extname: '.handlebars',
-                partialsDir: './Utils/Emails/Template',
-                layoutsDir: './Utils/Emails/Template',
-                defaultLayout: 'resetPassword'
-            },
-            viewPath: "./Utils/Emails/Template/",
-            extName: '.handlebars'
-        }));
-        let info = {
-            from: 'Etokisana <contact@commercegestion.com>', // sender address
-            to: user.userEmail, // list of receivers
-            subject: "Réinitialisation du mot de passe", // Subject line
-            template: "baseMail",
-            context: {
-                name: user.userFirstname,
-            }
-        };
-        await transporter.sendMail(info, (error, info) => {
-            if (error) {
-                console.log(info);
-                console.log(error);
-                res.status(500).send('Error sendig mail:' + error);
-            }
-            else {
-                console.log("Email sent" + info.response);
-                res.status(200).send("Email sent successfully");
-            }
-        });
+        SendEmail("baseMail", "resetPassword", user.userEmail, "Mot de passe réinitialiser", { name: user.userName, });
     }
     res.send('Password reseted');
 }));
 router.post("/requestResetPwd", asyncHandler(async (req, res) => {
     const { email } = req.body;
-    // console.log(email+ " " + userId)
+    //console.log(email+ " " + userId)
     const user = await UserModel.findOne({ userEmail: email });
     if (!user) {
         throw new Error("L'utilisateur n'existe pas");
@@ -411,51 +269,13 @@ router.post("/requestResetPwd", asyncHandler(async (req, res) => {
     }).save();
     //on envoi le token non crypté pour le comparer avec le token crypté de la base de donnée
     const link = `${clientURL}/#/passwordReset/${resetToken}/${user._id}`;
-    let transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: 465,
-        secure: true, // true for port 465, false for other ports
-        auth: {
-            user: process.env.EMAIL_USERNAME,
-            pass: process.env.EMAIL_PASSWORD
-        },
-    });
-    transporter.use("compile", hbs({
-        viewEngine: {
-            extname: '.handlebars',
-            partialsDir: './Utils/Emails/Template',
-            layoutsDir: './Utils/Emails/Template',
-            defaultLayout: 'requestResetPassword'
-        },
-        viewPath: "./Utils/Emails/Template/",
-        extName: '.handlebars'
-    }));
-    let info = {
-        from: 'Etokisana <contact@commercegestion.com>', // sender address
-        to: user.userEmail, // list of receivers
-        subject: "Réinitialisation du mot de passe", // Subject line
-        template: "baseMail",
-        context: {
-            name: user.userFirstname,
-            link: link,
-        }
-    };
-    await transporter.sendMail(info, (error, info) => {
-        if (error) {
-            console.log(info);
-            console.log(error);
-            res.status(500).send('Error sendig mail:' + error);
-        }
-        else {
-            console.log("Email sent" + info.response);
-            res.status(200).send('Email sent successfully');
-        }
+    SendEmail("requestResetPassword", "baseMail", user.userEmail, "Réinitialisation du mot de passe", {
+        name: user.userFirstname,
+        link: link,
     });
 }));
 router.get("", asyncHandler(async (req, res) => {
-    const users = await UserModel.find(
-    // {userAccess:"Utilisateur"}
-    );
+    const users = await UserModel.find();
     res.send(users);
 }));
 router.get("/id/:id", asyncHandler(async (req, res) => {
