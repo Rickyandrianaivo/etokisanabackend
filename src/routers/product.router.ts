@@ -128,6 +128,9 @@ router.get("/",expressAsyncHandler(async(req,res)=>{
 router.get("/:id",expressAsyncHandler(async(req,res)=>{
     const productId = req.params['id'];
     const selectedProduct = await ProductModel.findOne({_id : productId});
+    if(!selectedProduct){
+         res.status(404).send("Produit non trouvé");
+    }
     res.send(selectedProduct);
 }))
 router.get("/owner/:id",expressAsyncHandler(async(req,res)=>{
