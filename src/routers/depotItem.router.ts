@@ -33,7 +33,7 @@ router.delete("/delete/:id",expressAsyncHandler(async(req,res)=>{
 
 router.get("/:id",expressAsyncHandler(async(req,res)=>{
     const productId = req.params['id'];
-    const selectedProduct = await DepotItemModel.findOne({_id : productId});
+    const selectedProduct = await DepotItemModel.findOne({productId : productId});
     res.send(selectedProduct);
 }))
 
