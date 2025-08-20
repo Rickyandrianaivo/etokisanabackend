@@ -125,7 +125,7 @@ router.get("/",expressAsyncHandler(async(req,res)=>{
     const allProducts = await ProductModel.find();
     res.send(allProducts);
 }))
-router.get("/:id",expressAsyncHandler(async(req,res)=>{
+router.get("/id/:id",expressAsyncHandler(async(req,res)=>{
     const productId = req.params['id'];
     console.log("getproductbyid",productId);
     const selectedProduct = await ProductModel.findOne({_id : productId});
