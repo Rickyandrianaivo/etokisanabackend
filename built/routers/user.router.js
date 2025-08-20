@@ -86,7 +86,7 @@ router.post("/requestVerificationEmail", asyncHandler(async (req, res) => {
 router.post("/register/", asyncHandler(async (req, res) => {
     let tokenInfo;
     let userDb;
-    const { _id, userNickName, userName, userFirstname, userPassword, userEmail, userPhone, userAccess, userParainID, userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userId, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, } = req.body;
+    const { userNickName, userName, userFirstname, userPassword, userEmail, userPhone, userAccess, userParainID, userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userId, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, } = req.body;
     const user = await UserModel.findOne({ userEmail: userEmail.toLowerCase() });
     if (user) {
         res.send("Ce nom est déjà utilisé!");
@@ -95,7 +95,6 @@ router.post("/register/", asyncHandler(async (req, res) => {
     else {
         const encryptedPassword = await bcrypt.hash(userPassword, 10);
         const newUser = {
-            _id,
             userNickName,
             userName,
             userFirstname,

@@ -94,10 +94,16 @@ router.get("/", expressAsyncHandler(async (req, res) => {
     const allProducts = await ProductModel.find();
     res.send(allProducts);
 }));
-router.get("/:id", expressAsyncHandler(async (req, res) => {
+router.get("/id/:id", expressAsyncHandler(async (req, res) => {
     const productId = req.params['id'];
-    const selectedProduct = await ProductModel.findOne({ _id: productId });
-    res.send(selectedProduct);
+    console.log("getproductbyid", productId);
+    const selectedProduct = await ProductModel.findOne({ id: productId });
+    if (!selectedProduct) {
+        res.status(404).send("Produit non trouvé");
+    }
+    else {
+        res.send(selectedProduct);
+    }
 }));
 router.get("/owner/:id", expressAsyncHandler(async (req, res) => {
     const ownerId = req.params['id'];

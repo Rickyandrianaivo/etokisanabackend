@@ -7,16 +7,16 @@ export interface IDepotItem {
     lastUpdate: Date;
     currentDepotId: string;
 }
-export declare const DepotItemSchema: Schema<IDepotItem, import("mongoose").Model<IDepotItem, any, any, any, import("mongoose").Document<unknown, any, IDepotItem, any, {}> & IDepotItem & Required<{
+export declare const DepotItemSchema: Schema<IDepotItem, import("mongoose").Model<IDepotItem, any, any, any, import("mongoose").Document<unknown, any, IDepotItem> & IDepotItem & Required<{
     _id: string;
 }> & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, IDepotItem, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<IDepotItem>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<IDepotItem> & Required<{
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, IDepotItem, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<IDepotItem>> & import("mongoose").FlatRecord<IDepotItem> & Required<{
     _id: string;
 }> & {
     __v: number;
 }>;
-export declare const DepotItemModel: import("mongoose").Model<IDepotItem, {}, {}, {}, import("mongoose").Document<unknown, {}, IDepotItem, {}, {}> & IDepotItem & Required<{
+export declare const DepotItemModel: import("mongoose").Model<IDepotItem, {}, {}, {}, import("mongoose").Document<unknown, {}, IDepotItem> & IDepotItem & Required<{
     _id: string;
 }> & {
     __v: number;

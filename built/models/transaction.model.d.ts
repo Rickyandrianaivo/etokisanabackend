@@ -9,16 +9,16 @@ export interface ITransaction {
     statut: string;
     productList: [object];
 }
-export declare const TransactionSchema: mongoose.Schema<ITransaction, mongoose.Model<ITransaction, any, any, any, mongoose.Document<unknown, any, ITransaction, any, {}> & ITransaction & Required<{
+export declare const TransactionSchema: mongoose.Schema<ITransaction, mongoose.Model<ITransaction, any, any, any, mongoose.Document<unknown, any, ITransaction> & ITransaction & Required<{
     _id: string;
 }> & {
     __v: number;
-}, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, ITransaction, mongoose.Document<unknown, {}, mongoose.FlatRecord<ITransaction>, {}, mongoose.ResolveSchemaOptions<mongoose.DefaultSchemaOptions>> & mongoose.FlatRecord<ITransaction> & Required<{
+}, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, ITransaction, mongoose.Document<unknown, {}, mongoose.FlatRecord<ITransaction>> & mongoose.FlatRecord<ITransaction> & Required<{
     _id: string;
 }> & {
     __v: number;
 }>;
-export declare const TransactionModel: mongoose.Model<ITransaction, {}, {}, {}, mongoose.Document<unknown, {}, ITransaction, {}, {}> & ITransaction & Required<{
+export declare const TransactionModel: mongoose.Model<ITransaction, {}, {}, {}, mongoose.Document<unknown, {}, ITransaction> & ITransaction & Required<{
     _id: string;
 }> & {
     __v: number;
