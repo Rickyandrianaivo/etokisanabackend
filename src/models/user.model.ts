@@ -40,7 +40,7 @@ export const UserSchema = new Schema<User>({
     userName                : { type : String},
     userFirstname           : { type : String},
     userPassword            : { type : String, required : true},
-    userEmail               : { type : String, required : true, unique:true},
+    userEmail               : { type : String, required : true},
     userPhone               : { type : String},
     userType                : { type : String, required : true},
     userTotalSolde          : { type : Number},

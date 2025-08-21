@@ -408,7 +408,9 @@ router.delete("/delete/:id",asyncHandler(async(req,res)=>{
 
 router.patch("/update/:id",asyncHandler(async(req,res) => {
     const id = req.params['id'];
+    
     // const {
+    
     //     userName,
     //     userFirstname,
     //     userPassword,
@@ -437,6 +439,7 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
     // } = req.body;
      await UserModel.updateOne({_id : id}, {$set : req.body})
     // await UserModel.updateOne({_id : id}, {
+
     //   userName,
     //   userFirstname,
     //   userPassword,
