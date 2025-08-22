@@ -97,7 +97,7 @@ router.get("/", expressAsyncHandler(async (req, res) => {
 router.get("/id/:id", expressAsyncHandler(async (req, res) => {
     const productId = req.params['id'];
     console.log("getproductbyid", productId);
-    const selectedProduct = await ProductModel.findOne({ id: productId });
+    const selectedProduct = await ProductModel.findOne({ _id: productId });
     if (!selectedProduct) {
         res.status(404).send("Produit non trouvé");
     }
