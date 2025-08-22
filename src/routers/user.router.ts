@@ -9,6 +9,7 @@ import { SendEmail } from "../Utils/Emails/sendEmail.js";
 import multer from 'multer';
 import { NotificationModel } from "../models/notification.model.js";
 import { Options } from "nodemailer/lib/smtp-pool/index.js";
+import { SiteModel } from "../models/site.model.js";
 
 const bcryptSalt = process.env.BCRYPT_SALT;
 const clientURL = process.env.CLIENT_URL;
@@ -389,9 +390,14 @@ router.post("/login",asyncHandler(async(req,res) => {
 }))
 router.delete("/delete/:id",asyncHandler(async(req,res)=>{
   const userId = req.params.id;
-  console.log(userId)
-  await UserModel.deleteOne({_id : userId});
-  res.send("Utilisateur supprimé : " + userId);
+  const user = await UserModel.findOne({_id: userId})
+  const deletedSite = await SiteModel.deleteMany({siteUserID : userId})
+  if (user && deletedSite) {
+    await UserModel.deleteOne({_id : userId});
+    res.send("Utilisateur supprimé : " + userId);
+  }else{
+    res.send("Impossible d'effacer l'utilisateur");
+  }
 }))
 // router.patch("userToAdmin/:id",asyncHandler(async(req,res)=>{
 //   const userId = req.params['id'];
