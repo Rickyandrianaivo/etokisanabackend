@@ -80,7 +80,6 @@ router.post('/add',expressAsyncHandler(async(req,res)=>{
         currentDepotId,
     }= req.body;
     let newDepotItemData= {
-        _id,
         productId ,
         stock,
         prix,
