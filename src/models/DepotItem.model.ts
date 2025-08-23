@@ -1,7 +1,6 @@
 import { model, Schema } from "mongoose";
 
 export interface IDepotItem{
-    _id         : string;
     productId : string,
     stock: number,
     prix   : number,
@@ -9,7 +8,7 @@ export interface IDepotItem{
     currentDepotId : string,
 }
 export const DepotItemSchema = new Schema<IDepotItem>({
-    _id : { type : String},
+    
     productId : {type : String},
     stock: {type : Number},
     prix   : {type : Number},
