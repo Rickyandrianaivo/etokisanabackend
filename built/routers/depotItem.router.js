@@ -82,7 +82,7 @@ router.patch('/modifyDepotItem/:id', expressAsyncHandler(async (req, res) => {
     const newDepotItem = await DepotItemModel.updateOne({ _id: req.params['id'] }, { $set: req.body });
     res.send(newDepotItem).status(200);
 }));
-router.get('/getDepotItemByProductId/:id', expressAsyncHandler(async (req, res) => {
+router.get('/ByProductId/:id', expressAsyncHandler(async (req, res) => {
     const allDepotItemByProductId = await DepotItemModel.find({ productId: req.params['id'] });
     res.status(200).send(allDepotItemByProductId);
 }));
