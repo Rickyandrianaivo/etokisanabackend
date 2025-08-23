@@ -151,9 +151,8 @@ router.get('/getAllStock', expressAsyncHandler(async (req, res) => {
     }
 }));
 router.post('/addDepotItem', expressAsyncHandler(async (req, res) => {
-    const { _id, productId, stock, prix, lastUpdate, currentDepotId, } = req.body;
+    const { productId, stock, prix, lastUpdate, currentDepotId, } = req.body;
     let newDepotItemData = {
-        _id,
         productId,
         stock,
         prix,

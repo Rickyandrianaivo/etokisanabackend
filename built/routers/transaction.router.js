@@ -5,9 +5,8 @@ import { UserModel } from "../models/user.model.js";
 import { SendEmail } from "../Utils/Emails/sendEmail.js";
 const router = Router();
 router.post("/add", expressAsyncHandler(async (req, res) => {
-    const { _id, userId, siteDepartId, siteArriveId, typeES, montantTotal, statut, productList, } = req.body;
+    const { userId, siteDepartId, siteArriveId, typeES, montantTotal, statut, productList, } = req.body;
     const newTransaction = {
-        _id,
         userId,
         siteDepartId,
         siteArriveId,

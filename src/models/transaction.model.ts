@@ -2,7 +2,7 @@ import mongoose, { model, Schema } from "mongoose";
 import { ICartItem } from "./cartItem.model";
 
 export interface ITransaction{
-    _id         : string ;
+    // _id         : string ;
     userId      : string ;
     siteDepartId: string ;
     siteArriveId: string ;
@@ -12,7 +12,7 @@ export interface ITransaction{
     productList : [object] ;
 }
 export const TransactionSchema = new Schema<ITransaction>({
-    _id         : {type:String},
+    // _id         : {type:String},
     userId      :{ type:String, required:true },
     siteDepartId:{ type:String},
     siteArriveId:{ type:String, required:true},

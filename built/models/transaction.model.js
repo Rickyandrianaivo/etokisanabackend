@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 export const TransactionSchema = new Schema({
-    _id: { type: String },
+    // _id         : {type:String},
     userId: { type: String, required: true },
     siteDepartId: { type: String },
     siteArriveId: { type: String, required: true },

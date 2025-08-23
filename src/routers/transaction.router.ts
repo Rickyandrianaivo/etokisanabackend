@@ -9,7 +9,6 @@ const router = Router();
 
 router.post("/add",expressAsyncHandler(async(req,res)=>{
     const {
-      _id,
       userId,
       siteDepartId,
       siteArriveId,
@@ -19,7 +18,6 @@ router.post("/add",expressAsyncHandler(async(req,res)=>{
       productList,
     } = req.body;
     const newTransaction = {
-      _id,
       userId,
       siteDepartId,
       siteArriveId,
