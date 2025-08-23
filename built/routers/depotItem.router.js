@@ -55,7 +55,7 @@ router.get("/stock/:id", expressAsyncHandler(async (req, res) => {
 //         console.log("There is no depotItem Available")
 //     }
 // }))
-router.post('/addDepotItem', expressAsyncHandler(async (req, res) => {
+router.post('/add', expressAsyncHandler(async (req, res) => {
     const { _id, productId, stock, prix, lastUpdate, currentDepotId, } = req.body;
     let newDepotItemData = {
         _id,
