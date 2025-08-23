@@ -129,7 +129,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
     const user = await UserModel.findOne({userEmail : userEmail.toLowerCase()});
 
     if(user){
-        res.send("Ce nom est déjà utilisé!");
+        res.status(500).send("Ce nom est déjà utilisé!");
         return;
     }else
     {
@@ -209,7 +209,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         states  : "new",
       }
       await NotificationModel.create(newNotification);
-      
+      res.status(200).send("Utilisateur créé !!");
 }))
 
 router.get("/new",asyncHandler(async(req,res)=>{

@@ -90,7 +90,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
     const { userNickName, userName, userFirstname, userPassword, userEmail, userPhone, userAccess, userParainID, userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userId, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, } = req.body;
     const user = await UserModel.findOne({ userEmail: userEmail.toLowerCase() });
     if (user) {
-        res.send("Ce nom est déjà utilisé!");
+        res.status(500).send("Ce nom est déjà utilisé!");
         return;
     }
     else {
@@ -158,6 +158,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
         states: "new",
     };
     await NotificationModel.create(newNotification);
+    res.status(200).send("Utilisateur créé !!");
 }));
 router.get("/new", asyncHandler(async (req, res) => {
     const userNewList = await UserModel.find({ userValidated: false, userAccess: "Utilisateur" });

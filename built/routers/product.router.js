@@ -1,11 +1,6 @@
 import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { ProductModel } from "../models/product.model.js";
-import { StockElementModel } from "../models/stockElement.model.js";
-import { DepotItemModel } from "../models/DepotItem.model.js";
-import { SendEmail } from "../Utils/Emails/sendEmail.js";
-import { SiteModel } from "../models/site.model.js";
-import { UserModel } from "../models/user.model.js";
 import { sample_products } from "../data.js";
 import ftp from "basic-ftp";
 import multer from 'multer';
@@ -123,61 +118,6 @@ router.get("/state/:state", expressAsyncHandler(async (req, res) => {
     const productState = req.params['state'];
     const productByState = await ProductModel.find({ productCategory: productState });
     res.send(productByState);
-}));
-router.get("/stock/:id", expressAsyncHandler(async (req, res) => {
-    const depotId = req.params['id'];
-    const productInStock = await StockElementModel.find({ depotId: depotId });
-    res.send(productInStock);
-}));
-router.post("/addstock", expressAsyncHandler(async (req, res) => {
-    const { depotId, productId, quantity } = req.body;
-    const newStockElement = {
-        depotId,
-        productId,
-        quantity
-    };
-    await StockElementModel.create(newStockElement);
-    res.send(newStockElement);
-}));
-router.get('/getAllStock', expressAsyncHandler(async (req, res) => {
-    const allproduct = await DepotItemModel.find();
-    console.log(allproduct);
-    if (allproduct.length > 0) {
-        res.status(200).send(allproduct);
-    }
-    else {
-        console.log("There is no depotItem Available");
-    }
-}));
-router.post('/addDepotItem', expressAsyncHandler(async (req, res) => {
-    const { productId, stock, prix, lastUpdate, currentDepotId, } = req.body;
-    let newDepotItemData = {
-        productId,
-        stock,
-        prix,
-        lastUpdate,
-        currentDepotId,
-    };
-    const newDepotItem = await DepotItemModel.create(newDepotItemData);
-    const currentSite = await SiteModel.findOne({ _id: currentDepotId });
-    if (currentSite) {
-        const currentUser = await UserModel.findOne({ userId: currentSite.siteUserID });
-        if (currentUser) {
-            let contexteEmail = {
-                name: currentUser.userNickName,
-            };
-            SendEmail("baseMail", "Deposit", currentUser.userEmail, "Nouveau produit mis en stock", contexteEmail);
-        }
-    }
-    res.send(newDepotItem).status(200);
-}));
-router.patch('/modifyDepotItem/:id', expressAsyncHandler(async (req, res) => {
-    const newDepotItem = await DepotItemModel.updateOne({ _id: req.params['id'] }, { $set: req.body });
-    res.send(newDepotItem).status(200);
-}));
-router.get('/getDepotItemByProductId/:id', expressAsyncHandler(async (req, res) => {
-    const allDepotItemByProductId = await DepotItemModel.find({ productId: req.params['id'] });
-    res.status(200).send(allDepotItemByProductId);
 }));
 // à faire searchterm
 // filtre par prix croissant & décroissant ou fourchette
