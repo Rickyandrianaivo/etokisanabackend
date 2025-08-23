@@ -64,7 +64,6 @@ router.post("/seed", expressAsyncHandler(async (req, res) => {
 router.post("/add/", expressAsyncHandler(async (req, res) => {
     const { _id, codeCPC, productName, productDescription, productCategory, productState, productImage, productValidation, productVolume, productHauteur, productLargeur, productLongueur, productPoids, productOwnerId, } = req.body;
     const newProduct = {
-        _id,
         codeCPC,
         productName,
         productDescription,

@@ -94,7 +94,6 @@ router.post("/add/",expressAsyncHandler(async(req,res)=>{
         productOwnerId,
     }= req.body;
     const newProduct = {
-        _id,
         codeCPC,
         productName,
         productDescription,
