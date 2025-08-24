@@ -85,6 +85,10 @@ router.get('/ByProductId/:id', expressAsyncHandler(async (req, res) => {
     const allDepotItemByProductId = await DepotItemModel.find({ productId: req.params['id'] });
     res.status(200).send(allDepotItemByProductId);
 }));
+router.get('/id/:id', expressAsyncHandler(async (req, res) => {
+    const DepotItemById = await DepotItemModel.findOne({ _id: req.params['id'] });
+    res.status(200).send(DepotItemById);
+}));
 router.post('/upload-image', upload.single('file'), async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ success: false, error: "Aucun fichier fourni" });

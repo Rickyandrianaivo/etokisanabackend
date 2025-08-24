@@ -119,6 +119,11 @@ router.get('/ByProductId/:id',expressAsyncHandler(async(req,res)=>{
     res.status(200).send(allDepotItemByProductId);
 }))
 
+router.get('/id/:id',expressAsyncHandler(async(req,res)=>{
+    const DepotItemById = await DepotItemModel.findOne({_id : req.params['id']})
+    res.status(200).send(DepotItemById);
+}))
+
 
 router.post('/upload-image',upload.single('file'),async(req:MulterRequest,res:Response)=>{
     if(!req.file){
