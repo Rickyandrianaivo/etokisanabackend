@@ -13,7 +13,7 @@ export const SiteSchema = new Schema<ISite>({
     siteAddress :{type:String},
     siteLat     :{type:Number},
     siteLng     :{type:Number},
-    siteUserID  :{type:String,ref:'User'},
+    siteUserID  :{type:String,ref:'user'},
 },{
     timestamps : true,
     toJSON : {

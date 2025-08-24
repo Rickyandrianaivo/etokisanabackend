@@ -9,7 +9,7 @@ export interface IDepotItem{
 }
 export const DepotItemSchema = new Schema<IDepotItem>({
     
-    productId : {type : String,ref:'Product'},
+    productId : {type : String,ref:'product'},
     stock: {type : Number},
     prix   : {type : Number},
     lastUpdate : {type : Date},

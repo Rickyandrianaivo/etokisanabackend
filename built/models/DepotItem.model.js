@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 export const DepotItemSchema = new Schema({
-    productId: { type: String, ref: 'Product' },
+    productId: { type: String, ref: 'product' },
     stock: { type: Number },
     prix: { type: Number },
     lastUpdate: { type: Date },

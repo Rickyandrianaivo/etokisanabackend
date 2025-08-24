@@ -2,8 +2,8 @@ import { model, Schema } from "mongoose";
 export const TransactionSchema = new Schema({
     // _id         : {type:String},
     userId: { type: String, required: true },
-    siteDepartId: { type: String, ref: 'Site' },
-    siteArriveId: { type: String, required: true, ref: 'Site' },
+    siteDepartId: { type: String, ref: 'site' },
+    siteArriveId: { type: String, required: true, ref: 'site' },
     typeES: { type: String, required: true },
     montantTotal: { type: Number, required: true },
     statut: { type: String },
