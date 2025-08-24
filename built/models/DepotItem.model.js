@@ -4,7 +4,7 @@ export const DepotItemSchema = new Schema({
     stock: { type: Number },
     prix: { type: Number },
     lastUpdate: { type: Date },
-    currentDepotId: { type: String },
+    currentDepotId: { type: String, ref: 'site' },
 }, {
     timestamps: true,
     toJSON: {
