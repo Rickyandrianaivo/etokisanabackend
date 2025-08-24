@@ -14,8 +14,8 @@ export interface ITransaction{
 export const TransactionSchema = new Schema<ITransaction>({
     // _id         : {type:String},
     userId      :{ type:String, required:true },
-    siteDepartId:{ type:String},
-    siteArriveId:{ type:String, required:true},
+    siteDepartId:{ type:String,ref:'Site'},
+    siteArriveId:{ type:String, required:true,ref:'Site'},
     typeES      :{ type:String, required : true },
     montantTotal:{ type:Number, required:true },
     statut      :{ type:String },

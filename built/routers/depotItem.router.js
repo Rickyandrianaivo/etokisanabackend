@@ -56,7 +56,7 @@ router.get("/stock/:id", expressAsyncHandler(async (req, res) => {
 //     }
 // }))
 router.post('/add', expressAsyncHandler(async (req, res) => {
-    const { _id, productId, stock, prix, lastUpdate, currentDepotId, } = req.body;
+    const { productId, stock, prix, lastUpdate, currentDepotId, } = req.body;
     let newDepotItemData = {
         productId,
         stock,
@@ -82,11 +82,11 @@ router.patch('/modifyDepotItem/:id', expressAsyncHandler(async (req, res) => {
     res.send(newDepotItem).status(200);
 }));
 router.get('/ByProductId/:id', expressAsyncHandler(async (req, res) => {
-    const allDepotItemByProductId = await DepotItemModel.find({ productId: req.params['id'] });
+    const allDepotItemByProductId = await DepotItemModel.find({ productId: req.params['id'] }).populate('productId');
     res.status(200).send(allDepotItemByProductId);
 }));
 router.get('/id/:id', expressAsyncHandler(async (req, res) => {
-    const DepotItemById = await DepotItemModel.findOne({ _id: req.params['id'] });
+    const DepotItemById = await DepotItemModel.findOne({ _id: req.params['id'] }).populate('productId');
     res.status(200).send(DepotItemById);
 }));
 router.post('/upload-image', upload.single('file'), async (req, res) => {

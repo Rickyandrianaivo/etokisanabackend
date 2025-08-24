@@ -72,7 +72,6 @@ router.get("/stock/:id",expressAsyncHandler(async(req,res)=>{
 // }))
 router.post('/add',expressAsyncHandler(async(req,res)=>{
     const {    
-        _id, 
         productId ,
         stock,
         prix,
@@ -115,12 +114,13 @@ router.patch('/modifyDepotItem/:id',expressAsyncHandler(async(req,res)=>{
 }))
 
 router.get('/ByProductId/:id',expressAsyncHandler(async(req,res)=>{
-    const allDepotItemByProductId = await DepotItemModel.find({productId : req.params['id']})
+    const allDepotItemByProductId = await DepotItemModel.find({productId : req.params['id']}).populate('productId')
+    
     res.status(200).send(allDepotItemByProductId);
 }))
 
 router.get('/id/:id',expressAsyncHandler(async(req,res)=>{
-    const DepotItemById = await DepotItemModel.findOne({_id : req.params['id']})
+    const DepotItemById = await DepotItemModel.findOne({_id : req.params['id']}).populate('productId')
     res.status(200).send(DepotItemById);
 }))
 
