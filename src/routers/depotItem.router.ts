@@ -113,8 +113,6 @@ router.patch('/modifyDepotItem/:id',expressAsyncHandler(async(req,res)=>{
     res.send(newDepotItem).status(200);
 }))
 
-router.get('/getDepotItemByProductId/:id',expressAsyncHandler(async(req,res)=>{
-    const allDepotItemByProductId = await DepotItemModel.find({productId : req.params['id']})
 router.get('/ByProductId/:id',expressAsyncHandler(async(req,res)=>{
     const allDepotItemByProductId = await DepotItemModel.findOne({productId : req.params['id']})
     // .populate('productId')
