@@ -108,6 +108,20 @@ router.post('/add',expressAsyncHandler(async(req,res)=>{
 
 }))
 
+router.post('/delete/:id',expressAsyncHandler(async(req,res)=>{
+    
+    const deletedDepotItem = await DepotItemModel.findOne({_id :req.params['id']})
+    res.send(deletedDepotItem).status(200);
+
+}))
+
+router.post('/deleteByProductId/:id',expressAsyncHandler(async(req,res)=>{
+    
+    const deletedDepotItem = await DepotItemModel.deleteMany({productId :req.params['id']})
+    res.send(deletedDepotItem).status(200);
+
+}))
+
 router.patch('/modifyDepotItem/:id',expressAsyncHandler(async(req,res)=>{
     const newDepotItem = await DepotItemModel.updateOne({_id:req.params['id']},{$set:req.body});
     res.send(newDepotItem).status(200);
