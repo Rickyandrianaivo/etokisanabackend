@@ -39,6 +39,7 @@ router.get("/", expressAsyncHandler(async(req,res)=>{
 router.get("userId/:userId"),expressAsyncHandler(async(req,res)=>{
     const userId = req.params['userId'];
     const userNotifications = NotificationModel.find({userId : userId});
+    console.log(userNotifications)
     res.send(userNotifications).status(200);
 })
 router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
