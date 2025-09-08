@@ -21,9 +21,9 @@ router.delete("/delete/:id", expressAsyncHandler(async (req, res) => {
     await DepotItemModel.deleteOne({ _id: req.params['id'] });
     res.status(200).send("suppression réussie !");
 }));
-router.get("/:id", expressAsyncHandler(async (req, res) => {
-    const productId = req.params['id'];
-    const selectedProduct = await DepotItemModel.findOne({ productId: productId });
+router.get("id/:id", expressAsyncHandler(async (req, res) => {
+    const depotItemId = req.params['id'];
+    const selectedProduct = await DepotItemModel.findOne({ _id: depotItemId });
     res.send(selectedProduct);
 }));
 router.get("/owner/:id", expressAsyncHandler(async (req, res) => {
@@ -56,11 +56,11 @@ router.get("/stock/:id", expressAsyncHandler(async (req, res) => {
 //     }
 // }))
 router.post('/add', expressAsyncHandler(async (req, res) => {
-    const { productId, stock, prix, lastUpdate, currentDepotId, } = req.body;
+    const { productId, stock, price, lastUpdate, currentDepotId, } = req.body;
     let newDepotItemData = {
         productId,
         stock,
-        prix,
+        price,
         lastUpdate,
         currentDepotId,
     };
@@ -77,20 +77,24 @@ router.post('/add', expressAsyncHandler(async (req, res) => {
     }
     res.send(newDepotItem).status(200);
 }));
+router.post('/delete/:id', expressAsyncHandler(async (req, res) => {
+    const deletedDepotItem = await DepotItemModel.findOne({ _id: req.params['id'] });
+    res.send(deletedDepotItem).status(200);
+}));
+router.post('/deleteByProductId/:id', expressAsyncHandler(async (req, res) => {
+    const deletedDepotItem = await DepotItemModel.deleteMany({ productId: req.params['id'] });
+    res.send(deletedDepotItem).status(200);
+}));
 router.patch('/modifyDepotItem/:id', expressAsyncHandler(async (req, res) => {
     const newDepotItem = await DepotItemModel.updateOne({ _id: req.params['id'] }, { $set: req.body });
     res.send(newDepotItem).status(200);
 }));
 router.get('/ByProductId/:id', expressAsyncHandler(async (req, res) => {
-    const allDepotItemByProductId = await DepotItemModel.find({ productId: req.params['id'] })
-        .populate('productId')
-        .populate('currentDepotId')
-        .exec();
+    const allDepotItemByProductId = await DepotItemModel.findOne({ productId: req.params['id'] });
+    // .populate('productId')
+    // .populate('currentDepotId')
+    // .exec();
     res.status(200).send(allDepotItemByProductId);
-}));
-router.get('/id/:id', expressAsyncHandler(async (req, res) => {
-    const DepotItemById = await DepotItemModel.findOne({ _id: req.params['id'] }).populate('productId');
-    res.status(200).send(DepotItemById);
 }));
 router.post('/upload-image', upload.single('file'), async (req, res) => {
     if (!req.file) {
