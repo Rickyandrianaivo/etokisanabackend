@@ -61,15 +61,13 @@ router.get("/stock/:id",expressAsyncHandler(async(req,res)=>{
     res.send(productInStock);
 }))
 
-// router.get('/getAllStock',expressAsyncHandler(async(req,res)=>{
-//     const allproduct = await DepotItemModel.find();
-//     console.log(allproduct);
-//     if (allproduct.length>0) {
-//         res.status(200).send(allproduct);
-//     }else{
-//         console.log("There is no depotItem Available")
-//     }
-// }))
+router.get('/getStock/:productId/:depotId',expressAsyncHandler(async(req,res)=>{
+    const productId = req.params['productId'];
+    const depotId = req.params['depotId'];
+    const currentStock = await DepotItemModel.findOne({productId,currentDepotId : depotId});
+    console.log(currentStock);
+        res.status(200).send(currentStock);
+}))
 router.post('/add',expressAsyncHandler(async(req,res)=>{
     const {    
         productId ,
