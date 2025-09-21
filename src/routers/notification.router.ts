@@ -36,8 +36,13 @@ router.get("/", expressAsyncHandler(async(req,res)=>{
     res.send(categories).status(200);
     
 }))
-router.get("/userId/:id"),expressAsyncHandler(async(req,res)=>{
-    const userId = req.params['id'];
+router.get("id/:id", expressAsyncHandler(async(req,res)=>{
+    const categories = await NotificationModel.find();
+    res.send(categories).status(200);
+    
+}))
+router.get("/userId/:userId"),expressAsyncHandler(async(req,res)=>{
+    const userId = req.params['userId'];
     console.log(userId);
     const userNotifications = await NotificationModel.find({userId : userId});
     console.log(userNotifications)
