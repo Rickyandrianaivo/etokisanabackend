@@ -45,19 +45,9 @@ router.get("/userid/:id", expressAsyncHandler(async(req,res)=>{
     const notifications = await NotificationModel.find({userId:req.params['id']});
     res.send(notifications).status(200);
 }))
-router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
-    const {
-        userId,
-        title,
-        message,
-        state,
-    } = req.body;
-    await NotificationModel.updateOne({_id : req.params['id']},{
-        userId,
-        title,
-        message,
-        state,
-    })
+router.patch("/update/:id",expressAsyncHandler(async(req,res)=>{
+    const updatednotification = await NotificationModel.updateOne({_id : req.params['id']},{$set : req.body});
+    res.send(updatednotification).status(200);
 }))
 router.delete("/delete/:id",expressAsyncHandler(async(req,res)=>{
     res.status(200);
