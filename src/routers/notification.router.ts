@@ -37,7 +37,7 @@ router.get("/", expressAsyncHandler(async(req,res)=>{
     
 }))
 router.get("/id/:id", expressAsyncHandler(async(req,res)=>{
-    const categories = await NotificationModel.findOne({_id:req.params['id']});
+    const categories = await NotificationModel.findOne({userId:req.params['id']});
     res.send(categories).status(200);
     
 }))
