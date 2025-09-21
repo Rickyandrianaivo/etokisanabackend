@@ -42,7 +42,7 @@ router.get("/id/:id", expressAsyncHandler(async(req,res)=>{
     
 }))
 router.get("/userid/:id", expressAsyncHandler(async(req,res)=>{
-    const notifications = await NotificationModel.findOne({userId:req.params['id']});
+    const notifications = await NotificationModel.find({userId:req.params['id']});
     res.send(notifications).status(200);
 }))
 router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
