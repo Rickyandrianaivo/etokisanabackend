@@ -4,13 +4,13 @@ export interface INotification{
     userId  : string;
     title   : string;
     message : string ;
-    states  : string ;
+    state  : string ;
 }
 export const NotificationSchema = new Schema<INotification>({
     userId  : { type : String,required:true},
     title   : { type : String, required : true},
     message : { type : String},
-    states  : { type : String, required : true},
+    state  : { type : String, required : true},
 },{
     timestamps : true,
     toJSON : {
