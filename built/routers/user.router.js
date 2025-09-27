@@ -65,7 +65,7 @@ router.get("/user-confirmation/:token", asyncHandler(async (req, res) => {
                 userId: verified.userId,
                 title: "Email vérifié",
                 message: "Féliicitations ! Votra Email a bien été vérifié",
-                states: "new",
+                state: "new",
             };
             await NotificationModel.create(newNotification);
             res.status(200).send("Token Effacer");

@@ -22,14 +22,14 @@ router.post("/add",expressAsyncHandler(async(req,res)=>{
         message,
         state,
     } = req.body;
-    const newCategory = {
+    const newNotification = {
         userId,
         title,
         message,
         state,
     }
-    await NotificationModel.create(newCategory);
-    res.status(200)
+    await NotificationModel.create(newNotification);
+    res.status(200).send(newNotification)
 }))
 router.get("/", expressAsyncHandler(async(req,res)=>{
     const notifications = await NotificationModel.find();

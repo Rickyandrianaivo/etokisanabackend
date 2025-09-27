@@ -69,7 +69,7 @@ router.get("/user-confirmation/:token",asyncHandler(async(req,res)=>{
             userId  : verified.userId,
             title   : "Email vérifié",
             message : "Féliicitations ! Votra Email a bien été vérifié",
-            states  : "new",
+            state  : "new",
           }
           await NotificationModel.create(newNotification);
           res.status(200).send("Token Effacer");
@@ -416,7 +416,6 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
     const id = req.params['id'];
     
     // const {
-    
     //     userName,
     //     userFirstname,
     //     userPassword,
@@ -445,7 +444,6 @@ router.patch("/update/:id",asyncHandler(async(req,res) => {
     // } = req.body;
      await UserModel.updateOne({_id : id}, {$set : req.body})
     // await UserModel.updateOne({_id : id}, {
-
     //   userName,
     //   userFirstname,
     //   userPassword,
