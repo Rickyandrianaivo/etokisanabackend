@@ -54,11 +54,11 @@ router.get('/getStock/:productId/:depotId', expressAsyncHandler(async (req, res)
     res.status(200).send(currentStock);
 }));
 router.post('/add', expressAsyncHandler(async (req, res) => {
-    const { productId, stock, price, lastUpdate, currentDepotId, } = req.body;
+    const { productId, stock, prix, lastUpdate, currentDepotId, } = req.body;
     let newDepotItemData = {
         productId,
         stock,
-        price,
+        prix,
         lastUpdate,
         currentDepotId,
     };

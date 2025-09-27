@@ -72,14 +72,14 @@ router.post('/add',expressAsyncHandler(async(req,res)=>{
     const {    
         productId ,
         stock,
-        price,
+        prix,
         lastUpdate,
         currentDepotId,
     }= req.body;
     let newDepotItemData= {
         productId ,
         stock,
-        price,
+        prix,
         lastUpdate,
         currentDepotId,
     }
