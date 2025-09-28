@@ -21,7 +21,7 @@ router.delete("/delete/:id", expressAsyncHandler(async (req, res) => {
     await DepotItemModel.deleteOne({ _id: req.params['id'] });
     res.status(200).send("suppression réussie !");
 }));
-router.get("id/:id", expressAsyncHandler(async (req, res) => {
+router.get("/id/:id", expressAsyncHandler(async (req, res) => {
     const depotItemId = req.params['id'];
     const selectedProduct = await DepotItemModel.findOne({ _id: depotItemId });
     res.send(selectedProduct);

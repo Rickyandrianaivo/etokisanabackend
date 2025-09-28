@@ -122,7 +122,7 @@ router.delete("/delete/:id",expressAsyncHandler(async(req,res)=>{
 
 router.get("/",expressAsyncHandler(async(req,res)=>{
     const allProducts = await ProductModel.find();
-    res.send(allProducts);
+    res.send(allProducts).status(200);
 }))
 router.get("/id/:id",expressAsyncHandler(async(req,res)=>{
     const productId = req.params['id'];
@@ -131,7 +131,7 @@ router.get("/id/:id",expressAsyncHandler(async(req,res)=>{
     if(!selectedProduct){
          res.status(404).send("Produit non trouvé");
     }else{
-        res.send(selectedProduct);
+        res.send(selectedProduct).status(200);
     }
 }))
 router.get("/owner/:id",expressAsyncHandler(async(req,res)=>{
