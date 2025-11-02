@@ -2,6 +2,7 @@ import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { NotificationModel } from "../models/notification.model.js";
 import { sample_categories } from "../data.js";
+import { exec } from "child_process";
 
 const router = Router();
 
@@ -42,7 +43,7 @@ router.get("/id/:id", expressAsyncHandler(async(req,res)=>{
     
 }))
 router.get("/userid/:id", expressAsyncHandler(async(req,res)=>{
-    const notifications = await NotificationModel.find({userId:req.params['id']});
+    const notifications = await NotificationModel.find({userId:req.params['id']}).sort({createdAt: -1});
     res.send(notifications).status(200);
 }))
 router.get("/new/:id", expressAsyncHandler(async(req,res)=>{
