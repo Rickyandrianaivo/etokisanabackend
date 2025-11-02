@@ -62,8 +62,8 @@ router.get("/stock/:id",expressAsyncHandler(async(req,res)=>{
 }))
 
 router.get("/productinfos/:id",expressAsyncHandler(async(req,res)=>{
-    const depotId = req.params['id'];
-    const depotItemProductInfos = await DepotItemModel.find({currentDepotId : depotId}).populate({path:'productId'});
+    const depotItemId = req.params['id'];
+    const depotItemProductInfos = await DepotItemModel.findOne({_id : depotItemId}).populate({path:'productId'});
     res.send(depotItemProductInfos).status(200);
 }))
 
