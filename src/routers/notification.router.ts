@@ -52,6 +52,7 @@ router.get("/new/:id", expressAsyncHandler(async(req,res)=>{
 }))
 router.patch("/update/:id",expressAsyncHandler(async(req,res)=>{
     const updatednotification = await NotificationModel.updateOne({_id : req.params['id']},{$set : req.body});
+    console.log(updatednotification);
     res.send(updatednotification).status(200);
 }))
 router.delete("/delete/:id",expressAsyncHandler(async(req,res)=>{
