@@ -60,11 +60,13 @@ router.get("/stock/:id",expressAsyncHandler(async(req,res)=>{
     const productInStock = await DepotItemModel.find({currentDepotId : depotId});
     res.send(productInStock);
 }))
+
 router.get("/productinfos/:id",expressAsyncHandler(async(req,res)=>{
     const depotId = req.params['id'];
     const depotItemProductInfos = await DepotItemModel.find({currentDepotId : depotId}).populate({path:'productId'});
     res.send(depotItemProductInfos).status(200);
 }))
+
 router.get('/getStock/:productId/:depotId',expressAsyncHandler(async(req,res)=>{
     const productId = req.params['productId'];
     const depotId = req.params['depotId'];
@@ -72,6 +74,7 @@ router.get('/getStock/:productId/:depotId',expressAsyncHandler(async(req,res)=>{
     console.log(currentStock);
         res.status(200).send(currentStock);
 }))
+
 router.post('/add',expressAsyncHandler(async(req,res)=>{
     const {    
         productId ,
@@ -111,14 +114,12 @@ router.post('/add',expressAsyncHandler(async(req,res)=>{
 }))
 
 router.post('/delete/:id',expressAsyncHandler(async(req,res)=>{
-    
     const deletedDepotItem = await DepotItemModel.findOne({_id :req.params['id']})
     res.send(deletedDepotItem).status(200);
 
 }))
 
 router.post('/deleteByProductId/:id',expressAsyncHandler(async(req,res)=>{
-    
     const deletedDepotItem = await DepotItemModel.deleteMany({productId :req.params['id']})
     res.send(deletedDepotItem).status(200);
 

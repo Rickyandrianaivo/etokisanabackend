@@ -2,8 +2,8 @@ import { Product } from "./product.model";
 
 // import { model, Schema } from "mongoose";
 export interface ICartItem{
-    CartItemProduct : Product,
-    CartItemQuantity: number,
-    CartItemPrice   : number,
-    CartItemMontant : number,
+    depotItem : string,
+    quantity: number,
+    price   : number,
+    montant : number,
 }
