@@ -60,7 +60,7 @@ router.put("/update/:id",expressAsyncHandler(async(req,res)=>{
 router.delete("/delete/:id",expressAsyncHandler(async(req,res)=>{
     const siteId = req.params['id']
     await SiteModel.deleteOne({_id : siteId});
-    res.status(200).send("Site effacer ! ")
+    res.status(200).send("Site supprimé !!!")
 }))
 router.post("/addStock",expressAsyncHandler(async(req,res)=>{
     const {
