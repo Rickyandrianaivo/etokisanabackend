@@ -11,7 +11,7 @@ const logger = winston.createLogger({
     transports: [new winston.transports.Console()]
 });
 // export const sendEmail = async (from: string, to: string, subject: string, html: string) => {
-export const sendEmail = async (email, subject, payload, template) => {
+export const SendEmail = async (email, subject, payload, template) => {
     const transporter = nodemailer.createTransport({
         host: process.env.MAIL_HOST,
         port: 465,
