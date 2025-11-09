@@ -20,12 +20,15 @@ export const SendEmail =  async (
     subjectEmail:string,
     contextObject:any)=>{
     let transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
+        // host: process.env.EMAIL_HOST,
+        host : "commercegestion.com",
         port: 465,
         secure: true, // true for port 465, false for other ports
         auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD
+        // user: process.env.EMAIL_USERNAME,
+        // pass: process.env.EMAIL_PASSWORD
+        user: "contact@commercegestion.com",
+        pass: "Rzh398aNVtFZUu4"
         },
     });
     transporter.use("compile",hbs({
