@@ -155,7 +155,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
         userId: userId,
         title: "Inscription en attente",
         message: "Nous vous remercions de votre patience pendant la validation de votre insciption au sein de nos administrateurs",
-        states: "new",
+        state: "new",
     };
     await NotificationModel.create(newNotification);
     res.status(200).send("Utilisateur créé !!!");

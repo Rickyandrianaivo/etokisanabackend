@@ -18,7 +18,7 @@ app.use('/uploads', express.static('uploads'));
 app.use(cors(
 // {origin:["http://localhost:4200","https://www.commercegestion.com","https://commercegestion.com"]}
 {
-    origin: "*",
+    origin: ["http://localhost:4200", "https://www.commercegestion.com", "https://commercegestion.com"],
 }));
 // app.use(fileUpload({
 //     limits:{fieldSize:50 * 1024 * 1024} // limit file size to 200MB
