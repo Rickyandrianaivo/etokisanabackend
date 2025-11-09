@@ -205,7 +205,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
       let newNotification ={
         userId  : userId,
         title   : "Inscription en attente",
-        message : "Nous vous remercions de faire de patience pendant la validation de votre insciption au sein de nos administrateurs",
+        message : "Nous vous remercions de votre patience pendant la validation de votre insciption au sein de nos administrateurs",
         states  : "new",
       }
       await NotificationModel.create(newNotification);

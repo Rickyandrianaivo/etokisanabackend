@@ -1,10 +1,10 @@
 import { Schema } from "mongoose";
 export interface IDepotItem {
+    currentDepotId: string;
     productId: string;
     stock: number;
     prix: number;
     lastUpdate: Date;
-    currentDepotId: string;
 }
 export declare const DepotItemSchema: Schema<IDepotItem, import("mongoose").Model<IDepotItem, any, any, any, import("mongoose").Document<unknown, any, IDepotItem, any, {}> & IDepotItem & {
     _id: import("mongoose").Types.ObjectId;
