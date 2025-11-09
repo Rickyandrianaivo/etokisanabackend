@@ -68,15 +68,15 @@ router.get("/user-confirmation/:token",asyncHandler(async(req,res)=>{
           let newNotification = {
             userId  : verified.userId,
             title   : "Email vérifié",
-            message : "Féliicitations ! Votra Email a bien été vérifié",
+            message : "Félicitations ! Votre Email a bien été vérifié",
             state  : "new",
           }
           await NotificationModel.create(newNotification);
-          res.status(200).send("Token Effacer");
+          res.status(200).send("Token Effacé");
         }
     }
     else{
-      res.status(404).send("Token Introuvable")
+      res.status(404).send("Token introuvable")
     }
 }))
 
@@ -129,7 +129,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
     const user = await UserModel.findOne({userEmail : userEmail.toLowerCase()});
 
     if(user){
-        res.status(500).send("Ce nom est déjà utilisé!");
+        res.status(500).send("Ce nom est déjà utilisé !");
         return;
     }else
     {
@@ -209,7 +209,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         states  : "new",
       }
       await NotificationModel.create(newNotification);
-      res.status(200).send("Utilisateur créé !!");
+      res.status(200).send("Utilisateur créé !!!");
 }))
 
 router.get("/new",asyncHandler(async(req,res)=>{
@@ -297,11 +297,11 @@ router.patch("/passwordReset",asyncHandler(async(req,res)=>{
     let passwordResetToken = await TokenModel.findOne({ userId : id });
     let user = await UserModel.findOne({_id:id})
     if (!passwordResetToken) {
-      throw new Error("Invalid or expired password reset token");
+      throw new Error("Mot de passe incorrect !");
     }
     const isValid = await bcrypt.compare(token, passwordResetToken.token);
     if (!isValid) {
-      throw new Error("Invalid or expired password reset token");
+      throw new Error("Mot de passe incorrect !");
     }
     const hash = await bcrypt.hash(password, Number(bcryptSalt));
     if (user && passwordResetToken) {
@@ -319,11 +319,11 @@ router.patch("/passwordReset",asyncHandler(async(req,res)=>{
         "baseMail",
         "resetPassword",
         user.userEmail,
-        "Mot de passe réinitialiser",
+        "Mot de passe réinitialisé",
         {name : user.userName,}
       )
     }
-    res.send('Password reseted')   
+    res.send('Mot de passe réinitialisé')   
  }))
 
 router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
@@ -385,7 +385,7 @@ router.post("/login",asyncHandler(async(req,res) => {
         res.send(generateTokenResponse(user));
         
     }else{
-        res.status(404).send("User name or password is not valid!")
+        res.status(404).send("L'utilisateur n'existe pas ou le mot de passe est incorrect !");
     }
 }))
 router.delete("/delete/:id",asyncHandler(async(req,res)=>{
@@ -396,7 +396,7 @@ router.delete("/delete/:id",asyncHandler(async(req,res)=>{
     await UserModel.deleteOne({_id : userId});
     res.send("Utilisateur supprimé : " + userId);
   }else{
-    res.send("Impossible d'effacer l'utilisateur");
+    res.send("Impossible de supprimer l'utilisateur");
   }
 }))
 // router.patch("userToAdmin/:id",asyncHandler(async(req,res)=>{
