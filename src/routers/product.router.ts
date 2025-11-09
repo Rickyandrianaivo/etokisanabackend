@@ -1,11 +1,11 @@
 import { Router, Request,Response } from "express"
 import expressAsyncHandler from "express-async-handler";
 import { ProductModel } from "../models/product.model.js";
-import { StockElementModel } from "../models/stockElement.model.js";
-import { DepotItemModel } from "../models/DepotItem.model.js";
-import { SendEmail } from "../Utils/Emails/sendEmail.js";
-import { SiteModel } from "../models/site.model.js";
-import { UserModel } from "../models/user.model.js";
+// import { StockElementModel } from "../models/stockElement.model.js";
+// import { DepotItemModel } from "../models/DepotItem.model.js";
+// import { SendEmail } from "../Utils/Emails/sendEmail.js";
+// import { SiteModel } from "../models/site.model.js";
+// import { UserModel } from "../models/user.model.js";
 import { sample_products } from "../data.js";
 import  ftp from "basic-ftp";
 import multer from 'multer';
@@ -26,7 +26,8 @@ router.post('/upload-image',upload.single('file'),async(req:MulterRequest,res:Re
         return res.status(400).json({success: false, error : "Aucun fichier fourni"})
     }
     const  localPath = req.file.path; // chemin temporaire
-    const remotePath = `/httpdocs/images/${req.file.originalname}`; // destination
+    const newFileName = new Date()+"-"+req.file.originalname;
+    const remotePath = `/httpdocs/images/${newFileName}`; // destination
 
     const client = new ftp.Client();
     client.ftp.verbose = true;
@@ -42,7 +43,7 @@ router.post('/upload-image',upload.single('file'),async(req:MulterRequest,res:Re
 
         // Envoi du fichier
         await client.uploadFrom(localPath,remotePath);
-        const imageUrl = `https://www.commercegestion.com/images/${req.file.originalname}`
+        const imageUrl = `https://www.commercegestion.com/images/${newFileName}`
 
         //Supprimer le fichier local après upload
         fs.unlinkSync(localPath);

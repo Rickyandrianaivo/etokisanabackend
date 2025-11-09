@@ -24,6 +24,8 @@ export const SendEmail =  async (
         host : "commercegestion.com",
         port: 465,
         secure: true, // true for port 465, false for other ports
+        debug:true,
+        logger :true,
         auth: {
         // user: process.env.EMAIL_USERNAME,
         // pass: process.env.EMAIL_PASSWORD
@@ -52,10 +54,11 @@ export const SendEmail =  async (
 
     transporter.sendMail(info,(error,info)=>{
         if (error) {
-            console.log(info);
-            console.log(error);
+            // console.log(info);
+            // console.log(error);
+            return console.log('Erreur lors de l\'envoi:' ,error);
         }   else{
-            console.log("Email sent" + info.response);
+            console.log('Message envoyé : %s' + info.response);
         }
     })
 }
