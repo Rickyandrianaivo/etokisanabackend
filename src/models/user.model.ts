@@ -51,7 +51,7 @@ export const UserSchema = new Schema<User>({
     userEmailVerified       : { type : Boolean},
     userMainLat             : { type : Number},
     userMainLng             : { type : Number},
-    userId                  : { type : String, required : true},
+    userId                  : { type : String, required : true,unique : true},
     userImage               : { type : String},
     userDateOfBirth         : { type : Date},
     identityCardNumber      : { type : String},
