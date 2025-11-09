@@ -16,7 +16,7 @@ export const UserSchema = new Schema({
     userEmailVerified: { type: Boolean },
     userMainLat: { type: Number },
     userMainLng: { type: Number },
-    userId: { type: String, required: true, unique: true },
+    userId: { type: String, required: true },
     userImage: { type: String },
     userDateOfBirth: { type: Date },
     identityCardNumber: { type: String },
