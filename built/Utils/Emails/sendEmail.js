@@ -41,6 +41,14 @@ export const SendEmail = async (defaultLayout, templateName, destinataireEmail, 
         template: templateName,
         context: contextObject
     };
+    transporter.verify((error, success) => {
+        if (error) {
+            console.error('Erreur de configuration du transporteur SMTP :', error);
+        }
+        else {
+            console.log('Transporteur SMTP prêt pour l\'envoi d\'emails.', success);
+        }
+    });
     transporter.sendMail(info, (error, info) => {
         if (error) {
             // console.log(info);

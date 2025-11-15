@@ -18,6 +18,7 @@ router.post('/upload-image', upload.single('file'), async (req, res) => {
     }
     const localPath = req.file.path; // chemin temporaire
     const newFileName = new Date() + "-" + req.file.originalname;
+    console.log(newFileName);
     const remotePath = `/httpdocs/images/${newFileName}`; // destination
     const client = new ftp.Client();
     client.ftp.verbose = true;
