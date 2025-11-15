@@ -26,8 +26,9 @@ router.post('/upload-image',upload.single('file'),async(req:MulterRequest,res:Re
         return res.status(400).json({success: false, error : "Aucun fichier fourni"})
     }
     const  localPath = req.file.path; // chemin temporaire
-    const newFileName = new Date()+"-"+req.file.originalname;
-    console.log(newFileName);
+    // const newFileName = new Date()+"-"+req.file.originalname;
+    const newFileName = req.file.originalname;
+    // console.log(newFileName);
     const remotePath = `/httpdocs/images/${newFileName}`; // destination
 
     const client = new ftp.Client();
@@ -80,7 +81,6 @@ router.post("/seed",expressAsyncHandler(async(req,res)=>{
 }))
 router.post("/add/",expressAsyncHandler(async(req,res)=>{
     const {
-        _id,
         codeCPC,
         productName,
         productDescription,
@@ -110,6 +110,10 @@ router.post("/add/",expressAsyncHandler(async(req,res)=>{
         productPoids,
         productOwnerId,
     }
+    const newProductData = req.body;
+    console.log(newProductData);
+    console.log(newProduct);
+    console.log("produit créé");
     await ProductModel.create(newProduct);
     res.send(newProduct);
 }))

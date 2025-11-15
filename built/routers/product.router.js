@@ -17,8 +17,9 @@ router.post('/upload-image', upload.single('file'), async (req, res) => {
         return res.status(400).json({ success: false, error: "Aucun fichier fourni" });
     }
     const localPath = req.file.path; // chemin temporaire
-    const newFileName = new Date() + "-" + req.file.originalname;
-    console.log(newFileName);
+    // const newFileName = new Date()+"-"+req.file.originalname;
+    const newFileName = req.file.originalname;
+    // console.log(newFileName);
     const remotePath = `/httpdocs/images/${newFileName}`; // destination
     const client = new ftp.Client();
     client.ftp.verbose = true;
@@ -64,7 +65,7 @@ router.post("/seed", expressAsyncHandler(async (req, res) => {
     res.send("Seed is done!!");
 }));
 router.post("/add/", expressAsyncHandler(async (req, res) => {
-    const { _id, codeCPC, productName, productDescription, productCategory, productState, productImage, productValidation, productVolume, productHauteur, productLargeur, productLongueur, productPoids, productOwnerId, } = req.body;
+    const { codeCPC, productName, productDescription, productCategory, productState, productImage, productValidation, productVolume, productHauteur, productLargeur, productLongueur, productPoids, productOwnerId, } = req.body;
     const newProduct = {
         codeCPC,
         productName,
