@@ -42,7 +42,7 @@ router.get("/user-confirmation/:token", asyncHandler(async (req, res) => {
                 userType: user.userType,
                 userTotalSolde: user.userTotalSolde,
                 userAccess: user.userAccess,
-                userParainID: user.userParainID,
+                // userParainID : user.userParainID,
                 userValidated: user.userValidated,
                 // userDescritpion : user.userDescritpion,
                 // userImage : user.userImage,
@@ -87,7 +87,9 @@ router.post("/requestVerificationEmail", asyncHandler(async (req, res) => {
 router.post("/register/", asyncHandler(async (req, res) => {
     let tokenInfo;
     let userDb;
-    const { userNickName, userName, userFirstname, userPassword, userEmail, userPhone, userAccess, userParainID, userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userId, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, } = req.body;
+    const { userNickName, userName, userFirstname, userPassword, userEmail, userPhone, userAccess, 
+    // userParainID,
+    userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userId, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, parain1ID, parain2ID, } = req.body;
     const user = await UserModel.findOne({ userEmail: userEmail.toLowerCase() });
     if (user) {
         res.status(500).send("Ce nom est déjà utilisé !");
@@ -105,7 +107,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
             userTotalSolde: 0,
             userType,
             userAccess,
-            userParainID,
+            // userParainID,
             userValidated,
             userEmailVerified,
             userAddress,
@@ -126,6 +128,8 @@ router.post("/register/", asyncHandler(async (req, res) => {
             logo,
             managerName,
             managerEmail,
+            parain1ID,
+            parain2ID,
         };
         userDb = await UserModel.create(newUser);
     }
@@ -330,67 +334,7 @@ router.delete("/delete/:id", asyncHandler(async (req, res) => {
 // }))
 router.patch("/update/:id", asyncHandler(async (req, res) => {
     const id = req.params['id'];
-    // const {
-    //     userName,
-    //     userFirstname,
-    //     userPassword,
-    //     userEmail,
-    //     userPhone,
-    //     userImage,
-    //     userValidated,
-    //     userDateOfBirth,
-    //     userTotalSolde,
-    //     userAddress ,
-    //     userMainLat,
-    //     userMainLng,
-    //     userId,
-    //     identityDocument,
-    //     identityCardNumber,
-    //     documentType,
-    //     raisonSocial,
-    //     type,
-    //     rcs,
-    //     carteStat,
-    //     nif,
-    //     carteFiscal,
-    //     logo,
-    //     managerName,
-    //     managerEmail,
-    // } = req.body;
     await UserModel.updateOne({ _id: id }, { $set: req.body });
-    // await UserModel.updateOne({_id : id}, {
-    //   userName,
-    //   userFirstname,
-    //   userPassword,
-    //   userEmail,
-    //   userPhone,
-    //   userImage,
-    //   userValidated,
-    //   userDateOfBirth,
-    //   userTotalSolde,
-    //   userAddress ,
-    //   userMainLat,
-    //   userMainLng,
-    //   userId,
-    //   identityDocument,
-    //   identityCardNumber,
-    //   raisonSocial,
-    //   type,
-    //   rcs,
-    //   nif             ,
-    //   managerName     ,
-    //   managerEmail    ,
-    //   });
-    //   const updatedUser = await UserModel.findOne({_id:id})
-    //   console.log(updatedUser?._id);
-    //   console.log(updatedUser?.userId);
-    //   console.log(updatedUser?.userName);
-    //   console.log(updatedUser?.userFirstname);
-    //   console.log(updatedUser?.raisonSocial);
-    //   console.log(updatedUser?.userEmail);
-    //   console.log(updatedUser?.userAccess);
-    //   console.log(updatedUser?.userValidated);
-    //   console.log(updatedUser?.userEmailVerified);
     res.send(id).status(200);
 }));
 export default router;

@@ -13,8 +13,9 @@ export const SendEmail = async (defaultLayout, templateName, destinataireEmail, 
     let transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
         // host : "commercegestion.com",
-        port: 465,
-        secure: true, // true for port 465, false for other ports
+        // port: 465,
+        // secure: true, // true for port 465, false for other ports
+        port: 587,
         debug: true,
         logger: true,
         auth: {

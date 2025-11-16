@@ -81,6 +81,10 @@ router.post("/add/", expressAsyncHandler(async (req, res) => {
         productPoids,
         productOwnerId,
     };
+    const newProductData = req.body;
+    console.log(newProductData);
+    console.log(newProduct);
+    console.log("produit créé");
     await ProductModel.create(newProduct);
     res.send(newProduct);
 }));

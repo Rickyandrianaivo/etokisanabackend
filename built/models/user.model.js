@@ -10,7 +10,7 @@ export const UserSchema = new Schema({
     userType: { type: String, required: true },
     userTotalSolde: { type: Number },
     userAccess: { type: String, required: true },
-    userParainID: { type: String },
+    // userParainID            : { type : String},
     userAddress: { type: String },
     userValidated: { type: Boolean },
     userEmailVerified: { type: Boolean },
@@ -31,6 +31,8 @@ export const UserSchema = new Schema({
     logo: { type: String },
     carteStat: { type: String },
     carteFiscal: { type: [String] },
+    parain1ID: { type: String },
+    parain2ID: { type: String },
 }, {
     timestamps: true,
     toJSON: {

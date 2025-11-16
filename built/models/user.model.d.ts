@@ -9,7 +9,6 @@ export interface User {
     userType: string;
     userTotalSolde: number;
     userAccess: string;
-    userParainID: string;
     userValidated: boolean;
     userEmailVerified: boolean;
     userDateOfBirth: Date;
@@ -30,6 +29,8 @@ export interface User {
     logo: string;
     managerName: string;
     managerEmail: string;
+    parain1ID: string;
+    parain2ID: string;
 }
 export declare const UserSchema: Schema<User, import("mongoose").Model<User, any, any, any, import("mongoose").Document<unknown, any, User, any, {}> & User & {
     _id: import("mongoose").Types.ObjectId;
