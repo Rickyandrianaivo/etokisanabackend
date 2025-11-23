@@ -29,8 +29,8 @@ export interface User {
     logo: string;
     managerName: string;
     managerEmail: string;
-    parain1ID: string;
-    parain2ID: string;
+    parrain1ID: string;
+    parrain2ID: string;
 }
 export declare const UserSchema: Schema<User, import("mongoose").Model<User, any, any, any, import("mongoose").Document<unknown, any, User, any, {}> & User & {
     _id: import("mongoose").Types.ObjectId;

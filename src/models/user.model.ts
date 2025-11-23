@@ -11,7 +11,7 @@ export interface User{
     userType            : string;
     userTotalSolde      : number;
     userAccess          : string;
-    // userParainID        : string;
+    // userparrainID        : string;
     userValidated       : boolean;
     userEmailVerified   : boolean;
     userDateOfBirth     : Date;
@@ -32,8 +32,8 @@ export interface User{
     logo                : string;
     managerName         : string;
     managerEmail        : string;
-    parain1ID           : string;
-    parain2ID           : string;
+    parrain1ID           : string;
+    parrain2ID           : string;
 }
 
 export const UserSchema = new Schema<User>({
@@ -47,7 +47,7 @@ export const UserSchema = new Schema<User>({
     userType                : { type : String, required : true},
     userTotalSolde          : { type : Number},
     userAccess              : { type : String, required : true},
-    // userParainID            : { type : String},
+    // userparrainID            : { type : String},
     userAddress             : { type : String},
     userValidated           : { type : Boolean},
     userEmailVerified       : { type : Boolean},
@@ -68,8 +68,8 @@ export const UserSchema = new Schema<User>({
     logo                    : { type : String},
     carteStat               : { type : String},
     carteFiscal             : { type : [String]},
-    parain1ID               : { type : String},
-    parain2ID               : { type : String},
+    parrain1ID               : { type : String},
+    parrain2ID               : { type : String},
 },{
     timestamps : true,
     toJSON : {

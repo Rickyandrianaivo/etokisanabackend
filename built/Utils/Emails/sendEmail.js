@@ -12,18 +12,21 @@ const logger = winston.createLogger({
 export const SendEmail = async (defaultLayout, templateName, destinataireEmail, subjectEmail, contextObject) => {
     let transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
-        // host : "commercegestion.com",
-        // port: 465,
-        // secure: true, // true for port 465, false for other ports
-        port: 587,
+        port: 465,
+        secure: true,
         debug: true,
         logger: true,
         auth: {
             user: process.env.EMAIL_USERNAME,
-            pass: process.env.EMAIL_PASSWORD
-            // user: "contact@commercegestion.com",
-            // pass: "Rzh398aNVtFZUu4"
-        },
+            pass: process.env.EMAIL_PASSWORD,
+        }
+        // host: process.env.EMAIL_HOST,
+        // debug   : true,
+        // logger  : true,
+        // auth    : {
+        // user    : process.env.EMAIL_USERNAME,
+        // pass    : process.env.EMAIL_PASSWORD,
+        // },
     });
     transporter.use("compile", hbs({
         viewEngine: {

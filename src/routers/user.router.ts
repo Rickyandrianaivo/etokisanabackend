@@ -46,7 +46,7 @@ router.get("/user-confirmation/:token",asyncHandler(async(req,res)=>{
             userType : user.userType,
             userTotalSolde : user.userTotalSolde,
             userAccess : user.userAccess,
-            // userParainID : user.userParainID,
+            // userparrainID : user.userparrainID,
             userValidated : user.userValidated,
             // userDescritpion : user.userDescritpion,
             // userImage : user.userImage,
@@ -103,7 +103,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
       userEmail,
       userPhone,
       userAccess,
-      // userParainID,
+      // userparrainID,
       userType,
       userDateOfBirth,
       userAddress ,
@@ -125,8 +125,8 @@ router.post("/register/",asyncHandler(async(req, res) => {
       logo                ,
       managerName         ,
       managerEmail        ,
-      parain1ID,
-      parain2ID,
+      parrain1ID,
+      parrain2ID,
     } = req.body;
     const user = await UserModel.findOne({userEmail : userEmail.toLowerCase()});
 
@@ -147,7 +147,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
           userTotalSolde : 0,
           userType,
           userAccess,
-          // userParainID,
+          // userparrainID,
           userValidated,
           userEmailVerified,
           userAddress ,
@@ -168,9 +168,10 @@ router.post("/register/",asyncHandler(async(req, res) => {
           logo                ,
           managerName         ,
           managerEmail        ,
-          parain1ID,
-          parain2ID,
+          parrain1ID,
+          parrain2ID,
       }
+      
        userDb = await UserModel.create(newUser);        
     }
     tokenInfo = generateTokenResponse(userDb);
@@ -214,6 +215,14 @@ router.post("/register/",asyncHandler(async(req, res) => {
       }
       await NotificationModel.create(newNotification);
       res.status(200).send("Utilisateur créé !!!");
+}))
+router.get("/checkparrain/:id",asyncHandler(async(req,res)=>{
+  const user = await UserModel.findOne({_id:req.params['id']});
+  if(user){
+      if (user.parrain1ID && user.parrain2ID) {
+        await UserModel.updateOne({_id : req.params['id']},{$set :{userValidate : true}});
+    }
+  }
 }))
 
 router.get("/new",asyncHandler(async(req,res)=>{
