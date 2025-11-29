@@ -80,7 +80,7 @@ router.post("/requestVerificationEmail", asyncHandler(async (req, res) => {
     const userInfos = req.body;
     tokenInfo = generateTokenResponse(userInfos);
     const tokenDB = {
-        userId: tokenInfo._id,
+        userId: tokenInfo.userId,
         token: tokenInfo.token,
     };
 }));
@@ -133,26 +133,24 @@ router.post("/register/", asyncHandler(async (req, res) => {
         };
         //  userDb = await UserModel.create(newUser);        
     }
-    tokenInfo = generateTokenResponse(userDb);
-    // tokenInfo = generateTokenResponse(tokenInfo);
-    const tokenDB = {
-        userId: tokenInfo._id,
-        token: tokenInfo.token,
-        // createdAt : new Date()
-    };
-    await TokenModel.create(tokenDB);
+    // tokenInfo = generateTokenResponse(userDb);
+    // const tokenDB : Token = {
+    //   userId    : tokenInfo._id,
+    //   token : tokenInfo.token,
+    // }
+    // await TokenModel.create(tokenDB);
     // Sending mail
-    const verificationLink = "https://www.commercegestion.com/#/user-confirmation/" + tokenInfo.token;
+    // const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
     if (userType == "Entreprise") {
         SendEmail("baseMail", "ValidationEntrepriseEmail", userEmail, "Bienvenue sur Etokisana", {
             name: raisonSocial,
-            link: verificationLink,
+            // link : verificationLink,
         });
     }
     if (userType == "Particulier") {
         SendEmail("baseMail", "ValidationEmail", userEmail, "Bienvenue sur Etokisana", {
             name: raisonSocial,
-            link: verificationLink,
+            // link : verificationLink,
         });
     }
     let newNotification = {
