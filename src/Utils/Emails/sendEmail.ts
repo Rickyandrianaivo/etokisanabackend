@@ -26,7 +26,7 @@ export const SendEmail =  async (
         port: 465,
         secure:true,
         auth:{
-            user: "sergeradert@gmail.com",
+            user: "contact@commercegestion.com",
             pass: "Rzh398aNVtFZUu4",
         }
     });
