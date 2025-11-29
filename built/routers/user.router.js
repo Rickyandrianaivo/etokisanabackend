@@ -131,7 +131,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
             parrain1ID,
             parrain2ID,
         };
-        userDb = await UserModel.create(newUser);
+        //  userDb = await UserModel.create(newUser);        
     }
     tokenInfo = generateTokenResponse(userDb);
     // tokenInfo = generateTokenResponse(tokenInfo);
@@ -161,7 +161,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
         message: "Nous vous remercions de votre patience pendant la validation de votre insciption au sein de nos administrateurs",
         state: "new",
     };
-    await NotificationModel.create(newNotification);
+    // await NotificationModel.create(newNotification);
     res.status(200).send("Utilisateur créé !!!");
 }));
 router.get("/checkparrain/:id", asyncHandler(async (req, res) => {
