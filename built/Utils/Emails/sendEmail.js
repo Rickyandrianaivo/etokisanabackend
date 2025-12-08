@@ -55,9 +55,9 @@ export const SendEmail = async (defaultLayout, templateName, destinataireEmail, 
         let emailData = {
             from: 'rickyandrianaivo@gmail.com', // sender address
             to: "rickyandrianaivo@yahoo.fr", // list of receivers
-            subject: subjectEmail, // Subject line
-            template: templateName,
-            context: contextObject
+            subject: "hello", // Subject line
+            // template: "",
+            html: "<b>Hello world</b>"
         };
         //---------------------------
         // 4. Envoi email (async/await propre)
