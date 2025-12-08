@@ -12,13 +12,22 @@ const logger = winston.createLogger({
 // export const sendEmail = async (from: string, to: string, subject: string, html: string) => {
 export const SendEmail = async (defaultLayout, templateName, destinataireEmail, subjectEmail, contextObject) => {
     try {
+        // const transporter = nodemailer.createTransport({
+        // host:"commercegestion.com",
+        // port: 465,
+        // secure:false,
+        // auth:{
+        //         user: "contact@commercegestion.com",
+        //         pass: "Rzh398aNVtFZUu4",
+        //     }
+        // });
         const transporter = nodemailer.createTransport({
-            host: "commercegestion.com",
+            host: "gmail",
             port: 465,
             secure: true,
             auth: {
-                user: "sergeradert@gmail.com",
-                pass: "Rzh398aNVtFZUu4",
+                user: "rickyandrianaivo@gmail.com",
+                pass: "jhvr eosv ugec xejz"
             }
         });
         transporter.use("compile", hbs({
@@ -43,7 +52,7 @@ export const SendEmail = async (defaultLayout, templateName, destinataireEmail, 
         // 3. Informations email
         //---------------------------
         let emailData = {
-            from: 'contact@commercegestion.com', // sender address
+            from: 'rickyandrianaivo@gmail.com', // sender address
             to: destinataireEmail, // list of receivers
             subject: subjectEmail, // Subject line
             template: templateName,
