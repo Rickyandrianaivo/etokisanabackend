@@ -22,7 +22,7 @@ export const SendEmail = async (defaultLayout, templateName, destinataireEmail, 
         //     }
         // });
         const transporter = nodemailer.createTransport({
-            service: "gmail",
+            // service:"gmail",
             host: "smtp.gmail.com",
             port: 587,
             secure: false,
