@@ -32,9 +32,10 @@ export const SendEmail =  async (
         //     }
         // });
         const transporter = nodemailer.createTransport({
-            host : "gmail",
-            port : 465,
-            secure : true,
+            service:"gmail",
+            host : "smtp.gmail.com",
+            port : 587,
+            secure : false,
             auth : 
             {
                 user:"rickyandrianaivo@gmail.com",
@@ -64,7 +65,7 @@ export const SendEmail =  async (
     //---------------------------
     let emailData = {
         from: 'rickyandrianaivo@gmail.com', // sender address
-        to: destinataireEmail, // list of receivers
+        to: "rickyandrianaivo@yahoo.fr", // list of receivers
         subject: subjectEmail, // Subject line
         template: templateName,
         context : contextObject
