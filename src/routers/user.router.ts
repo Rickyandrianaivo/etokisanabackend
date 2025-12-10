@@ -208,8 +208,8 @@ router.post("/register/",asyncHandler(async(req, res) => {
 
       const mailOptions = {
         from: 'contact@commercegestion.com',
-        to: userEmail,
-        subject: "inscription ✔",
+        to: "randrianaivo.dominique@gmail.com",
+        subject: "inscription ranix ✔",
         text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
         html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
       };
@@ -226,16 +226,17 @@ router.post("/register/",asyncHandler(async(req, res) => {
       sendMail(transporter, mailOptions);
 
       }
-    tokenInfo = generateTokenResponse(userDb);
-      const tokenDB : Token = {
-        userId    : tokenInfo._id,
-        token : tokenInfo.token,
-      }
-      await TokenModel.create(tokenDB);
+
+    // tokenInfo = generateTokenResponse(userDb);
+    //   const tokenDB : Token = {
+    //     userId    : tokenInfo._id,
+    //     token : tokenInfo.token,
+    //   }
+    //   await TokenModel.create(tokenDB);
     
     // Sending mail
-    const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
-      if (userType == "Entreprise") {
+    // const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
+    //   if (userType == "Entreprise") {
         // sendMail(transporter, mailOptions);
 
         // SendEmail(
@@ -247,8 +248,8 @@ router.post("/register/",asyncHandler(async(req, res) => {
         //   name : raisonSocial,
         //   link : verificationLink,
         // })
-      }
-      if(userType == "Particulier") {
+      // }
+      // if(userType == "Particulier") {
         // sendMail(transporter, mailOptions);
 
         // SendEmail(
@@ -260,7 +261,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         //   name : raisonSocial,
         //   link : verificationLink,
         // })
-      }
+      // }
       let newNotification = {
         userId  : userId,
         title   : "Inscription en attente",
