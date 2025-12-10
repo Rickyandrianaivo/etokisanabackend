@@ -172,17 +172,17 @@ router.post("/register/",asyncHandler(async(req, res) => {
           parrain2ID,
       }
       
-      //  userDb = await UserModel.create(newUser);        
+       userDb = await UserModel.create(newUser);        
     }
-    // tokenInfo = generateTokenResponse(userDb);
-      // const tokenDB : Token = {
-      //   userId    : tokenInfo._id,
-      //   token : tokenInfo.token,
-      // }
-      // await TokenModel.create(tokenDB);
+    tokenInfo = generateTokenResponse(userDb);
+      const tokenDB : Token = {
+        userId    : tokenInfo._id,
+        token : tokenInfo.token,
+      }
+      await TokenModel.create(tokenDB);
     
     // Sending mail
-    // const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
+    const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
       if (userType == "Entreprise") {
         SendEmail(
         "baseMail",
@@ -191,7 +191,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         "Bienvenue sur Etokisana",
         {
           name : raisonSocial,
-          // link : verificationLink,
+          link : verificationLink,
         })
       }
       if(userType == "Particulier") {
@@ -202,7 +202,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         "Bienvenue sur Etokisana",
         {
           name : raisonSocial,
-          // link : verificationLink,
+          link : verificationLink,
         })
       }
       let newNotification ={
@@ -211,7 +211,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         message : "Nous vous remercions de votre patience pendant la validation de votre insciption au sein de nos administrateurs",
         state  : "new",
       }
-      // await NotificationModel.create(newNotification);
+      await NotificationModel.create(newNotification);
       res.status(200).send("Utilisateur créé !!!");
 }))
 router.get("/checkparrain/:id",asyncHandler(async(req,res)=>{
