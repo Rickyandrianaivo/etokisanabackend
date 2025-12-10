@@ -13,6 +13,9 @@ import { SiteModel } from "../models/site.model.js";
 import nodemailer from 'nodemailer';
 import dotenv from "dotenv";
 dotenv.config();
+const router = Router();
+
+router.post("/register/",asyncHandler(async(req, res) => {
 
 const transporter = nodemailer.createTransport({
   host: "commercegestion.com",
@@ -40,8 +43,8 @@ const sendMail = async (transporter:any, mailOptions:any) => {
     console.log("Error while sending mail:", error);
   }
 };
-
 sendMail(transporter, mailOptions);
+}));
 
 // const bcryptSalt = process.env.BCRYPT_SALT;
 // const clientURL = process.env.CLIENT_URL;
