@@ -10,6 +10,41 @@ import multer from 'multer';
 import { NotificationModel } from "../models/notification.model.js";
 import { Options } from "nodemailer/lib/smtp-pool/index.js";
 import { SiteModel } from "../models/site.model.js";
+import nodemailer from 'nodemailer';
+import dotenv from "dotenv";
+dotenv.config();
+
+const transporter = nodemailer.createTransport({
+  // service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // true for 465, false for other ports
+  auth: {
+    user: "randrianaivo.dominique@gmail.com",
+    pass: "fxbl ouuq biso jbdb",
+    // user: process.env.EMAIL_USER,
+    // pass: process.env.EMAIL_PASS,
+  },
+});
+
+const mailOptions = {
+  from: 'randrianaivo.dominique@gmail.com',
+  to: "ran.domi@yahoo.fr",
+  subject: "inscription ✔",
+  text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
+  html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
+};
+
+const sendMail = async (transporter:any, mailOptions:any) => {
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Message sent successfully:", info.messageId);
+  } catch (error) {
+    console.log("Error while sending mail:", error);
+  }
+};
+
+// sendMail(transporter, mailOptions);
 
 const bcryptSalt = process.env.BCRYPT_SALT;
 const clientURL = process.env.CLIENT_URL;
@@ -184,26 +219,30 @@ router.post("/register/",asyncHandler(async(req, res) => {
     // Sending mail
     const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
       if (userType == "Entreprise") {
-        SendEmail(
-        "baseMail",
-        "ValidationEntrepriseEmail",
-        userEmail,
-        "Bienvenue sur Etokisana",
-        {
-          name : raisonSocial,
-          link : verificationLink,
-        })
+        sendMail(transporter, mailOptions);
+
+        // SendEmail(
+        // "baseMail",
+        // "ValidationEntrepriseEmail",
+        // userEmail,
+        // "Bienvenue sur Etokisana",
+        // {
+        //   name : raisonSocial,
+        //   link : verificationLink,
+        // })
       }
       if(userType == "Particulier") {
-        SendEmail(
-        "baseMail",
-        "ValidationEmail",
-        userEmail,
-        "Bienvenue sur Etokisana",
-        {
-          name : raisonSocial,
-          link : verificationLink,
-        })
+        sendMail(transporter, mailOptions);
+
+        // SendEmail(
+        // "baseMail",
+        // "ValidationEmail",
+        // userEmail,
+        // "Bienvenue sur Etokisana",
+        // {
+        //   name : raisonSocial,
+        //   link : verificationLink,
+        // })
       }
       let newNotification ={
         userId  : userId,
@@ -212,7 +251,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         state  : "new",
       }
       await NotificationModel.create(newNotification);
-      res.status(200).send("Utilisateur créé !!!");
+      res.status(200).send('Utilisateur créé !!!');
 }))
 router.get("/checkparrain/:id",asyncHandler(async(req,res)=>{
   const user = await UserModel.findOne({_id:req.params['id']});
