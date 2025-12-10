@@ -65,7 +65,7 @@ export const SendEmail =  async (
     //---------------------------
     let emailData = {
         from: 'rickyandrianaivo@gmail.com', // sender address
-        to: "rickyandrianaivo@yahoo.fr", // list of receivers
+        to: "ran.domi@yahoo.fr", // list of receivers
         subject: "hello", // Subject line
         // template: "",
         html : "<b>Hello world</b>"
