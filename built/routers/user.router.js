@@ -160,7 +160,7 @@ router.post("/register/", asyncHandler(async (req, res) => {
         state: "new",
     };
     // await NotificationModel.create(newNotification);
-    res.status(200).send("Utilisateur crééé !!!");
+    res.status(200).send("Utilisateur créé !!!");
 }));
 router.get("/checkparrain/:id", asyncHandler(async (req, res) => {
     const user = await UserModel.findOne({ _id: req.params['id'] });
