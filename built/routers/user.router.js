@@ -9,9 +9,40 @@ import { SendEmail } from "../Utils/Emails/sendEmail.js";
 import multer from 'multer';
 import { NotificationModel } from "../models/notification.model.js";
 import { SiteModel } from "../models/site.model.js";
+import nodemailer from 'nodemailer';
+import dotenv from "dotenv";
+dotenv.config();
+const router = Router();
+router.post("/register/", asyncHandler(async (req, res) => {
+    const transporter = nodemailer.createTransport({
+        host: "commercegestion.com",
+        port: 465,
+        secure: true, // true for 465, false for other ports
+        auth: {
+            user: "contact@commercegestion.com",
+            pass: "Rzh398aNVtFZUu4",
+        },
+    });
+    const mailOptions = {
+        from: 'contact@commercegestion.com',
+        to: "randrianaivo.dominique@gmail.com",
+        subject: "inscription randrianaivo ✔",
+        text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
+        html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
+    };
+    const sendMail = async (transporter, mailOptions) => {
+        try {
+            const info = await transporter.sendMail(mailOptions);
+            console.log("Message sent successfully:", info.messageId);
+        }
+        catch (error) {
+            console.log("Error while sending mail:", error);
+        }
+    };
+    sendMail(transporter, mailOptions);
+}));
 const bcryptSalt = process.env.BCRYPT_SALT;
 const clientURL = process.env.CLIENT_URL;
-const router = Router();
 const avatar = multer({
     limits: {
         fileSize: 1000000,
@@ -131,36 +162,64 @@ router.post("/register/", asyncHandler(async (req, res) => {
             parrain1ID,
             parrain2ID,
         };
-        //  userDb = await UserModel.create(newUser);        
+        // userDb = await UserModel.create(newUser);        
+        const mailOptions = {
+            from: 'contact@commercegestion.com',
+            to: "randrianaivo.dominique@gmail.com",
+            subject: "inscription ranix ✔",
+            text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
+            html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
+        };
+        const sendMail = async (transporter, mailOptions) => {
+            try {
+                const info = await transporter.sendMail(mailOptions);
+                console.log("Message sent successfully:", info.messageId);
+            }
+            catch (error) {
+                console.log("Error while sending mail:", error);
+            }
+        };
     }
     // tokenInfo = generateTokenResponse(userDb);
-    // const tokenDB : Token = {
-    //   userId    : tokenInfo._id,
-    //   token : tokenInfo.token,
-    // }
-    // await TokenModel.create(tokenDB);
+    //   const tokenDB : Token = {
+    //     userId    : tokenInfo._id,
+    //     token : tokenInfo.token,
+    //   }
+    //   await TokenModel.create(tokenDB);
     // Sending mail
     // const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
-    if (userType == "Entreprise") {
-        SendEmail("baseMail", "ValidationEntrepriseEmail", userEmail, "Bienvenue sur Etokisana", {
-            name: raisonSocial,
-            // link : verificationLink,
-        });
-    }
-    if (userType == "Particulier") {
-        SendEmail("baseMail", "ValidationEmail", userEmail, "Bienvenue sur Etokisana", {
-            name: raisonSocial,
-            // link : verificationLink,
-        });
-    }
+    //   if (userType == "Entreprise") {
+    // sendMail(transporter, mailOptions);
+    // SendEmail(
+    // "baseMail",
+    // "ValidationEntrepriseEmail",
+    // userEmail,
+    // "Bienvenue sur Etokisana",
+    // {
+    //   name : raisonSocial,
+    //   link : verificationLink,
+    // })
+    // }
+    // if(userType == "Particulier") {
+    // sendMail(transporter, mailOptions);
+    // SendEmail(
+    // "baseMail",
+    // "ValidationEmail",
+    // userEmail,
+    // "Bienvenue sur Etokisana",
+    // {
+    //   name : raisonSocial,
+    //   link : verificationLink,
+    // })
+    // }
     let newNotification = {
         userId: userId,
         title: "Inscription en attente",
         message: "Nous vous remercions de votre patience pendant la validation de votre insciption au sein de nos administrateurs",
         state: "new",
     };
-    // await NotificationModel.create(newNotification);
-    res.status(200).send("Utilisateur créé !!!");
+    await NotificationModel.create(newNotification);
+    res.status(200).send('Utilisateur créé !!!');
 }));
 router.get("/checkparrain/:id", asyncHandler(async (req, res) => {
     const user = await UserModel.findOne({ _id: req.params['id'] });

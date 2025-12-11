@@ -23,13 +23,12 @@ export const SendEmail = async (defaultLayout, templateName, destinataireEmail, 
         // });
         const transporter = nodemailer.createTransport({
             // service:"gmail",
-            host: "commercegestion.com",
-            port: 465,
-            secure: true,
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false,
             auth: {
-                user: "contact@commercegestion.com",
-                // pass: "jhvr eosv ugec xejz"
-                pass: "Rzh398aNVtFZUu4"
+                user: "rickyandrianaivo@gmail.com",
+                pass: "jhvr eosv ugec xejz"
             }
         });
         transporter.use("compile", hbs({
@@ -54,11 +53,11 @@ export const SendEmail = async (defaultLayout, templateName, destinataireEmail, 
         // 3. Informations email
         //---------------------------
         let emailData = {
-            from: 'contact@commercegestion.com', // sender address
-            to: "randrianaivo.dominique@gmail.com", // list of receivers
-            subject: "inscription randrianaivo", // Subject line
+            from: 'rickyandrianaivo@gmail.com', // sender address
+            to: "ran.domi@yahoo.fr", // list of receivers
+            subject: "hello", // Subject line
             // template: "",
-            html: "<b>réussie !</b>"
+            html: "<b>Hello world</b>"
         };
         //---------------------------
         // 4. Envoi email (async/await propre)

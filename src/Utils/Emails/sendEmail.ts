@@ -1,7 +1,6 @@
 import nodemailer from 'nodemailer';
 import winston from 'winston';
 import dotenv from "dotenv";
-import fs from "fs";
 import path from "path";
 import handlebars from 'handlebars';
 import hbs from 'nodemailer-express-handlebars';
@@ -32,14 +31,13 @@ export const SendEmail =  async (
         //     }
         // });
         const transporter = nodemailer.createTransport({
-            // service:"gmail",
-            host : "smtp.gmail.com",
-            port : 587,
-            secure : false,
+            host : "commercegestion.com",
+            port : 465,
+            secure : true,
             auth : 
             {
-                user:"rickyandrianaivo@gmail.com",
-                pass:"jhvr eosv ugec xejz"
+                user:process.env.EMAIL_USERNAME,
+                pass:process.env.EMAIL_PASSWORD
             }
         })
         
@@ -52,25 +50,26 @@ export const SendEmail =  async (
         },
         viewPath : path.resolve("./Utils/Emails/Template/"),
         extName : '.handlebars',
-    
     }))
+
     await transporter.verify((error, success) => {
     if (error) {
         console.error('Erreur de configuration du transporteur SMTP :', error);
     } else {
         console.log('Transporteur SMTP prêt pour l\'envoi d\'emails.',success);
     }})
+
     //---------------------------
     // 3. Informations email
     //---------------------------
     let emailData = {
-        from: 'rickyandrianaivo@gmail.com', // sender address
-        to: "ran.domi@yahoo.fr", // list of receivers
-        subject: "hello", // Subject line
-        // template: "",
-        html : "<b>Hello world</b>"
+        from: process.env.EMAIL_USERNAME, // sender address
+        to: destinataireEmail, // list of receivers
+        subject : subjectEmail,
+        contextObject: contextObject,
     };
-//---------------------------
+
+    //---------------------------
     // 4. Envoi email (async/await propre)
     //---------------------------
     const sendInfo = await transporter.sendMail(emailData);
