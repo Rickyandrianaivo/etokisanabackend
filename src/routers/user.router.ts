@@ -15,36 +15,36 @@ import dotenv from "dotenv";
 dotenv.config();
 const router = Router();
 
-router.post("/register/",asyncHandler(async(req, res) => {
+// router.post("/register/",asyncHandler(async(req, res) => {
 
-const transporter = nodemailer.createTransport({
-  host: "commercegestion.com",
-  port: 465,
-  secure: true, // true for 465, false for other ports
-  auth: {
-    user: "contact@commercegestion.com",
-    pass: "Rzh398aNVtFZUu4",
-  },
-});
+// const transporter = nodemailer.createTransport({
+//   host: "commercegestion.com",
+//   port: 465,
+//   secure: true, // true for 465, false for other ports
+//   auth: {
+//     user: "contact@commercegestion.com",
+//     pass: "Rzh398aNVtFZUu4",
+//   },
+// });
 
-const mailOptions = {
-  from: 'contact@commercegestion.com',
-  to: "randrianaivo.dominique@gmail.com",
-  subject: "inscription randrianaivo ✔",
-  text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
-  html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
-};
+// const mailOptions = {
+//   from: 'contact@commercegestion.com',
+//   to: "randrianaivo.dominique@gmail.com",
+//   subject: "inscription randrianaivo ✔",
+//   text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
+//   html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
+// };
 
-const sendMail = async (transporter:any, mailOptions:any) => {
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Message sent successfully:", info.messageId);
-  } catch (error) {
-    console.log("Error while sending mail:", error);
-  }
-};
-sendMail(transporter, mailOptions);
-}));
+// const sendMail = async (transporter:any, mailOptions:any) => {
+//   try {
+//     const info = await transporter.sendMail(mailOptions);
+//     console.log("Message sent successfully:", info.messageId);
+//   } catch (error) {
+//     console.log("Error while sending mail:", error);
+//   }
+// };
+// sendMail(transporter, mailOptions);
+// }));
 
 const bcryptSalt = process.env.BCRYPT_SALT;
 const clientURL = process.env.CLIENT_URL;
