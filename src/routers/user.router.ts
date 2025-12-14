@@ -171,40 +171,40 @@ router.post("/register/",asyncHandler(async(req, res) => {
     {
       const encryptedPassword = await bcrypt.hash(userPassword,10);
       
-      const newUser : User = {
-          userNickName,
-          userName,
-          userFirstname,
-          userPassword: encryptedPassword,
-          userEmail:userEmail.toLowerCase(),
-          userPhone,
-          userTotalSolde : 0,
-          userType,
-          userAccess,
-          // userparrainID,
-          userValidated,
-          userEmailVerified,
-          userAddress ,
-          userDateOfBirth,
-          userMainLat,
-          userMainLng,
-          userId              ,
-          userImage           ,
-          identityDocument    ,
-          identityCardNumber  ,
-          documentType        ,
-          raisonSocial        ,
-          type                ,
-          rcs                 ,
-          carteStat           ,
-          nif                 ,
-          carteFiscal         ,
-          logo                ,
-          managerName         ,
-          managerEmail        ,
-          parrain1ID,
-          parrain2ID,
-      }
+      // const newUser : User = {
+      //     userNickName,
+      //     userName,
+      //     userFirstname,
+      //     userPassword: encryptedPassword,
+      //     userEmail:userEmail.toLowerCase(),
+      //     userPhone,
+      //     userTotalSolde : 0,
+      //     userType,
+      //     userAccess,
+      //     // userparrainID,
+      //     userValidated,
+      //     userEmailVerified,
+      //     userAddress ,
+      //     userDateOfBirth,
+      //     userMainLat,
+      //     userMainLng,
+      //     userId              ,
+      //     userImage           ,
+      //     identityDocument    ,
+      //     identityCardNumber  ,
+      //     documentType        ,
+      //     raisonSocial        ,
+      //     type                ,
+      //     rcs                 ,
+      //     carteStat           ,
+      //     nif                 ,
+      //     carteFiscal         ,
+      //     logo                ,
+      //     managerName         ,
+      //     managerEmail        ,
+      //     parrain1ID,
+      //     parrain2ID,
+      // }
       // SendEmail(userEmail,"Test réusssi !!");
       // userDb = await UserModel.create(newUser); 
       
@@ -249,20 +249,24 @@ router.post("/register/",asyncHandler(async(req, res) => {
     //---------------------------
     // 4. Envoi email (async/await propre)
     //---------------------------
-    try 
-    {
+    // try 
+    // {
         const sendInfo = await transporter.sendMail(mailOptions);
-        console.log("Email envoyé : ", sendInfo.messageId);
+        if (sendInfo) {
+          console.log("Email envoyé : ", sendInfo.messageId);          
+        }else{
+          console.log("Erreur lors de l'envoi du mail");
+        }
 
         // return {
         //     success : true,
         //     response : sendInfo.response
         // }
 
-    }catch(error){
-        console.error("Erreur lors de l'envoi de l'email : ", error);
-        // return {success:false,error};
-    }      
+    // }catch(error){
+    //     console.error("Erreur lors de l'envoi de l'email : ", error);
+    //     // return {success:false,error};
+    // }      
       }
 
     // tokenInfo = generateTokenResponse(userDb);
