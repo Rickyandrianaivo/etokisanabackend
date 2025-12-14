@@ -39,7 +39,7 @@ app.use("/api/category", categoryRouter);
 app.use("/api/transaction", transactionRouter);
 app.use("/api/notification", notificationRouter);
 
-
+console.log('Routeur OK')
 // Create a test account or replace with real credentials.
 const transporter = nodemailer.createTransport({
   // service: "gmail",
@@ -51,7 +51,7 @@ const transporter = nodemailer.createTransport({
     pass: "Rzh398aNVtFZUu4",
   },
 });
-
+console.log('Transporteur OK')
 const mailOptions = {
   from: 'contact@commercegestion.com',
   to: "randrianaivo.dominique@gmail.com",
@@ -59,7 +59,7 @@ const mailOptions = {
   text: "inscription réussie !", // plain‑text body
   html: "<b>inscription réussie !</b>", // HTML body
 };
-
+console.log('mailOptions OK')
 const sendMail = async (transporter:any, mailOptions:any) => {
   try {
     const info = await transporter.sendMail(mailOptions);
