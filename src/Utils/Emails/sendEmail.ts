@@ -22,24 +22,14 @@ export const SendEmail =  async (
 )=>{
     try 
     {
-        // const transporter = nodemailer.createTransport({
-        // host:"commercegestion.com",
-        // port: 465,
-        // secure:false,
-        // auth:{
-        //         user: "contact@commercegestion.com",
-        //         pass: "Rzh398aNVtFZUu4",
-        //     }
-        // });
         const transporter = nodemailer.createTransport({
-            // service:"gmail",
-            host : "smtp.gmail.com",
+            host : "commercegestion.com",
             port : 587,
             secure : false,
             auth : 
             {
-                user:"rickyandrianaivo@gmail.com",
-                pass:"jhvr eosv ugec xejz"
+                user:"contact@commercegestion.com",
+                pass:"Rzh398aNVtFZUu4"
             }
         })
         
@@ -64,9 +54,9 @@ export const SendEmail =  async (
     // 3. Informations email
     //---------------------------
     let emailData = {
-        from: 'rickyandrianaivo@gmail.com', // sender address
-        to: "ran.domi@yahoo.fr", // list of receivers
-        subject: "hello", // Subject line
+        from: 'contact@commercegestion.com', // sender address
+        to: destinataireEmail, // list of receivers
+        subject: subjectEmail, // Subject line
         // template: "",
         html : "<b>Hello world</b>"
     };
