@@ -9,6 +9,7 @@ import { SendEmail } from "../Utils/Emails/sendEmail.js";
 import multer from 'multer';
 import { NotificationModel } from "../models/notification.model.js";
 import { SiteModel } from "../models/site.model.js";
+import nodemailer from 'nodemailer';
 import dotenv from "dotenv";
 dotenv.config();
 const router = Router();
@@ -114,8 +115,8 @@ router.post("/requestVerificationEmail", asyncHandler(async (req, res) => {
     };
 }));
 router.post("/register/", asyncHandler(async (req, res) => {
-    let tokenInfo;
-    let userDb;
+    // let tokenInfo
+    // let userDb
     const { userNickName, userName, userFirstname, userPassword, userEmail, userPhone, userAccess, 
     // userparrainID,
     userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userId, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, parrain1ID, parrain2ID, } = req.body;
@@ -160,8 +161,8 @@ router.post("/register/", asyncHandler(async (req, res) => {
             parrain1ID,
             parrain2ID,
         };
-        SendEmail(userEmail, "Test réusssi !!");
-        // userDb = await UserModel.create(newUser);        
+        // SendEmail(userEmail,"Test réusssi !!");
+        // userDb = await UserModel.create(newUser); 
         // const mailOptions = {
         //   from: 'contact@commercegestion.com',
         //   to: "randrianaivo.dominique@gmail.com",
@@ -177,6 +178,38 @@ router.post("/register/", asyncHandler(async (req, res) => {
         //   console.log("Error while sending mail:", error);
         // }
         // };
+        const transporter = nodemailer.createTransport({
+            host: "commercegestion.com",
+            port: 465,
+            secure: true,
+            auth: {
+                user: "contact@commercegestion.com",
+                pass: "Rzh398aNVtFZUu4"
+            }
+        });
+        const mailOptions = {
+            from: '"Etokisana" <contact@commercegestion.com>', // sender address
+            to: userEmail, // list of receivers
+            subject: "Test réussi",
+            text: "Test réussi",
+            html: "<h1>Test réussi</h1></br> <p>On avance !!</p>"
+            // contextObject: contextObject,
+        };
+        //---------------------------
+        // 4. Envoi email (async/await propre)
+        //---------------------------
+        try {
+            const sendInfo = await transporter.sendMail(mailOptions);
+            console.log("Email envoyé : ", sendInfo.messageId);
+            // return {
+            //     success : true,
+            //     response : sendInfo.response
+            // }
+        }
+        catch (error) {
+            console.error("Erreur lors de l'envoi de l'email : ", error);
+            // return {success:false,error};
+        }
     }
     // tokenInfo = generateTokenResponse(userDb);
     //   const tokenDB : Token = {
@@ -188,26 +221,38 @@ router.post("/register/", asyncHandler(async (req, res) => {
     // const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
     if (userType == "Entreprise") {
         // sendMail(transporter, mailOptions);
-        SendEmail(
+        // SendEmail(
         // "baseMail",
         // "ValidationEntrepriseEmail",
-        userEmail, "Bienvenue sur Etokisana");
+        // userEmail,
+        // "Bienvenue sur Etokisana",
+        // {
+        //   name : raisonSocial,
+        //   link : verificationLink,
+        // }
+        // )
     }
     if (userType == "Particulier") {
         // sendMail(transporter, mailOptions);
-        SendEmail(
+        // SendEmail(
         // "baseMail",
         // "ValidationEmail",
-        userEmail, "Bienvenue sur Etokisana");
+        // userEmail,
+        // "Bienvenue sur Etokisana",
+        // {
+        //   name : raisonSocial,
+        //   link : verificationLink,
+        // }
+        // )
     }
-    let newNotification = {
-        userId: userId,
-        title: "Inscription en attente",
-        message: "Nous vous remercions de votre patience pendant la validation de votre insciption au sein de nos administrateurs",
-        state: "new",
-    };
+    // let newNotification = {
+    //   userId  : userId,
+    //   title   : "Inscription en attente",
+    //   message : "Nous vous remercions de votre patience pendant la validation de votre insciption au sein de nos administrateurs",
+    //   state  : "new",
+    // }
     // await NotificationModel.create(newNotification);
-    res.status(200).send(['Utilisateur créé !!!']);
+    // res.status(200).send(['Utilisateur créé !!!']);
 }));
 router.get("/checkparrain/:id", asyncHandler(async (req, res) => {
     const user = await UserModel.findOne({ _id: req.params['id'] });
