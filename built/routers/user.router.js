@@ -160,23 +160,23 @@ router.post("/register/", asyncHandler(async (req, res) => {
             parrain1ID,
             parrain2ID,
         };
-        userDb = await UserModel.create(newUser);
-        const mailOptions = {
-            from: 'contact@commercegestion.com',
-            to: "randrianaivo.dominique@gmail.com",
-            subject: "inscription ranix ✔",
-            text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
-            html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
-        };
-        const sendMail = async (transporter, mailOptions) => {
-            try {
-                const info = await transporter.sendMail(mailOptions);
-                console.log("Message sent successfully:", info.messageId);
-            }
-            catch (error) {
-                console.log("Error while sending mail:", error);
-            }
-        };
+        SendEmail(userEmail, "Test réusssi !!");
+        // userDb = await UserModel.create(newUser);        
+        // const mailOptions = {
+        //   from: 'contact@commercegestion.com',
+        //   to: "randrianaivo.dominique@gmail.com",
+        //   subject: "inscription ranix ✔",
+        //   text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
+        //   html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
+        // };
+        // const sendMail = async (transporter:any, mailOptions:any) => {
+        // try {
+        //   const info = await transporter.sendMail(mailOptions);
+        //   console.log("Message sent successfully:", info.messageId);
+        // } catch (error) {
+        //   console.log("Error while sending mail:", error);
+        // }
+        // };
     }
     tokenInfo = generateTokenResponse(userDb);
     const tokenDB = {

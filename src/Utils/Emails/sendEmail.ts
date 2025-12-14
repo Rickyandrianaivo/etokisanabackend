@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import nodemailer, { Transporter } from 'nodemailer';
 import winston from 'winston';
 import dotenv from "dotenv";
 // import path from "path";
@@ -12,23 +12,24 @@ const logger = winston.createLogger({
     transports: [new winston.transports.Console()]
 });
 // export const sendEmail = async (from: string, to: string, subject: string, html: string) => {
-export const SendEmail =  async (
+export async function SendEmail (
     // defaultLayout:string,
     // templateName:string,
     destinataireEmail : string,
     subjectEmail:string,
     // contextObject:any
-)=>{
-    try 
-    {
-        const transporter = nodemailer.createTransport({
+){
+    
+        const transporter:Transporter = nodemailer.createTransport({
             host : "commercegestion.com",
             port : 465,
             secure : true,
             auth : 
             {
-                user:process.env.EMAIL_USERNAME,
-                pass:process.env.EMAIL_PASSWORD
+                // user:process.env.EMAIL_USERNAME,
+                // pass:process.env.EMAIL_PASSWORD
+                user:"contact@commercegestion.com",
+                pass:"Rzh398aNVtFZUu4"
             }
         })
         
@@ -43,37 +44,40 @@ export const SendEmail =  async (
     //     extName : '.handlebars',
     // }))
 
-    await transporter.verify((error, success) => {
-    if (error) {
-        console.error('Erreur de configuration du transporteur SMTP :', error);
-    } else {
-        console.log('Transporteur SMTP prêt pour l\'envoi d\'emails.',success);
-    }})
+    // await transporter.verify((error, success) => {
+    // if (error) {
+    //     console.error('Erreur de configuration du transporteur SMTP :', error);
+    // } else {
+    //     console.log('Transporteur SMTP prêt pour l\'envoi d\'emails.',success);
+    // }})
 
     //---------------------------
     // 3. Informations email
     //---------------------------
-    let emailData = {
-        from: process.env.EMAIL_USERNAME, // sender address
+    const mailOptions = {
+        from: '"Etokisana" <contact@commercegestion.com>', // sender address
         to: destinataireEmail, // list of receivers
         subject : subjectEmail,
+        text : "Test réussi",
+        html : "<h1>Test réussi</h1></br> <p>On avance !!</p>"
         // contextObject: contextObject,
-        html : "<h1>Test réussie</h1></br> <p>On avance !!</p>"
     };
 
     //---------------------------
     // 4. Envoi email (async/await propre)
     //---------------------------
-    const sendInfo = await transporter.sendMail(emailData);
-        console.log("Email envoyé : ", sendInfo);
+    try 
+    {
+        const sendInfo = await transporter.sendMail(mailOptions);
+        console.log("Email envoyé : ", sendInfo.messageId);
 
-        return {
-            success : true,
-            response : sendInfo.response
-        }
+        // return {
+        //     success : true,
+        //     response : sendInfo.response
+        // }
 
     }catch(error){
         console.error("Erreur lors de l'envoi de l'email : ", error);
-        return {success:false,error};
+        // return {success:false,error};
     }
 }
