@@ -11,7 +11,10 @@ const logger = winston.createLogger({
     transports: [new winston.transports.Console()]
 });
 // export const sendEmail = async (from: string, to: string, subject: string, html: string) => {
-export const SendEmail = async (defaultLayout, templateName, destinataireEmail, subjectEmail, contextObject) => {
+export const SendEmail = async (
+// defaultLayout:string,
+// templateName:string,
+destinataireEmail, subjectEmail) => {
     try {
         const transporter = nodemailer.createTransport({
             host: "commercegestion.com",

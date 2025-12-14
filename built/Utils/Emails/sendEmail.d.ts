@@ -1,4 +1,4 @@
-export declare const SendEmail: (defaultLayout: string, templateName: string, destinataireEmail: string, subjectEmail: string, contextObject: any) => Promise<{
+export declare const SendEmail: (destinataireEmail: string, subjectEmail: string) => Promise<{
     success: boolean;
     response: string;
     error?: undefined;

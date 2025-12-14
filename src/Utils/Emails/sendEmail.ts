@@ -13,11 +13,11 @@ const logger = winston.createLogger({
 });
 // export const sendEmail = async (from: string, to: string, subject: string, html: string) => {
 export const SendEmail =  async (
-    defaultLayout:string,
-    templateName:string,
+    // defaultLayout:string,
+    // templateName:string,
     destinataireEmail : string,
     subjectEmail:string,
-    contextObject:any
+    // contextObject:any
 )=>{
     try 
     {

@@ -28,19 +28,23 @@ router.post("/add",expressAsyncHandler(async(req,res)=>{
     }
     const currentUser = await UserModel.findOne({_id : userId})
     if (currentUser && typeES == "Dépôt") {
-      SendEmail("baseMail","Deposit",currentUser.userEmail,"Transaction réussie",
-        {
-          name : currentUser.userFirstname,
-          montant : montantTotal,
-        }
+      SendEmail(
+        // "baseMail","Deposit",
+        currentUser.userEmail,"Transaction réussie",
+        // {
+        //   name : currentUser.userFirstname,
+        //   montant : montantTotal,
+        // }
       )
     }
     if (currentUser && typeES == "Retrait") {
-      SendEmail("baseMail","Withdraw",currentUser.userEmail,"Transaction réussie",
-        {
-          name : currentUser.userFirstname,
-          montant : montantTotal,
-        }
+      SendEmail(
+        // "baseMail","Withdraw",
+        currentUser.userEmail,"Transaction réussie",
+        // {
+        //   name : currentUser.userFirstname,
+        //   montant : montantTotal,
+        // }
       )
     }
     await TransactionModel.create(newTransaction);

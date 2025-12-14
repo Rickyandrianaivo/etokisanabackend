@@ -240,27 +240,29 @@ router.post("/register/",asyncHandler(async(req, res) => {
         // sendMail(transporter, mailOptions);
 
         SendEmail(
-        "baseMail",
-        "ValidationEntrepriseEmail",
+        // "baseMail",
+        // "ValidationEntrepriseEmail",
         userEmail,
         "Bienvenue sur Etokisana",
-        {
-          name : raisonSocial,
-          link : verificationLink,
-        })
+        // {
+        //   name : raisonSocial,
+        //   link : verificationLink,
+        // }
+        )
       }
       if(userType == "Particulier") {
         // sendMail(transporter, mailOptions);
 
         SendEmail(
-        "baseMail",
-        "ValidationEmail",
+        // "baseMail",
+        // "ValidationEmail",
         userEmail,
         "Bienvenue sur Etokisana",
-        {
-          name : raisonSocial,
-          link : verificationLink,
-        })
+        // {
+        //   name : raisonSocial,
+        //   link : verificationLink,
+        // }
+      )
       }
       let newNotification = {
         userId  : userId,
@@ -291,24 +293,24 @@ router.get("/validate/:id",asyncHandler(async(req,res)=>{
  
     if (userById?.userType == "Entreprise") {
       SendEmail(
-        "baseMail",
-        "welcome",
+        // "baseMail",
+        // "welcome",
         userById.userEmail,
         "Inscription terminée",
-        {
-          name : userById.userName,
-        }
+        // {
+        //   name : userById.userName,
+        // }
       )
     }
     if (userById && userById.userType == "Particulier") {
       SendEmail(
-        "baseMail",
-        "welcome",
+        // "baseMail",
+        // "welcome",
         userById.userEmail,
         "Inscription terminée",
-        {
-          name : userById.userName,
-        }
+        // {
+        //   name : userById.userName,
+        // }
       )
     }
     
@@ -384,11 +386,11 @@ router.patch("/passwordReset",asyncHandler(async(req,res)=>{
     if (isValid && user) {
 
       SendEmail(
-        "baseMail",
-        "resetPassword",
+        // "baseMail",
+        // "resetPassword",
         user.userEmail,
         "Mot de passe réinitialisé",
-        {name : user.userName,}
+        // {name : user.userName,}
       )
     }
     res.send('Mot de passe réinitialisé')   
@@ -417,11 +419,15 @@ router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
         //on envoi le token non crypté pour le comparer avec le token crypté de la base de donnée
         const link = `${clientURL}/#/passwordReset/${resetToken}/${user._id}`;
         
-        SendEmail("requestResetPassword","baseMail",user.userEmail,"Réinitialisation du mot de passe",
-          {
-            name : user.userFirstname,
-            link : link,
-          }
+        SendEmail(
+          // "requestResetPassword",
+          // "baseMail",
+          user.userEmail,
+          "Réinitialisation du mot de passe",
+          // {
+          //   name : user.userFirstname,
+          //   link : link,
+          // }
         )
 }))
 

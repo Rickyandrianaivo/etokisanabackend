@@ -188,17 +188,17 @@ router.post("/register/", asyncHandler(async (req, res) => {
     const verificationLink = "https://www.commercegestion.com/#/user-confirmation/" + tokenInfo.token;
     if (userType == "Entreprise") {
         // sendMail(transporter, mailOptions);
-        SendEmail("baseMail", "ValidationEntrepriseEmail", userEmail, "Bienvenue sur Etokisana", {
-            name: raisonSocial,
-            link: verificationLink,
-        });
+        SendEmail(
+        // "baseMail",
+        // "ValidationEntrepriseEmail",
+        userEmail, "Bienvenue sur Etokisana");
     }
     if (userType == "Particulier") {
         // sendMail(transporter, mailOptions);
-        SendEmail("baseMail", "ValidationEmail", userEmail, "Bienvenue sur Etokisana", {
-            name: raisonSocial,
-            link: verificationLink,
-        });
+        SendEmail(
+        // "baseMail",
+        // "ValidationEmail",
+        userEmail, "Bienvenue sur Etokisana");
     }
     let newNotification = {
         userId: userId,
@@ -226,14 +226,16 @@ router.get("/validate/:id", asyncHandler(async (req, res) => {
     const userById = await UserModel.findById({ _id: userDBId });
     await UserModel.updateOne({ _id: userDBId }, { $set: { userValidated: true } });
     if (userById?.userType == "Entreprise") {
-        SendEmail("baseMail", "welcome", userById.userEmail, "Inscription terminée", {
-            name: userById.userName,
-        });
+        SendEmail(
+        // "baseMail",
+        // "welcome",
+        userById.userEmail, "Inscription terminée");
     }
     if (userById && userById.userType == "Particulier") {
-        SendEmail("baseMail", "welcome", userById.userEmail, "Inscription terminée", {
-            name: userById.userName,
-        });
+        SendEmail(
+        // "baseMail",
+        // "welcome",
+        userById.userEmail, "Inscription terminée");
     }
     // let newNotification = {
     //     userId  : userById?.userId,
@@ -302,7 +304,10 @@ router.patch("/passwordReset", asyncHandler(async (req, res) => {
         }
     }
     if (isValid && user) {
-        SendEmail("baseMail", "resetPassword", user.userEmail, "Mot de passe réinitialisé", { name: user.userName, });
+        SendEmail(
+        // "baseMail",
+        // "resetPassword",
+        user.userEmail, "Mot de passe réinitialisé");
     }
     res.send('Mot de passe réinitialisé');
 }));
@@ -327,10 +332,10 @@ router.post("/requestResetPwd", asyncHandler(async (req, res) => {
     }).save();
     //on envoi le token non crypté pour le comparer avec le token crypté de la base de donnée
     const link = `${clientURL}/#/passwordReset/${resetToken}/${user._id}`;
-    SendEmail("requestResetPassword", "baseMail", user.userEmail, "Réinitialisation du mot de passe", {
-        name: user.userFirstname,
-        link: link,
-    });
+    SendEmail(
+    // "requestResetPassword",
+    // "baseMail",
+    user.userEmail, "Réinitialisation du mot de passe");
 }));
 router.get("", asyncHandler(async (req, res) => {
     const users = await UserModel.find();
