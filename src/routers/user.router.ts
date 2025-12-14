@@ -126,9 +126,26 @@ router.post("/requestVerificationEmail",asyncHandler(async(req,res)=>{
   
 }))
 
+
+
+const sendMail = async (transporter : Transporter, mailOptions : any) => {
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Message sent successfully:", info.messageId);
+  } catch (error) {
+    console.log("Error while sending mail:", error);
+  }
+};
 router.post("/register/",asyncHandler(async(req, res) => {
+  
     // let tokenInfo
     // let userDb
+
+
+
+    //----------------------
+    // Récupération des informations de l'utilisateur
+    //----------------------
     const {
       userNickName,
       userName,
@@ -162,14 +179,23 @@ router.post("/register/",asyncHandler(async(req, res) => {
       parrain1ID,
       parrain2ID,
     } = req.body;
-    const user = await UserModel.findOne({userEmail : userEmail.toLowerCase()});
 
-    if(user){
-        res.status(500).send("Ce nom est déjà utilisé !");
-        return;
-    }else
-    {
-      const encryptedPassword = await bcrypt.hash(userPassword,10);
+
+    //----------------------
+    //Check si l'email est déjà utilisé
+    //----------------------
+    // const user = await UserModel.findOne({userEmail : userEmail.toLowerCase()});
+    // if(user){
+    //     res.status(500).send("Ce nom est déjà utilisé !");
+    //     return;
+    // }else
+    // {
+
+      // Criptage du mot de passe
+      // const encryptedPassword = await bcrypt.hash(userPassword,10);
+
+
+
       
       // const newUser : User = {
       //     userNickName,
@@ -227,7 +253,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
         // }
       // };
 
-      const transporter:Transporter = nodemailer.createTransport({
+      const transporter = nodemailer.createTransport({
                   host : "commercegestion.com",
                   port : 465,
                   secure : true,
@@ -245,18 +271,18 @@ router.post("/register/",asyncHandler(async(req, res) => {
         html : "<h1>Test réussi</h1></br> <p>On avance !!</p>"
         // contextObject: contextObject,
     };
-
+    sendMail(transporter,mailOptions);
     //---------------------------
     // 4. Envoi email (async/await propre)
     //---------------------------
     // try 
     // {
-        const sendInfo = await transporter.sendMail(mailOptions);
-        if (sendInfo) {
-          console.log("Email envoyé : ", sendInfo.messageId);          
-        }else{
-          console.log("Erreur lors de l'envoi du mail");
-        }
+    //     const sendInfo = await transporter.sendMail(mailOptions);
+    //     if (sendInfo) {
+    //       console.log("Email envoyé : ", sendInfo.messageId);          
+    //     }else{
+    //       console.log("Erreur lors de l'envoi du mail");
+    //     }
 
         // return {
         //     success : true,
@@ -267,7 +293,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
     //     console.error("Erreur lors de l'envoi de l'email : ", error);
     //     // return {success:false,error};
     // }      
-      }
+      // }
 
     // tokenInfo = generateTokenResponse(userDb);
     //   const tokenDB : Token = {
@@ -317,7 +343,8 @@ router.post("/register/",asyncHandler(async(req, res) => {
       // }
       // await NotificationModel.create(newNotification);
       // res.status(200).send(['Utilisateur créé !!!']);
-}))
+}
+))
 router.get("/checkparrain/:id",asyncHandler(async(req,res)=>{
   const user = await UserModel.findOne({_id:req.params['id']});
   if(user){

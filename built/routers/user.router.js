@@ -114,108 +114,124 @@ router.post("/requestVerificationEmail", asyncHandler(async (req, res) => {
         token: tokenInfo.token,
     };
 }));
+const sendMail = async (transporter, mailOptions) => {
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Message sent successfully:", info.messageId);
+    }
+    catch (error) {
+        console.log("Error while sending mail:", error);
+    }
+};
 router.post("/register/", asyncHandler(async (req, res) => {
     // let tokenInfo
     // let userDb
+    //----------------------
+    // Récupération des informations de l'utilisateur
+    //----------------------
     const { userNickName, userName, userFirstname, userPassword, userEmail, userPhone, userAccess, 
     // userparrainID,
     userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userId, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, parrain1ID, parrain2ID, } = req.body;
-    const user = await UserModel.findOne({ userEmail: userEmail.toLowerCase() });
-    if (user) {
-        res.status(500).send("Ce nom est déjà utilisé !");
-        return;
-    }
-    else {
-        const encryptedPassword = await bcrypt.hash(userPassword, 10);
-        // const newUser : User = {
-        //     userNickName,
-        //     userName,
-        //     userFirstname,
-        //     userPassword: encryptedPassword,
-        //     userEmail:userEmail.toLowerCase(),
-        //     userPhone,
-        //     userTotalSolde : 0,
-        //     userType,
-        //     userAccess,
-        //     // userparrainID,
-        //     userValidated,
-        //     userEmailVerified,
-        //     userAddress ,
-        //     userDateOfBirth,
-        //     userMainLat,
-        //     userMainLng,
-        //     userId              ,
-        //     userImage           ,
-        //     identityDocument    ,
-        //     identityCardNumber  ,
-        //     documentType        ,
-        //     raisonSocial        ,
-        //     type                ,
-        //     rcs                 ,
-        //     carteStat           ,
-        //     nif                 ,
-        //     carteFiscal         ,
-        //     logo                ,
-        //     managerName         ,
-        //     managerEmail        ,
-        //     parrain1ID,
-        //     parrain2ID,
-        // }
-        // SendEmail(userEmail,"Test réusssi !!");
-        // userDb = await UserModel.create(newUser); 
-        // const mailOptions = {
-        //   from: 'contact@commercegestion.com',
-        //   to: "randrianaivo.dominique@gmail.com",
-        //   subject: "inscription ranix ✔",
-        //   text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
-        //   html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
-        // };
-        // const sendMail = async (transporter:any, mailOptions:any) => {
-        // try {
-        //   const info = await transporter.sendMail(mailOptions);
-        //   console.log("Message sent successfully:", info.messageId);
-        // } catch (error) {
-        //   console.log("Error while sending mail:", error);
-        // }
-        // };
-        const transporter = nodemailer.createTransport({
-            host: "commercegestion.com",
-            port: 465,
-            secure: true,
-            auth: {
-                user: "contact@commercegestion.com",
-                pass: "Rzh398aNVtFZUu4"
-            }
-        });
-        const mailOptions = {
-            from: '"Etokisana" <contact@commercegestion.com>', // sender address
-            to: "rickyandrianaivo@yahoo.fr", // list of receivers
-            subject: "Test réussi",
-            text: "Test réussi",
-            html: "<h1>Test réussi</h1></br> <p>On avance !!</p>"
-            // contextObject: contextObject,
-        };
-        //---------------------------
-        // 4. Envoi email (async/await propre)
-        //---------------------------
-        // try 
-        // {
-        const sendInfo = await transporter.sendMail(mailOptions);
-        if (sendInfo) {
-            console.log("Email envoyé : ", sendInfo.messageId);
+    //----------------------
+    //Check si l'email est déjà utilisé
+    //----------------------
+    // const user = await UserModel.findOne({userEmail : userEmail.toLowerCase()});
+    // if(user){
+    //     res.status(500).send("Ce nom est déjà utilisé !");
+    //     return;
+    // }else
+    // {
+    // Criptage du mot de passe
+    // const encryptedPassword = await bcrypt.hash(userPassword,10);
+    // const newUser : User = {
+    //     userNickName,
+    //     userName,
+    //     userFirstname,
+    //     userPassword: encryptedPassword,
+    //     userEmail:userEmail.toLowerCase(),
+    //     userPhone,
+    //     userTotalSolde : 0,
+    //     userType,
+    //     userAccess,
+    //     // userparrainID,
+    //     userValidated,
+    //     userEmailVerified,
+    //     userAddress ,
+    //     userDateOfBirth,
+    //     userMainLat,
+    //     userMainLng,
+    //     userId              ,
+    //     userImage           ,
+    //     identityDocument    ,
+    //     identityCardNumber  ,
+    //     documentType        ,
+    //     raisonSocial        ,
+    //     type                ,
+    //     rcs                 ,
+    //     carteStat           ,
+    //     nif                 ,
+    //     carteFiscal         ,
+    //     logo                ,
+    //     managerName         ,
+    //     managerEmail        ,
+    //     parrain1ID,
+    //     parrain2ID,
+    // }
+    // SendEmail(userEmail,"Test réusssi !!");
+    // userDb = await UserModel.create(newUser); 
+    // const mailOptions = {
+    //   from: 'contact@commercegestion.com',
+    //   to: "randrianaivo.dominique@gmail.com",
+    //   subject: "inscription ranix ✔",
+    //   text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
+    //   html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
+    // };
+    // const sendMail = async (transporter:any, mailOptions:any) => {
+    // try {
+    //   const info = await transporter.sendMail(mailOptions);
+    //   console.log("Message sent successfully:", info.messageId);
+    // } catch (error) {
+    //   console.log("Error while sending mail:", error);
+    // }
+    // };
+    const transporter = nodemailer.createTransport({
+        host: "commercegestion.com",
+        port: 465,
+        secure: true,
+        auth: {
+            user: "contact@commercegestion.com",
+            pass: "Rzh398aNVtFZUu4"
         }
-        else {
-            console.log("Erreur lors de l'envoi du mail");
-        }
-        // return {
-        //     success : true,
-        //     response : sendInfo.response
-        // }
-        // }catch(error){
-        //     console.error("Erreur lors de l'envoi de l'email : ", error);
-        //     // return {success:false,error};
-        // }      
-    }
+    });
+    const mailOptions = {
+        from: '"Etokisana" <contact@commercegestion.com>', // sender address
+        to: "rickyandrianaivo@yahoo.fr", // list of receivers
+        subject: "Test réussi",
+        text: "Test réussi",
+        html: "<h1>Test réussi</h1></br> <p>On avance !!</p>"
+        // contextObject: contextObject,
+    };
+    sendMail(transporter, mailOptions);
+    //---------------------------
+    // 4. Envoi email (async/await propre)
+    //---------------------------
+    // try 
+    // {
+    //     const sendInfo = await transporter.sendMail(mailOptions);
+    //     if (sendInfo) {
+    //       console.log("Email envoyé : ", sendInfo.messageId);          
+    //     }else{
+    //       console.log("Erreur lors de l'envoi du mail");
+    //     }
+    // return {
+    //     success : true,
+    //     response : sendInfo.response
+    // }
+    // }catch(error){
+    //     console.error("Erreur lors de l'envoi de l'email : ", error);
+    //     // return {success:false,error};
+    // }      
+    // }
     // tokenInfo = generateTokenResponse(userDb);
     //   const tokenDB : Token = {
     //     userId    : tokenInfo._id,
