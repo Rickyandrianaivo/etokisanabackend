@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { Token, TokenModel } from "../models/token.models.js";
 import {randomBytes} from"crypto";
-import { SendEmail } from "../Utils/Emails/sendEmail.js";
+// import { SendEmail } from "../Utils/Emails/sendEmail.js";
 import multer from 'multer';
 import { NotificationModel } from "../models/notification.model.js";
 import { Options } from "nodemailer/lib/smtp-pool/index.js";
@@ -14,6 +14,38 @@ import nodemailer from 'nodemailer';
 import dotenv from "dotenv";
 dotenv.config();
 const router = Router();
+
+
+
+  const transporter = nodemailer.createTransport({
+                  host : "commercegestion.com",
+                  port : 465,
+                  secure : true,
+                  auth : 
+                  {
+                      user:"contact@commercegestion.com",
+                      pass:"Rzh398aNVtFZUu4"
+                  }
+              })
+  const mailOptions = {
+    from: 'contact@commercegestion.com', // sender address
+    to: "randrianaivo.dominique@gmail.com", // list of receivers
+    subject : "Test réussi",
+    text : "Test réussi",
+    html : "<h1>Test réussi</h1></br> <p>On avance !!</p>"
+    // contextObject: contextObject,
+  };
+
+
+const sendMail = async (transporter:any , mailOptions:any) => {
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Message sent successfully:", info.messageId);
+  } catch (error) {
+    console.log("Error while sending mail:", error);
+  }
+};
+
 
 // router.post("/register/",asyncHandler(async(req, res) => {
 
@@ -126,151 +158,199 @@ router.post("/requestVerificationEmail",asyncHandler(async(req,res)=>{
   
 }))
 
+
+
+
 router.post("/register/",asyncHandler(async(req, res) => {
-    let tokenInfo
-    let userDb
-    const {
-      userNickName,
-      userName,
-      userFirstname,
-      userPassword,
-      userEmail,
-      userPhone,
-      userAccess,
-      // userparrainID,
-      userType,
-      userDateOfBirth,
-      userAddress ,
-      userMainLat,
-      userMainLng,
-      userId,
-      userEmailVerified,
-      userValidated,
-      userImage,
-      identityDocument,
-      identityCardNumber,
-      documentType,
-      raisonSocial        ,
-      type                ,
-      rcs                 ,
-      carteStat           ,
-      nif                 ,
-      carteFiscal         ,
-      logo                ,
-      managerName         ,
-      managerEmail        ,
-      parrain1ID,
-      parrain2ID,
-    } = req.body;
-    const user = await UserModel.findOne({userEmail : userEmail.toLowerCase()});
+  
+    // let tokenInfo
+    // let userDb
 
-    if(user){
-        res.status(500).send("Ce nom est déjà utilisé !");
-        return;
-    }else
-    {
-      const encryptedPassword = await bcrypt.hash(userPassword,10);
+
+
+    //----------------------
+    // Récupération des informations de l'utilisateur
+    //----------------------
+    // const {
+    //   userNickName,
+    //   userName,
+    //   userFirstname,
+    //   userPassword,
+    //   userEmail,
+    //   userPhone,
+    //   userAccess,
+    //   // userparrainID,
+    //   userType,
+    //   userDateOfBirth,
+    //   userAddress ,
+    //   userMainLat,
+    //   userMainLng,
+    //   userId,
+    //   userEmailVerified,
+    //   userValidated,
+    //   userImage,
+    //   identityDocument,
+    //   identityCardNumber,
+    //   documentType,
+    //   raisonSocial        ,
+    //   type                ,
+    //   rcs                 ,
+    //   carteStat           ,
+    //   nif                 ,
+    //   carteFiscal         ,
+    //   logo                ,
+    //   managerName         ,
+    //   managerEmail        ,
+    //   parrain1ID,
+    //   parrain2ID,
+    // } = req.body;
+
+
+    //----------------------
+    //Check si l'email est déjà utilisé
+    //----------------------
+    // const user = await UserModel.findOne({userEmail : userEmail.toLowerCase()});
+    // if(user){
+    //     res.status(500).send("Ce nom est déjà utilisé !");
+    //     return;
+    // }else
+    // {
+
+      // Criptage du mot de passe
+      // const encryptedPassword = await bcrypt.hash(userPassword,10);
+
+
+
       
-      const newUser : User = {
-          userNickName,
-          userName,
-          userFirstname,
-          userPassword: encryptedPassword,
-          userEmail:userEmail.toLowerCase(),
-          userPhone,
-          userTotalSolde : 0,
-          userType,
-          userAccess,
-          // userparrainID,
-          userValidated,
-          userEmailVerified,
-          userAddress ,
-          userDateOfBirth,
-          userMainLat,
-          userMainLng,
-          userId              ,
-          userImage           ,
-          identityDocument    ,
-          identityCardNumber  ,
-          documentType        ,
-          raisonSocial        ,
-          type                ,
-          rcs                 ,
-          carteStat           ,
-          nif                 ,
-          carteFiscal         ,
-          logo                ,
-          managerName         ,
-          managerEmail        ,
-          parrain1ID,
-          parrain2ID,
-      }
+      // const newUser : User = {
+      //     userNickName,
+      //     userName,
+      //     userFirstname,
+      //     userPassword: encryptedPassword,
+      //     userEmail:userEmail.toLowerCase(),
+      //     userPhone,
+      //     userTotalSolde : 0,
+      //     userType,
+      //     userAccess,
+      //     // userparrainID,
+      //     userValidated,
+      //     userEmailVerified,
+      //     userAddress ,
+      //     userDateOfBirth,
+      //     userMainLat,
+      //     userMainLng,
+      //     userId              ,
+      //     userImage           ,
+      //     identityDocument    ,
+      //     identityCardNumber  ,
+      //     documentType        ,
+      //     raisonSocial        ,
+      //     type                ,
+      //     rcs                 ,
+      //     carteStat           ,
+      //     nif                 ,
+      //     carteFiscal         ,
+      //     logo                ,
+      //     managerName         ,
+      //     managerEmail        ,
+      //     parrain1ID,
+      //     parrain2ID,
+      // }
+      // SendEmail(userEmail,"Test réusssi !!");
+      // userDb = await UserModel.create(newUser); 
       
-      userDb = await UserModel.create(newUser);        
+      
 
-      const mailOptions = {
-        from: 'contact@commercegestion.com',
-        to: "randrianaivo.dominique@gmail.com",
-        subject: "inscription ranix ✔",
-        text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
-        html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
-      };
+      // const mailOptions = {
+      //   from: 'contact@commercegestion.com',
+      //   to: "randrianaivo.dominique@gmail.com",
+      //   subject: "inscription ranix ✔",
+      //   text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
+      //   html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
+      // };
 
-      const sendMail = async (transporter:any, mailOptions:any) => {
-        try {
-          const info = await transporter.sendMail(mailOptions);
-          console.log("Message sent successfully:", info.messageId);
-        } catch (error) {
-          console.log("Error while sending mail:", error);
-        }
-      };
+      // const sendMail = async (transporter:any, mailOptions:any) => {
+        // try {
+        //   const info = await transporter.sendMail(mailOptions);
+        //   console.log("Message sent successfully:", info.messageId);
+        // } catch (error) {
+        //   console.log("Error while sending mail:", error);
+        // }
+      // };
+    sendMail(transporter,mailOptions);
+    //---------------------------
+    // 4. Envoi email (async/await propre)
+    //---------------------------
+    // try 
+    // {
+    //     const sendInfo = await transporter.sendMail(mailOptions);
+    //     if (sendInfo) {
+    //       console.log("Email envoyé : ", sendInfo.messageId);          
+    //     }else{
+    //       console.log("Erreur lors de l'envoi du mail");
+    //     }
 
-      }
+        // return {
+        //     success : true,
+        //     response : sendInfo.response
+        // }
 
-    tokenInfo = generateTokenResponse(userDb);
-      const tokenDB : Token = {
-        userId    : tokenInfo._id,
-        token : tokenInfo.token,
-      }
-      await TokenModel.create(tokenDB);
+    // }catch(error){
+    //     console.error("Erreur lors de l'envoi de l'email : ", error);
+    //     // return {success:false,error};
+    // }      
+      // }
+
+    // tokenInfo = generateTokenResponse(userDb);
+    //   const tokenDB : Token = {
+    //     userId    : tokenInfo._id,
+    //     token : tokenInfo.token,
+    //   }
+    //   await TokenModel.create(tokenDB);
     
     // Sending mail
-    const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
-      if (userType == "Entreprise") {
+    // const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
+      // if (userType == "Entreprise") {
         // sendMail(transporter, mailOptions);
 
-        SendEmail(
-        "baseMail",
-        "ValidationEntrepriseEmail",
-        userEmail,
-        "Bienvenue sur Etokisana",
-        {
-          name : raisonSocial,
-          link : verificationLink,
-        })
-      }
-      if(userType == "Particulier") {
+        // SendEmail(
+        // "baseMail",
+        // "ValidationEntrepriseEmail",
+        // userEmail,
+        // "Bienvenue sur Etokisana",
+        // {
+        //   name : raisonSocial,
+        //   link : verificationLink,
+        // }
+        // )
+
+      // }
+      // if(userType == "Particulier") {
         // sendMail(transporter, mailOptions);
 
-        SendEmail(
-        "baseMail",
-        "ValidationEmail",
-        userEmail,
-        "Bienvenue sur Etokisana",
-        {
-          name : raisonSocial,
-          link : verificationLink,
-        })
-      }
-      let newNotification = {
-        userId  : userId,
-        title   : "Inscription en attente",
-        message : "Nous vous remercions de votre patience pendant la validation de votre insciption au sein de nos administrateurs",
-        state  : "new",
-      }
-      await NotificationModel.create(newNotification);
-      res.status(200).send('Utilisateur créé !!!');
-}))
+        // SendEmail(
+        // "baseMail",
+        // "ValidationEmail",
+        // userEmail,
+        // "Bienvenue sur Etokisana",
+        // {
+        //   name : raisonSocial,
+        //   link : verificationLink,
+        // }
+      // )
+
+
+      // }
+      // let newNotification = {
+      //   userId  : userId,
+      //   title   : "Inscription en attente",
+      //   message : "Nous vous remercions de votre patience pendant la validation de votre insciption au sein de nos administrateurs",
+      //   state  : "new",
+      // }
+      // await NotificationModel.create(newNotification);
+      // res.status(200).send(['Utilisateur créé !!!']);
+}
+))
 router.get("/checkparrain/:id",asyncHandler(async(req,res)=>{
   const user = await UserModel.findOne({_id:req.params['id']});
   if(user){
@@ -290,26 +370,26 @@ router.get("/validate/:id",asyncHandler(async(req,res)=>{
   await UserModel.updateOne({_id : userDBId},{$set : {userValidated : true}});
  
     if (userById?.userType == "Entreprise") {
-      SendEmail(
-        "baseMail",
-        "welcome",
-        userById.userEmail,
-        "Inscription terminée",
-        {
-          name : userById.userName,
-        }
-      )
+      // SendEmail(
+      //   // "baseMail",
+      //   // "welcome",
+      //   userById.userEmail,
+      //   "Inscription terminée",
+      //   // {
+      //   //   name : userById.userName,
+      //   // }
+      // )
     }
     if (userById && userById.userType == "Particulier") {
-      SendEmail(
-        "baseMail",
-        "welcome",
-        userById.userEmail,
-        "Inscription terminée",
-        {
-          name : userById.userName,
-        }
-      )
+      // SendEmail(
+      //   // "baseMail",
+      //   // "welcome",
+      //   userById.userEmail,
+      //   "Inscription terminée",
+      //   // {
+      //   //   name : userById.userName,
+      //   // }
+      // )
     }
     
       
@@ -383,13 +463,13 @@ router.patch("/passwordReset",asyncHandler(async(req,res)=>{
     }
     if (isValid && user) {
 
-      SendEmail(
-        "baseMail",
-        "resetPassword",
-        user.userEmail,
-        "Mot de passe réinitialisé",
-        {name : user.userName,}
-      )
+      // SendEmail(
+      //   // "baseMail",
+      //   // "resetPassword",
+      //   user.userEmail,
+      //   "Mot de passe réinitialisé",
+      //   // {name : user.userName,}
+      // )
     }
     res.send('Mot de passe réinitialisé')   
  }))
@@ -417,12 +497,16 @@ router.post("/requestResetPwd",asyncHandler(async(req,res)=>{
         //on envoi le token non crypté pour le comparer avec le token crypté de la base de donnée
         const link = `${clientURL}/#/passwordReset/${resetToken}/${user._id}`;
         
-        SendEmail("requestResetPassword","baseMail",user.userEmail,"Réinitialisation du mot de passe",
-          {
-            name : user.userFirstname,
-            link : link,
-          }
-        )
+        // SendEmail(
+        //   // "requestResetPassword",
+        //   // "baseMail",
+        //   user.userEmail,
+        //   "Réinitialisation du mot de passe",
+        //   // {
+        //   //   name : user.userFirstname,
+        //   //   link : link,
+        //   // }
+        // )
 }))
 
 router.get("", asyncHandler(async(req, res) => {

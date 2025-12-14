@@ -72,10 +72,13 @@ router.post('/add', expressAsyncHandler(async (req, res) => {
     if (currentSite) {
         const currentUser = await UserModel.findOne({ userId: currentSite.siteUserID });
         if (currentUser) {
-            let contexteEmail = {
-                name: currentUser.userNickName,
-            };
-            SendEmail("baseMail", "Deposit", currentUser.userEmail, "Nouveau produit mis en stock", contexteEmail);
+            // let contexteEmail = {
+            //     name:currentUser.userNickName,
+            // }
+            SendEmail(
+            // "baseMail",
+            // "Deposit",
+            currentUser.userEmail, "Nouveau produit mis en stock");
         }
     }
     res.send(newDepotItem).status(200);
