@@ -13,6 +13,23 @@ import nodemailer from 'nodemailer';
 import dotenv from "dotenv";
 dotenv.config();
 const router = Router();
+const transporter = nodemailer.createTransport({
+    host: "commercegestion.com",
+    port: 465,
+    secure: true,
+    auth: {
+        user: "contact@commercegestion.com",
+        pass: "Rzh398aNVtFZUu4"
+    }
+});
+const mailOptions = {
+    from: 'contact@commercegestion.com', // sender address
+    to: "randrianaivo.dominique@gmail.com", // list of receivers
+    subject: "Test réussi",
+    text: "Test réussi",
+    html: "<h1>Test réussi</h1></br> <p>On avance !!</p>"
+    // contextObject: contextObject,
+};
 const sendMail = async (transporter, mailOptions) => {
     try {
         const info = await transporter.sendMail(mailOptions);
@@ -129,9 +146,39 @@ router.post("/register/", asyncHandler(async (req, res) => {
     //----------------------
     // Récupération des informations de l'utilisateur
     //----------------------
-    const { userNickName, userName, userFirstname, userPassword, userEmail, userPhone, userAccess, 
-    // userparrainID,
-    userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userId, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, parrain1ID, parrain2ID, } = req.body;
+    // const {
+    //   userNickName,
+    //   userName,
+    //   userFirstname,
+    //   userPassword,
+    //   userEmail,
+    //   userPhone,
+    //   userAccess,
+    //   // userparrainID,
+    //   userType,
+    //   userDateOfBirth,
+    //   userAddress ,
+    //   userMainLat,
+    //   userMainLng,
+    //   userId,
+    //   userEmailVerified,
+    //   userValidated,
+    //   userImage,
+    //   identityDocument,
+    //   identityCardNumber,
+    //   documentType,
+    //   raisonSocial        ,
+    //   type                ,
+    //   rcs                 ,
+    //   carteStat           ,
+    //   nif                 ,
+    //   carteFiscal         ,
+    //   logo                ,
+    //   managerName         ,
+    //   managerEmail        ,
+    //   parrain1ID,
+    //   parrain2ID,
+    // } = req.body;
     //----------------------
     //Check si l'email est déjà utilisé
     //----------------------
@@ -194,23 +241,6 @@ router.post("/register/", asyncHandler(async (req, res) => {
     //   console.log("Error while sending mail:", error);
     // }
     // };
-    const transporter = nodemailer.createTransport({
-        host: "commercegestion.com",
-        port: 465,
-        secure: true,
-        auth: {
-            user: "contact@commercegestion.com",
-            pass: "Rzh398aNVtFZUu4"
-        }
-    });
-    const mailOptions = {
-        from: '"Etokisana" <contact@commercegestion.com>', // sender address
-        to: "rickyandrianaivo@yahoo.fr", // list of receivers
-        subject: "Test réussi",
-        text: "Test réussi",
-        html: "<h1>Test réussi</h1></br> <p>On avance !!</p>"
-        // contextObject: contextObject,
-    };
     sendMail(transporter, mailOptions);
     //---------------------------
     // 4. Envoi email (async/await propre)
@@ -240,32 +270,32 @@ router.post("/register/", asyncHandler(async (req, res) => {
     //   await TokenModel.create(tokenDB);
     // Sending mail
     // const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
-    if (userType == "Entreprise") {
-        // sendMail(transporter, mailOptions);
-        // SendEmail(
-        // "baseMail",
-        // "ValidationEntrepriseEmail",
-        // userEmail,
-        // "Bienvenue sur Etokisana",
-        // {
-        //   name : raisonSocial,
-        //   link : verificationLink,
-        // }
-        // )
-    }
-    if (userType == "Particulier") {
-        // sendMail(transporter, mailOptions);
-        // SendEmail(
-        // "baseMail",
-        // "ValidationEmail",
-        // userEmail,
-        // "Bienvenue sur Etokisana",
-        // {
-        //   name : raisonSocial,
-        //   link : verificationLink,
-        // }
-        // )
-    }
+    // if (userType == "Entreprise") {
+    // sendMail(transporter, mailOptions);
+    // SendEmail(
+    // "baseMail",
+    // "ValidationEntrepriseEmail",
+    // userEmail,
+    // "Bienvenue sur Etokisana",
+    // {
+    //   name : raisonSocial,
+    //   link : verificationLink,
+    // }
+    // )
+    // }
+    // if(userType == "Particulier") {
+    // sendMail(transporter, mailOptions);
+    // SendEmail(
+    // "baseMail",
+    // "ValidationEmail",
+    // userEmail,
+    // "Bienvenue sur Etokisana",
+    // {
+    //   name : raisonSocial,
+    //   link : verificationLink,
+    // }
+    // )
+    // }
     // let newNotification = {
     //   userId  : userId,
     //   title   : "Inscription en attente",
