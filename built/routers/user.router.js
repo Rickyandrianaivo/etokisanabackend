@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { TokenModel } from "../models/token.models.js";
 import { randomBytes } from "crypto";
-import { SendEmail } from "../Utils/Emails/sendEmail.js";
+// import { SendEmail } from "../Utils/Emails/sendEmail.js";
 import multer from 'multer';
 import { NotificationModel } from "../models/notification.model.js";
 import { SiteModel } from "../models/site.model.js";
@@ -13,6 +13,15 @@ import nodemailer from 'nodemailer';
 import dotenv from "dotenv";
 dotenv.config();
 const router = Router();
+const sendMail = async (transporter, mailOptions) => {
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Message sent successfully:", info.messageId);
+    }
+    catch (error) {
+        console.log("Error while sending mail:", error);
+    }
+};
 // router.post("/register/",asyncHandler(async(req, res) => {
 // const transporter = nodemailer.createTransport({
 //   host: "commercegestion.com",
@@ -114,15 +123,6 @@ router.post("/requestVerificationEmail", asyncHandler(async (req, res) => {
         token: tokenInfo.token,
     };
 }));
-const sendMail = async (transporter, mailOptions) => {
-    try {
-        const info = await transporter.sendMail(mailOptions);
-        console.log("Message sent successfully:", info.messageId);
-    }
-    catch (error) {
-        console.log("Error while sending mail:", error);
-    }
-};
 router.post("/register/", asyncHandler(async (req, res) => {
     // let tokenInfo
     // let userDb
@@ -292,16 +292,26 @@ router.get("/validate/:id", asyncHandler(async (req, res) => {
     const userById = await UserModel.findById({ _id: userDBId });
     await UserModel.updateOne({ _id: userDBId }, { $set: { userValidated: true } });
     if (userById?.userType == "Entreprise") {
-        SendEmail(
-        // "baseMail",
-        // "welcome",
-        userById.userEmail, "Inscription terminée");
+        // SendEmail(
+        //   // "baseMail",
+        //   // "welcome",
+        //   userById.userEmail,
+        //   "Inscription terminée",
+        //   // {
+        //   //   name : userById.userName,
+        //   // }
+        // )
     }
     if (userById && userById.userType == "Particulier") {
-        SendEmail(
-        // "baseMail",
-        // "welcome",
-        userById.userEmail, "Inscription terminée");
+        // SendEmail(
+        //   // "baseMail",
+        //   // "welcome",
+        //   userById.userEmail,
+        //   "Inscription terminée",
+        //   // {
+        //   //   name : userById.userName,
+        //   // }
+        // )
     }
     // let newNotification = {
     //     userId  : userById?.userId,
@@ -370,10 +380,13 @@ router.patch("/passwordReset", asyncHandler(async (req, res) => {
         }
     }
     if (isValid && user) {
-        SendEmail(
-        // "baseMail",
-        // "resetPassword",
-        user.userEmail, "Mot de passe réinitialisé");
+        // SendEmail(
+        //   // "baseMail",
+        //   // "resetPassword",
+        //   user.userEmail,
+        //   "Mot de passe réinitialisé",
+        //   // {name : user.userName,}
+        // )
     }
     res.send('Mot de passe réinitialisé');
 }));
@@ -398,10 +411,16 @@ router.post("/requestResetPwd", asyncHandler(async (req, res) => {
     }).save();
     //on envoi le token non crypté pour le comparer avec le token crypté de la base de donnée
     const link = `${clientURL}/#/passwordReset/${resetToken}/${user._id}`;
-    SendEmail(
-    // "requestResetPassword",
-    // "baseMail",
-    user.userEmail, "Réinitialisation du mot de passe");
+    // SendEmail(
+    //   // "requestResetPassword",
+    //   // "baseMail",
+    //   user.userEmail,
+    //   "Réinitialisation du mot de passe",
+    //   // {
+    //   //   name : user.userFirstname,
+    //   //   link : link,
+    //   // }
+    // )
 }));
 router.get("", asyncHandler(async (req, res) => {
     const users = await UserModel.find();
