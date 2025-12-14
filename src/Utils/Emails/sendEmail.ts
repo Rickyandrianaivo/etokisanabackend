@@ -1,7 +1,6 @@
 import nodemailer from 'nodemailer';
 import winston from 'winston';
 import dotenv from "dotenv";
-import fs from "fs";
 import path from "path";
 import handlebars from 'handlebars';
 import hbs from 'nodemailer-express-handlebars';
@@ -24,12 +23,21 @@ export const SendEmail =  async (
     {
         const transporter = nodemailer.createTransport({
             host : "commercegestion.com",
+<<<<<<< HEAD
             port : 587,
             secure : false,
             auth : 
             {
                 user:"contact@commercegestion.com",
                 pass:"Rzh398aNVtFZUu4"
+=======
+            port : 465,
+            secure : true,
+            auth : 
+            {
+                user:process.env.EMAIL_USERNAME,
+                pass:process.env.EMAIL_PASSWORD
+>>>>>>> 0174d6ffb612c3b434c27a64116a39d4eaf41913
             }
         })
         
@@ -42,25 +50,34 @@ export const SendEmail =  async (
         },
         viewPath : path.resolve("./Utils/Emails/Template/"),
         extName : '.handlebars',
-    
     }))
+
     await transporter.verify((error, success) => {
     if (error) {
         console.error('Erreur de configuration du transporteur SMTP :', error);
     } else {
         console.log('Transporteur SMTP prêt pour l\'envoi d\'emails.',success);
     }})
+
     //---------------------------
     // 3. Informations email
     //---------------------------
     let emailData = {
+<<<<<<< HEAD
         from: 'contact@commercegestion.com', // sender address
         to: destinataireEmail, // list of receivers
         subject: subjectEmail, // Subject line
         // template: "",
         html : "<b>Hello world</b>"
+=======
+        from: process.env.EMAIL_USERNAME, // sender address
+        to: destinataireEmail, // list of receivers
+        subject : subjectEmail,
+        contextObject: contextObject,
+>>>>>>> 0174d6ffb612c3b434c27a64116a39d4eaf41913
     };
-//---------------------------
+
+    //---------------------------
     // 4. Envoi email (async/await propre)
     //---------------------------
     const sendInfo = await transporter.sendMail(emailData);
