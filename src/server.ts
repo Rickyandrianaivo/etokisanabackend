@@ -44,14 +44,11 @@ app.use("/api/notification", notificationRouter);
 const transporter = nodemailer.createTransport({
   // service: "gmail",
   host: "commercegestion.com",
-  port: 465,
-  secure: true, // true for 465, false for other ports
+  port: 587,
+  secure: false, // true for 465, false for other ports
   auth: {
     user: "contact@commercegestion.com",
     pass: "Rzh398aNVtFZUu4",
-    // pass: "fxbl ouuq biso jbdb",
-    // user: process.env.EMAIL_USER,
-    // pass: process.env.EMAIL_PASS,
   },
 });
 
