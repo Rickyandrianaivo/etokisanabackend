@@ -1,9 +1,9 @@
 import nodemailer from 'nodemailer';
 import winston from 'winston';
 import dotenv from "dotenv";
-// import path from "path";
-// import handlebars from 'handlebars';
-// import hbs from 'nodemailer-express-handlebars';
+import path from "path";
+import handlebars from 'handlebars';
+import hbs from 'nodemailer-express-handlebars';
 dotenv.config();
 
 const logger = winston.createLogger({
@@ -21,6 +21,15 @@ export const SendEmail =  async (
 )=>{
     try 
     {
+        // const transporter = nodemailer.createTransport({
+        // host:"commercegestion.com",
+        // port: 465,
+        // secure:false,
+        // auth:{
+        //         user: "contact@commercegestion.com",
+        //         pass: "Rzh398aNVtFZUu4",
+        //     }
+        // });
         const transporter = nodemailer.createTransport({
             host : "commercegestion.com",
             port : 465,
@@ -32,16 +41,16 @@ export const SendEmail =  async (
             }
         })
         
-    // transporter.use("compile",hbs({
-    //     viewEngine: {
-    //         extname:'.handlebars',
-    //         defaultLayout: defaultLayout,
-    //         partialsDir:path.resolve('./Utils/Emails/Template'),
-    //         layoutsDir:path.resolve('./Utils/Emails/Template'),
-    //     },
-    //     viewPath : path.resolve("./Utils/Emails/Template/"),
-    //     extName : '.handlebars',
-    // }))
+    transporter.use("compile",hbs({
+        viewEngine: {
+            extname:'.handlebars',
+            defaultLayout: defaultLayout,
+            partialsDir:path.resolve('./Utils/Emails/Template'),
+            layoutsDir:path.resolve('./Utils/Emails/Template'),
+        },
+        viewPath : path.resolve("./Utils/Emails/Template/"),
+        extName : '.handlebars',
+    }))
 
     await transporter.verify((error, success) => {
     if (error) {
@@ -57,8 +66,7 @@ export const SendEmail =  async (
         from: process.env.EMAIL_USERNAME, // sender address
         to: destinataireEmail, // list of receivers
         subject : subjectEmail,
-        // contextObject: contextObject,
-        html : "<h1>Test réussie</h1></br> <p>On avance !!</p>"
+        contextObject: contextObject,
     };
 
     //---------------------------

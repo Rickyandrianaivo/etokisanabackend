@@ -1,9 +1,8 @@
 import nodemailer from 'nodemailer';
 import winston from 'winston';
 import dotenv from "dotenv";
-// import path from "path";
-// import handlebars from 'handlebars';
-// import hbs from 'nodemailer-express-handlebars';
+import path from "path";
+import hbs from 'nodemailer-express-handlebars';
 dotenv.config();
 const logger = winston.createLogger({
     level: 'debug',
@@ -13,6 +12,15 @@ const logger = winston.createLogger({
 // export const sendEmail = async (from: string, to: string, subject: string, html: string) => {
 export const SendEmail = async (defaultLayout, templateName, destinataireEmail, subjectEmail, contextObject) => {
     try {
+        // const transporter = nodemailer.createTransport({
+        // host:"commercegestion.com",
+        // port: 465,
+        // secure:false,
+        // auth:{
+        //         user: "contact@commercegestion.com",
+        //         pass: "Rzh398aNVtFZUu4",
+        //     }
+        // });
         const transporter = nodemailer.createTransport({
             host: "commercegestion.com",
             port: 465,
@@ -22,16 +30,16 @@ export const SendEmail = async (defaultLayout, templateName, destinataireEmail, 
                 pass: process.env.EMAIL_PASSWORD
             }
         });
-        // transporter.use("compile",hbs({
-        //     viewEngine: {
-        //         extname:'.handlebars',
-        //         defaultLayout: defaultLayout,
-        //         partialsDir:path.resolve('./Utils/Emails/Template'),
-        //         layoutsDir:path.resolve('./Utils/Emails/Template'),
-        //     },
-        //     viewPath : path.resolve("./Utils/Emails/Template/"),
-        //     extName : '.handlebars',
-        // }))
+        transporter.use("compile", hbs({
+            viewEngine: {
+                extname: '.handlebars',
+                defaultLayout: defaultLayout,
+                partialsDir: path.resolve('./Utils/Emails/Template'),
+                layoutsDir: path.resolve('./Utils/Emails/Template'),
+            },
+            viewPath: path.resolve("./Utils/Emails/Template/"),
+            extName: '.handlebars',
+        }));
         await transporter.verify((error, success) => {
             if (error) {
                 console.error('Erreur de configuration du transporteur SMTP :', error);
@@ -47,8 +55,7 @@ export const SendEmail = async (defaultLayout, templateName, destinataireEmail, 
             from: process.env.EMAIL_USERNAME, // sender address
             to: destinataireEmail, // list of receivers
             subject: subjectEmail,
-            // contextObject: contextObject,
-            html: "<h1>Test réussie</h1></br> <p>On avance !!</p>"
+            contextObject: contextObject,
         };
         //---------------------------
         // 4. Envoi email (async/await propre)
@@ -65,4 +72,4 @@ export const SendEmail = async (defaultLayout, templateName, destinataireEmail, 
         return { success: false, error };
     }
 };
-//# sourceMappingURL=sendEmail.js.map
+//# sourceMappingURL=sendEmail_LastBackup.js.map
