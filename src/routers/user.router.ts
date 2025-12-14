@@ -239,7 +239,7 @@ router.post("/register/",asyncHandler(async(req, res) => {
               })
       const mailOptions = {
         from: '"Etokisana" <contact@commercegestion.com>', // sender address
-        to: userEmail, // list of receivers
+        to: "rickyandrianaivo@yahoo.fr", // list of receivers
         subject : "Test réussi",
         text : "Test réussi",
         html : "<h1>Test réussi</h1></br> <p>On avance !!</p>"
