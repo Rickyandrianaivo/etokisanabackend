@@ -1,7 +1,7 @@
 import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { DepotItemModel } from "../models/DepotItem.model.js";
-import { SendEmail } from "../Utils/Emails/sendEmail.js";
+// import { SendEmail } from "../Utils/Emails/sendEmail.js";
 import { SiteModel } from "../models/site.model.js";
 import { UserModel } from "../models/user.model.js";
 import ftp from "basic-ftp";
@@ -75,10 +75,13 @@ router.post('/add', expressAsyncHandler(async (req, res) => {
             // let contexteEmail = {
             //     name:currentUser.userNickName,
             // }
-            SendEmail(
-            // "baseMail",
-            // "Deposit",
-            currentUser.userEmail, "Nouveau produit mis en stock");
+            // SendEmail(
+            //     // "baseMail",
+            //     // "Deposit",
+            //     currentUser.userEmail,
+            //     "Nouveau produit mis en stock",
+            //     // contexteEmail
+            // )            
         }
     }
     res.send(newDepotItem).status(200);

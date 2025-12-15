@@ -141,169 +141,141 @@ router.post("/requestVerificationEmail", asyncHandler(async (req, res) => {
     };
 }));
 router.post("/register/", asyncHandler(async (req, res) => {
-    // let tokenInfo
-    // let userDb
+    let tokenInfo;
+    let userDb;
     //----------------------
     // Récupération des informations de l'utilisateur
     //----------------------
-    // const {
-    //   userNickName,
-    //   userName,
-    //   userFirstname,
-    //   userPassword,
-    //   userEmail,
-    //   userPhone,
-    //   userAccess,
-    //   // userparrainID,
-    //   userType,
-    //   userDateOfBirth,
-    //   userAddress ,
-    //   userMainLat,
-    //   userMainLng,
-    //   userId,
-    //   userEmailVerified,
-    //   userValidated,
-    //   userImage,
-    //   identityDocument,
-    //   identityCardNumber,
-    //   documentType,
-    //   raisonSocial        ,
-    //   type                ,
-    //   rcs                 ,
-    //   carteStat           ,
-    //   nif                 ,
-    //   carteFiscal         ,
-    //   logo                ,
-    //   managerName         ,
-    //   managerEmail        ,
-    //   parrain1ID,
-    //   parrain2ID,
-    // } = req.body;
+    const { userNickName, userName, userFirstname, userPassword, userEmail, userPhone, userAccess, 
+    // userparrainID,
+    userType, userDateOfBirth, userAddress, userMainLat, userMainLng, userId, userEmailVerified, userValidated, userImage, identityDocument, identityCardNumber, documentType, raisonSocial, type, rcs, carteStat, nif, carteFiscal, logo, managerName, managerEmail, parrain1ID, parrain2ID, } = req.body;
     //----------------------
     //Check si l'email est déjà utilisé
     //----------------------
-    // const user = await UserModel.findOne({userEmail : userEmail.toLowerCase()});
-    // if(user){
-    //     res.status(500).send("Ce nom est déjà utilisé !");
-    //     return;
-    // }else
-    // {
-    // Criptage du mot de passe
-    // const encryptedPassword = await bcrypt.hash(userPassword,10);
-    // const newUser : User = {
-    //     userNickName,
-    //     userName,
-    //     userFirstname,
-    //     userPassword: encryptedPassword,
-    //     userEmail:userEmail.toLowerCase(),
-    //     userPhone,
-    //     userTotalSolde : 0,
-    //     userType,
-    //     userAccess,
-    //     // userparrainID,
-    //     userValidated,
-    //     userEmailVerified,
-    //     userAddress ,
-    //     userDateOfBirth,
-    //     userMainLat,
-    //     userMainLng,
-    //     userId              ,
-    //     userImage           ,
-    //     identityDocument    ,
-    //     identityCardNumber  ,
-    //     documentType        ,
-    //     raisonSocial        ,
-    //     type                ,
-    //     rcs                 ,
-    //     carteStat           ,
-    //     nif                 ,
-    //     carteFiscal         ,
-    //     logo                ,
-    //     managerName         ,
-    //     managerEmail        ,
-    //     parrain1ID,
-    //     parrain2ID,
-    // }
-    // SendEmail(userEmail,"Test réusssi !!");
-    // userDb = await UserModel.create(newUser); 
-    // const mailOptions = {
-    //   from: 'contact@commercegestion.com',
-    //   to: "randrianaivo.dominique@gmail.com",
-    //   subject: "inscription ranix ✔",
-    //   text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
-    //   html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
-    // };
-    // const sendMail = async (transporter:any, mailOptions:any) => {
-    // try {
-    //   const info = await transporter.sendMail(mailOptions);
-    //   console.log("Message sent successfully:", info.messageId);
-    // } catch (error) {
-    //   console.log("Error while sending mail:", error);
-    // }
-    // };
-    sendMail(transporter, mailOptions);
-    //---------------------------
-    // 4. Envoi email (async/await propre)
-    //---------------------------
-    // try 
-    // {
-    //     const sendInfo = await transporter.sendMail(mailOptions);
-    //     if (sendInfo) {
-    //       console.log("Email envoyé : ", sendInfo.messageId);          
-    //     }else{
-    //       console.log("Erreur lors de l'envoi du mail");
-    //     }
-    // return {
-    //     success : true,
-    //     response : sendInfo.response
-    // }
-    // }catch(error){
-    //     console.error("Erreur lors de l'envoi de l'email : ", error);
-    //     // return {success:false,error};
-    // }      
-    // }
-    // tokenInfo = generateTokenResponse(userDb);
-    //   const tokenDB : Token = {
-    //     userId    : tokenInfo._id,
-    //     token : tokenInfo.token,
-    //   }
-    //   await TokenModel.create(tokenDB);
-    // Sending mail
-    // const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
-    // if (userType == "Entreprise") {
-    // sendMail(transporter, mailOptions);
-    // SendEmail(
-    // "baseMail",
-    // "ValidationEntrepriseEmail",
-    // userEmail,
-    // "Bienvenue sur Etokisana",
-    // {
-    //   name : raisonSocial,
-    //   link : verificationLink,
-    // }
-    // )
-    // }
-    // if(userType == "Particulier") {
-    // sendMail(transporter, mailOptions);
-    // SendEmail(
-    // "baseMail",
-    // "ValidationEmail",
-    // userEmail,
-    // "Bienvenue sur Etokisana",
-    // {
-    //   name : raisonSocial,
-    //   link : verificationLink,
-    // }
-    // )
-    // }
-    // let newNotification = {
-    //   userId  : userId,
-    //   title   : "Inscription en attente",
-    //   message : "Nous vous remercions de votre patience pendant la validation de votre insciption au sein de nos administrateurs",
-    //   state  : "new",
-    // }
-    // await NotificationModel.create(newNotification);
-    // res.status(200).send(['Utilisateur créé !!!']);
+    const user = await UserModel.findOne({ userEmail: userEmail.toLowerCase() });
+    if (user) {
+        res.status(500).send("Ce nom est déjà utilisé !");
+        return;
+    }
+    else {
+        // Cryptage du mot de passe
+        const encryptedPassword = await bcrypt.hash(userPassword, 10);
+        const newUser = {
+            userNickName,
+            userName,
+            userFirstname,
+            userPassword: encryptedPassword,
+            userEmail: userEmail.toLowerCase(),
+            userPhone,
+            userTotalSolde: 0,
+            userType,
+            userAccess,
+            // userparrainID,
+            userValidated,
+            userEmailVerified,
+            userAddress,
+            userDateOfBirth,
+            userMainLat,
+            userMainLng,
+            userId,
+            userImage,
+            identityDocument,
+            identityCardNumber,
+            documentType,
+            raisonSocial,
+            type,
+            rcs,
+            carteStat,
+            nif,
+            carteFiscal,
+            logo,
+            managerName,
+            managerEmail,
+            parrain1ID,
+            parrain2ID,
+        };
+        // SendEmail(userEmail,"Test réusssi !!");
+        userDb = await UserModel.create(newUser);
+        const mailOptions = {
+            from: 'contact@commercegestion.com',
+            to: "randrianaivo.dominique@gmail.com",
+            subject: "inscription ranix ✔",
+            text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
+            html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
+        };
+        const sendMail = async (transporter, mailOptions) => {
+            try {
+                const info = await transporter.sendMail(mailOptions);
+                console.log("Message sent successfully:", info.messageId);
+            }
+            catch (error) {
+                console.log("Error while sending mail:", error);
+            }
+        };
+        sendMail(transporter, mailOptions);
+        //---------------------------
+        // 4. Envoi email (async/await propre)
+        //---------------------------
+        // try 
+        // {
+        //     const sendInfo = await transporter.sendMail(mailOptions);
+        //     if (sendInfo) {
+        //       console.log("Email envoyé : ", sendInfo.messageId);          
+        //     }else{
+        //       console.log("Erreur lors de l'envoi du mail");
+        //     }
+        // return {
+        //     success : true,
+        //     response : sendInfo.response
+        // }
+        // }catch(error){
+        //     console.error("Erreur lors de l'envoi de l'email : ", error);
+        //     // return {success:false,error};
+        // }      
+        // }
+        tokenInfo = generateTokenResponse(userDb);
+        const tokenDB = {
+            userId: tokenInfo._id,
+            token: tokenInfo.token,
+        };
+        await TokenModel.create(tokenDB);
+        // Sending mail
+        const verificationLink = "https://www.commercegestion.com/#/user-confirmation/" + tokenInfo.token;
+        if (userType == "Entreprise") {
+            sendMail(transporter, mailOptions);
+            // SendEmail(
+            // "baseMail",
+            // "ValidationEntrepriseEmail",
+            // userEmail,
+            // "Bienvenue sur Etokisana",
+            // {
+            //   name : raisonSocial,
+            //   link : verificationLink,
+            // }
+            // )
+        }
+        if (userType == "Particulier") {
+            sendMail(transporter, mailOptions);
+            // SendEmail(
+            // "baseMail",
+            // "ValidationEmail",
+            // userEmail,
+            // "Bienvenue sur Etokisana",
+            // {
+            //   name : raisonSocial,
+            //   link : verificationLink,
+            // }
+            // )
+        }
+        let newNotification = {
+            userId: userId,
+            title: "Inscription en attente",
+            message: "Nous vous remercions de votre patience pendant la validation de votre insciption au sein de nos administrateurs",
+            state: "new",
+        };
+        await NotificationModel.create(newNotification);
+        res.status(200).send(['Utilisateur créé !!!']);
+    }
 }));
 router.get("/checkparrain/:id", asyncHandler(async (req, res) => {
     const user = await UserModel.findOne({ _id: req.params['id'] });
@@ -333,6 +305,7 @@ router.get("/validate/:id", asyncHandler(async (req, res) => {
         // )
     }
     if (userById && userById.userType == "Particulier") {
+        sendMail(transporter, mailOptions);
         // SendEmail(
         //   // "baseMail",
         //   // "welcome",
@@ -343,13 +316,13 @@ router.get("/validate/:id", asyncHandler(async (req, res) => {
         //   // }
         // )
     }
-    // let newNotification = {
-    //     userId  : userById?.userId,
-    //     title   : "Inscritpion réussie !",
-    //     message : "Félicitations ! Vous faites maintenant partie de la grande famille de notre plateforme.",
-    //     states  : "new",
-    // }
-    // await NotificationModel.create(newNotification);
+    let newNotification = {
+        userId: userById?.userId,
+        title: "Inscritpion réussie !",
+        message: "Félicitations ! Vous faites maintenant partie de la grande famille de notre plateforme.",
+        states: "new",
+    };
+    await NotificationModel.create(newNotification);
     res.status(200).send(userById?.userId);
 }));
 const generateTokenResponse = (user) => {

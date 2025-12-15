@@ -2,7 +2,7 @@ import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { TransactionModel } from "../models/transaction.model.js";
 import { UserModel } from "../models/user.model.js";
-import { SendEmail } from "../Utils/Emails/sendEmail.js";
+// import { SendEmail } from "../Utils/Emails/sendEmail.js";
 const router = Router();
 router.post("/add", expressAsyncHandler(async (req, res) => {
     const { userId, siteDepartId, siteArriveId, typeES, montantTotal, statut, productList, } = req.body;
@@ -17,14 +17,24 @@ router.post("/add", expressAsyncHandler(async (req, res) => {
     };
     const currentUser = await UserModel.findOne({ _id: userId });
     if (currentUser && typeES == "Dépôt") {
-        SendEmail(
-        // "baseMail","Deposit",
-        currentUser.userEmail, "Transaction réussie");
+        // SendEmail(
+        //   // "baseMail","Deposit",
+        //   currentUser.userEmail,"Transaction réussie",
+        //   // {
+        //   //   name : currentUser.userFirstname,
+        //   //   montant : montantTotal,
+        //   // }
+        // )
     }
     if (currentUser && typeES == "Retrait") {
-        SendEmail(
-        // "baseMail","Withdraw",
-        currentUser.userEmail, "Transaction réussie");
+        // SendEmail(
+        //   // "baseMail","Withdraw",
+        //   currentUser.userEmail,"Transaction réussie",
+        //   // {
+        //   //   name : currentUser.userFirstname,
+        //   //   montant : montantTotal,
+        //   // }
+        // )
     }
     await TransactionModel.create(newTransaction);
     res.send(newTransaction).status(200);
