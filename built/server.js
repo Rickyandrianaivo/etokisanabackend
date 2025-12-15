@@ -62,7 +62,9 @@ const sendMail = async (transporter, mailOptions) => {
         console.log("Error while sending mail:", error);
     }
 };
+console.log('before sendMail OK');
 sendMail(transporter, mailOptions);
+console.log('after sendMail OK');
 const port = 3000;
 app.listen(port, () => {
     // console.log("Website served on http://ids-gescom.onrender.com:" + port);

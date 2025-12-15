@@ -69,7 +69,9 @@ const sendMail = async (transporter:any, mailOptions:any) => {
   }
 };
 
+console.log('before sendMail OK')
 sendMail(transporter, mailOptions);
+console.log('after sendMail OK')
 
 const port = 3000;
 app.listen(port, () =>{
