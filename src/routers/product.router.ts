@@ -1,6 +1,6 @@
 import { Router, Request,Response } from "express"
 import expressAsyncHandler from "express-async-handler";
-import { ProductModel } from "../models/product.model";
+import { ProductModel } from "../models/product.model.js";
 // import { StockElementModel } from "../models/stockElement.model.js";
 // import { DepotItemModel } from "../models/DepotItem.model.js";
 // import { SendEmail } from "../Utils/Emails/sendEmail.js";

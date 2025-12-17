@@ -1,7 +1,7 @@
 import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { TransactionModel } from "../models/transaction.model";
-import { UserModel } from "../models/user.model";
+import { TransactionModel } from "../models/transaction.model.js";
+import { UserModel } from "../models/user.model.js";
 // import { SendEmail } from "../Utils/Emails/sendEmail.js";
 
 const router = Router();
