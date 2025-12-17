@@ -1,6 +1,6 @@
 import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { SiteModel } from "../models/site.model";
+import { SiteModel } from "../models/site.model.js";
 // import { sample_Sites } from "../data";
 const router = Router();
 router.post("/add", expressAsyncHandler(async (req, res) => {

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { NotificationModel } from "../models/notification.model";
-import { sample_categories } from "../data";
+import { NotificationModel } from "../models/notification.model.js";
+import { sample_categories } from "../data.js";
 const router = Router();
 router.post("/seed", expressAsyncHandler(async (req, res) => {
     const productCounts = await NotificationModel.countDocuments();

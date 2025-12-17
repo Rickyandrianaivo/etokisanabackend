@@ -1,9 +1,9 @@
 import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { DepotItemModel } from "../models/DepotItem.model";
+import { DepotItemModel } from "../models/DepotItem.model.js";
 // import { SendEmail } from "../Utils/Emails/sendEmail.js";
-import { SiteModel } from "../models/site.model";
-import { UserModel } from "../models/user.model";
+import { SiteModel } from "../models/site.model.js";
+import { UserModel } from "../models/user.model.js";
 import ftp from "basic-ftp";
 import multer from 'multer';
 import fs from "fs";

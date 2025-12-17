@@ -1,17 +1,17 @@
 import { Router } from "express";
 import asyncHandler from "express-async-handler";
-import { UserModel } from "../models/user.model";
+import { UserModel } from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { TokenModel } from "../models/token.models";
+import { TokenModel } from "../models/token.models.js";
 import { randomBytes } from "crypto";
-import { SendEmail } from "../Utils/Emails/sendEmail";
+import { SendEmail } from "../Utils/Emails/sendEmail.js";
 import multer from 'multer';
-import { NotificationModel } from "../models/notification.model";
-import { SiteModel } from "../models/site.model";
+import { NotificationModel } from "../models/notification.model.js";
+import { SiteModel } from "../models/site.model.js";
 import nodemailer from 'nodemailer';
 import dotenv from "dotenv";
-import { JWT_SECRET } from "../Utils/constant/constant";
+import { JWT_SECRET } from "../Utils/constant/constant.js";
 dotenv.config();
 const userRouter = Router();
 const transporter = nodemailer.createTransport({

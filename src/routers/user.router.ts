@@ -5,14 +5,14 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { Token, TokenModel } from "../models/token.models.js";
 import {randomBytes} from"crypto";
-import { SendEmail } from "../Utils/Emails/sendEmail";
+import { SendEmail } from "../Utils/Emails/sendEmail.js";
 import multer from 'multer';
 import { NotificationModel } from "../models/notification.model.js";
 import { Options } from "nodemailer/lib/smtp-pool/index";
 import { SiteModel } from "../models/site.model.js";
 import nodemailer from 'nodemailer';
 import dotenv from "dotenv";
-import { JWT_SECRET } from "../Utils/constant/constant";
+import { JWT_SECRET } from "../Utils/constant/constant.js";
 dotenv.config();
 const userRouter = Router();
 

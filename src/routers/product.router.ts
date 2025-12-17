@@ -6,7 +6,7 @@ import { ProductModel } from "../models/product.model.js";
 // import { SendEmail } from "../Utils/Emails/sendEmail.js";
 // import { SiteModel } from "../models/site.model.js";
 // import { UserModel } from "../models/user.model.js";
-import { sample_products } from "../data";
+import { sample_products } from "../data.js";
 import  ftp from "basic-ftp";
 import multer from 'multer';
 import fs from "fs";
