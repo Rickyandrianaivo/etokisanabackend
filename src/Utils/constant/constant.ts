@@ -1,4 +1,10 @@
 import path from "path"
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
 
 export const MONGO_URI ="mongodb+srv://rickyandrianaivo:2tkMQr6UkB4vexKT@ids.ll4k7bh.mongodb.net/etokisana"
 export const JWT_SECRET = 'e-tokisana'
