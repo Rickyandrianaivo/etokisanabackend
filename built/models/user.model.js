@@ -1,11 +1,13 @@
 import { Schema, model } from "mongoose";
+import bcrypt from 'bcryptjs';
+import { BCRYPT_SALT } from "../Utils/constant/constant";
 export const UserSchema = new Schema({
     // _id                     : { type : String},
     userNickName: { type: String },
     userName: { type: String },
     userFirstname: { type: String },
     userPassword: { type: String, required: true },
-    userEmail: { type: String, required: true },
+    userEmail: { type: String, required: true, unique: true },
     userPhone: { type: String },
     userType: { type: String, required: true },
     userTotalSolde: { type: Number },
@@ -42,5 +44,15 @@ export const UserSchema = new Schema({
         virtuals: true
     }
 });
+UserSchema.pre('save', async function (next) {
+    if (!this.isModified('userPassword'))
+        return next();
+    this.userPassword = await bcrypt.hash(this.userPassword, BCRYPT_SALT);
+    next();
+});
+// Comparaison du mot de passe
+UserSchema.methods.comparePassword = async function (pw) {
+    return bcrypt.compare(pw, this.password);
+};
 export const UserModel = model('user', UserSchema);
 //# sourceMappingURL=user.model.js.map

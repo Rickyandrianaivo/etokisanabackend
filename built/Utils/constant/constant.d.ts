@@ -1,0 +1,17 @@
+export declare const MONGO_URI = "mongodb+srv://rickyandrianaivo:2tkMQr6UkB4vexKT@ids.ll4k7bh.mongodb.net/etokisana";
+export declare const JWT_SECRET = "e-tokisana";
+export declare const EMAIL_HOST = "commercegestion.com";
+export declare const EMAIL_USERNAME = "contact@commercegestion.com";
+export declare const EMAIL_PASSWORD = "Rzh398aNVtFZUu4";
+export declare const FROM_EMAIL = "contact@commercegestion.com";
+export declare const EMAIL_PORT = 465;
+export declare const BCRYPT_SALT = 10;
+export declare const CLIENT_URL = "https://www.commercegestion.com";
+export declare const NODE_ENV = "DEV";
+export declare const MAILTRAP_HOST = "sandbox.smtp.mailtrap.io";
+export declare const MAILTRAP_PORT = 2525;
+export declare const MAILTRAP_USER = "2a6a049ea742dd";
+export declare const MAILTRAP_PASS = "1b8d17f7b2651a";
+export declare const PORT_DEV = 3000;
+export declare const LIMIT = "50mb";
+export declare const EMAIL_TEMPLATE_PATH: string;
