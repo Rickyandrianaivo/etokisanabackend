@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.sample_inventaire = exports.sample_inventaireDetails = void 0;
-exports.sample_inventaireDetails = [];
-exports.sample_inventaire = [
+export const sample_inventaireDetails = [];
+export const sample_inventaire = [
     {
         reference: "A10BRELLCAMOTAF",
         prixUnitaireVenteTTC: 72500,

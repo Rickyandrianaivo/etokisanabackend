@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TransactionModel = exports.TransactionSchema = void 0;
-const mongoose_1 = require("mongoose");
-exports.TransactionSchema = new mongoose_1.Schema({
+import { model, Schema } from "mongoose";
+export const TransactionSchema = new Schema({
     // _id         : {type:String},
     userId: { type: String, required: true },
     siteDepartId: { type: String, ref: 'site' },
@@ -20,5 +17,5 @@ exports.TransactionSchema = new mongoose_1.Schema({
         virtuals: true
     }
 });
-exports.TransactionModel = (0, mongoose_1.model)("transaction", exports.TransactionSchema);
+export const TransactionModel = model("transaction", TransactionSchema);
 //# sourceMappingURL=transaction.model.js.map

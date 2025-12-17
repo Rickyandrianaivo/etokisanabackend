@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProductModel = exports.ProductSchema = void 0;
-const mongoose_1 = require("mongoose");
-exports.ProductSchema = new mongoose_1.Schema({
+import { Schema, model } from "mongoose";
+export const ProductSchema = new Schema({
     // _id                 : {type : String},
     codeCPC: { type: String },
     productName: { type: String },
@@ -27,5 +24,5 @@ exports.ProductSchema = new mongoose_1.Schema({
         virtuals: true
     }
 });
-exports.ProductModel = (0, mongoose_1.model)('product', exports.ProductSchema);
+export const ProductModel = model('product', ProductSchema);
 //# sourceMappingURL=product.model.js.map

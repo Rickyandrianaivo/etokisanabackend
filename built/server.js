@@ -1,8 +1,5 @@
-"use strict";
 // import dotenv from 'dotenv';
 // dotenv.config();
-Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
 // import express from "express";
 // import cors from "cors";
 // import userRouter from './routers/user.router.js';
@@ -72,9 +69,9 @@ const tslib_1 = require("tslib");
 //     // console.log("Website served on http://ids-gescom.onrender.com:" + port);
 //     console.log("Website served on http://localhost:" + port);
 // })
-require("dotenv/config");
-const database_config_js_1 = tslib_1.__importDefault(require("./configs/database.config.js"));
-const app_js_1 = tslib_1.__importDefault(require("./configs/app.js"));
-database_config_js_1.default.connectDB();
-app_js_1.default.bootstrap();
+import "dotenv/config";
+import DB from './configs/database.config.js';
+import Server from './configs/app.js';
+DB.connectDB();
+Server.bootstrap();
 //# sourceMappingURL=server.js.map

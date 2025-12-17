@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.EmailConfirmationModel = exports.EmailConfirmationSchema = void 0;
-const mongoose_1 = require("mongoose");
-exports.EmailConfirmationSchema = new mongoose_1.Schema({
+import { Schema, model } from "mongoose";
+export const EmailConfirmationSchema = new Schema({
     userId: { type: String, required: true, unique: true },
     userToken: { type: String, required: true, unique: true },
 }, {
@@ -14,5 +11,5 @@ exports.EmailConfirmationSchema = new mongoose_1.Schema({
         virtuals: true
     }
 });
-exports.EmailConfirmationModel = (0, mongoose_1.model)('user', exports.EmailConfirmationSchema);
+export const EmailConfirmationModel = model('user', EmailConfirmationSchema);
 //# sourceMappingURL=mailconfirmation.models.js.map

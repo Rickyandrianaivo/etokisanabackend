@@ -1,11 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserModel = exports.UserSchema = void 0;
-const tslib_1 = require("tslib");
-const mongoose_1 = require("mongoose");
-const bcryptjs_1 = tslib_1.__importDefault(require("bcryptjs"));
-const constant_js_1 = require("../Utils/constant/constant.js");
-exports.UserSchema = new mongoose_1.Schema({
+import { Schema, model } from "mongoose";
+import bcrypt from 'bcryptjs';
+import { BCRYPT_SALT } from "../Utils/constant/constant.js";
+export const UserSchema = new Schema({
     // _id                     : { type : String},
     userNickName: { type: String },
     userName: { type: String },
@@ -48,15 +44,15 @@ exports.UserSchema = new mongoose_1.Schema({
         virtuals: true
     }
 });
-exports.UserSchema.pre('save', async function (next) {
+UserSchema.pre('save', async function (next) {
     if (!this.isModified('userPassword'))
         return next();
-    this.userPassword = await bcryptjs_1.default.hash(this.userPassword, constant_js_1.BCRYPT_SALT);
+    this.userPassword = await bcrypt.hash(this.userPassword, BCRYPT_SALT);
     next();
 });
 // Comparaison du mot de passe
-exports.UserSchema.methods.comparePassword = async function (pw) {
-    return bcryptjs_1.default.compare(pw, this.password);
+UserSchema.methods.comparePassword = async function (pw) {
+    return bcrypt.compare(pw, this.password);
 };
-exports.UserModel = (0, mongoose_1.model)('user', exports.UserSchema);
+export const UserModel = model('user', UserSchema);
 //# sourceMappingURL=user.model.js.map

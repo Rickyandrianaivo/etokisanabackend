@@ -1,22 +1,18 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SendEmail = void 0;
-const tslib_1 = require("tslib");
-const nodemailer_1 = tslib_1.__importDefault(require("nodemailer"));
-const winston_1 = tslib_1.__importDefault(require("winston"));
-const dotenv_1 = tslib_1.__importDefault(require("dotenv"));
-const fs_1 = tslib_1.__importDefault(require("fs"));
-const path_1 = tslib_1.__importDefault(require("path"));
-const handlebars_1 = tslib_1.__importDefault(require("handlebars"));
-dotenv_1.default.config();
-const logger = winston_1.default.createLogger({
+import nodemailer from 'nodemailer';
+import winston from 'winston';
+import dotenv from "dotenv";
+import fs from "fs";
+import path from "path";
+import handlebars from 'handlebars';
+dotenv.config();
+const logger = winston.createLogger({
     level: 'debug',
-    format: winston_1.default.format.json(),
-    transports: [new winston_1.default.transports.Console()]
+    format: winston.format.json(),
+    transports: [new winston.transports.Console()]
 });
 // export const sendEmail = async (from: string, to: string, subject: string, html: string) => {
-const SendEmail = async (email, subject, payload, template) => {
-    const transporter = nodemailer_1.default.createTransport({
+export const SendEmail = async (email, subject, payload, template) => {
+    const transporter = nodemailer.createTransport({
         host: process.env.MAIL_HOST,
         port: 465,
         secure: true, // true for port 465, false for others
@@ -25,8 +21,8 @@ const SendEmail = async (email, subject, payload, template) => {
             pass: process.env.EMAIL_PASSWORD
         }
     });
-    const source = fs_1.default.readFileSync(path_1.default.join(__dirname, template), "utf8");
-    const compiledTemplate = handlebars_1.default.compile(source);
+    const source = fs.readFileSync(path.join(__dirname, template), "utf8");
+    const compiledTemplate = handlebars.compile(source);
     const mailOptions = {
         from: process.env.FROM_EMAIL,
         to: email,
@@ -43,5 +39,4 @@ const SendEmail = async (email, subject, payload, template) => {
         }
     });
 };
-exports.SendEmail = SendEmail;
 //# sourceMappingURL=sendEmail%20copy.js.map

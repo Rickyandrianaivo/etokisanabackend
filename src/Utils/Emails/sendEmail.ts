@@ -3,7 +3,7 @@ import winston from 'winston';
 import dotenv from "dotenv";
 import path from "path";
 import handlebars, { template } from 'handlebars';
-import hbs from 'nodemailer-express-handlebars';
+const hbs = (await import('nodemailer-express-handlebars')).default;
 import { EMAIL_HOST, EMAIL_PASSWORD, EMAIL_PORT, EMAIL_TEMPLATE_PATH, EMAIL_USERNAME } from '../constant/constant.js';
 dotenv.config();
 
@@ -12,7 +12,6 @@ const logger = winston.createLogger({
     format: winston.format.json(),
     transports: [new winston.transports.Console()]
 });
-// export const sendEmail = async (from: string, to: string, subject: string, html: string) => {
 export const SendEmail = async (
     defaultLayout?: string,
     templateName?: string,

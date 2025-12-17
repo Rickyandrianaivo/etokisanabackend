@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.sample_categories = exports.sample_products = void 0;
-exports.sample_products = [
+export const sample_products = [
     {
         productName: "Redmi Note 8 pro",
         productDescription: "Téléphone haut de gamme 8go de RAM, 128Go de stockage",
@@ -69,7 +66,7 @@ exports.sample_products = [
         productImage: "default.jpg",
     },
 ];
-exports.sample_categories = [
+export const sample_categories = [
     { CatName: 'Meubles' },
     { CatName: 'Technologie' },
     { CatName: 'Sport' },
