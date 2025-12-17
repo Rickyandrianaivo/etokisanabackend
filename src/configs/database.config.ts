@@ -11,7 +11,7 @@
 // }
 
 import mongoose from 'mongoose';
-import { MONGO_URI } from '../Utils/constant/constant.js';
+import { MONGO_URI } from '../Utils/constant/constant';
 
 class ServerDB {
     constructor() {}

@@ -1,9 +1,12 @@
-import { Router } from "express";
-import expressAsyncHandler from "express-async-handler";
-import { SiteModel } from "../models/site.model.js";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
+const express_1 = require("express");
+const express_async_handler_1 = tslib_1.__importDefault(require("express-async-handler"));
+const site_model_1 = require("../models/site.model");
 // import { sample_Sites } from "../data";
-const router = Router();
-router.post("/add", expressAsyncHandler(async (req, res) => {
+const router = (0, express_1.Router)();
+router.post("/add", (0, express_async_handler_1.default)(async (req, res) => {
     const { siteName, siteAddress, siteLat, siteLng, siteUserID } = req.body;
     const newSite = {
         siteName,
@@ -12,28 +15,28 @@ router.post("/add", expressAsyncHandler(async (req, res) => {
         siteLng,
         siteUserID
     };
-    await SiteModel.create(newSite);
+    await site_model_1.SiteModel.create(newSite);
     res.send(newSite);
 }));
-router.get("/", expressAsyncHandler(async (req, res) => {
-    const allSites = await SiteModel.find();
+router.get("/", (0, express_async_handler_1.default)(async (req, res) => {
+    const allSites = await site_model_1.SiteModel.find();
     res.send(allSites);
 }));
-router.get("/user/:userId", expressAsyncHandler(async (req, res) => {
+router.get("/user/:userId", (0, express_async_handler_1.default)(async (req, res) => {
     const userId = req.params['userId'];
     // console.log(userId);
-    const userSites = await SiteModel.find({ siteUserID: userId });
+    const userSites = await site_model_1.SiteModel.find({ siteUserID: userId });
     res.send(userSites);
 }));
-router.get("/:id", expressAsyncHandler(async (req, res) => {
+router.get("/:id", (0, express_async_handler_1.default)(async (req, res) => {
     const siteId = req.params['id'];
     // console.log(siteId);
-    const selectedSite = await SiteModel.findById({ _id: siteId });
+    const selectedSite = await site_model_1.SiteModel.findById({ _id: siteId });
     res.send(selectedSite);
 }));
-router.put("/update/:id", expressAsyncHandler(async (req, res) => {
+router.put("/update/:id", (0, express_async_handler_1.default)(async (req, res) => {
     const { siteName, siteAddress, siteLat, siteLng, siteUserID, } = req.body;
-    const modifiedSite = await SiteModel.updateOne({ _id: req.params['id'] }, {
+    const modifiedSite = await site_model_1.SiteModel.updateOne({ _id: req.params['id'] }, {
         siteName,
         siteAddress,
         siteLat,
@@ -42,13 +45,13 @@ router.put("/update/:id", expressAsyncHandler(async (req, res) => {
     });
     res.send(modifiedSite);
 }));
-router.delete("/delete/:id", expressAsyncHandler(async (req, res) => {
+router.delete("/delete/:id", (0, express_async_handler_1.default)(async (req, res) => {
     const siteId = req.params['id'];
-    await SiteModel.deleteOne({ _id: siteId });
+    await site_model_1.SiteModel.deleteOne({ _id: siteId });
     res.status(200).send("Site supprimé !!!");
 }));
-router.post("/addStock", expressAsyncHandler(async (req, res) => {
+router.post("/addStock", (0, express_async_handler_1.default)(async (req, res) => {
     const { depotId, productId, quantity } = req.body;
 }));
-export default router;
+exports.default = router;
 //# sourceMappingURL=site.router.js.map

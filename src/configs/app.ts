@@ -1,12 +1,12 @@
 import express from "express";
 import cors from "cors";
 import fileUpload from "express-fileupload";
-import userRouter from "../routers/user.router.js";
-import siteRouter from "../routers/site.router.js";
-import productRouter from "../routers/product.router.js";
-import categoryRouter from "../routers/category.router.js";
-import notificationRouter from "../routers/notification.router.js";
-import { LIMIT, PORT_DEV } from '../Utils/constant/constant.js';
+import userRouter from "../routers/user.router";
+import siteRouter from "../routers/site.router";
+import productRouter from "../routers/product.router";
+import categoryRouter from "../routers/category.router";
+import notificationRouter from "../routers/notification.router";
+import { LIMIT, PORT_DEV } from '../Utils/constant/constant';
 
 class Server {
     private app = express();

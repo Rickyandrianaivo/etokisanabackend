@@ -1,5 +1,8 @@
-import { model, Schema } from "mongoose";
-export const orderSchema = new Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.orderModel = exports.orderSchema = void 0;
+const mongoose_1 = require("mongoose");
+exports.orderSchema = new mongoose_1.Schema({
     orderType: { type: String },
     orderMontant: { type: Number },
     orderState: { type: String },
@@ -13,5 +16,5 @@ export const orderSchema = new Schema({
         virtuals: true
     }
 });
-export const orderModel = model("order", orderSchema);
+exports.orderModel = (0, mongoose_1.model)("order", exports.orderSchema);
 //# sourceMappingURL=order.model.js.map

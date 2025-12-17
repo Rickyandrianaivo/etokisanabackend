@@ -1,5 +1,8 @@
-import { model, Schema } from "mongoose";
-export const SiteSchema = new Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SiteModel = exports.SiteSchema = void 0;
+const mongoose_1 = require("mongoose");
+exports.SiteSchema = new mongoose_1.Schema({
     siteName: { type: String },
     siteAddress: { type: String },
     siteLat: { type: Number },
@@ -14,5 +17,5 @@ export const SiteSchema = new Schema({
         virtuals: true
     }
 });
-export const SiteModel = model("site", SiteSchema);
+exports.SiteModel = (0, mongoose_1.model)("site", exports.SiteSchema);
 //# sourceMappingURL=site.model.js.map

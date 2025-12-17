@@ -1,6 +1,6 @@
 import { query, Router } from "express"
 import expressAsyncHandler from "express-async-handler";
-import { SiteModel } from "../models/site.model.js";
+import { SiteModel } from "../models/site.model";
 // import { sample_Sites } from "../data";
 
 const router = Router();

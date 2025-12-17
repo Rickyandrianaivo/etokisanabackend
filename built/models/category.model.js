@@ -1,5 +1,8 @@
-import { model, Schema } from "mongoose";
-export const CategorySchema = new Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CategoryModel = exports.CategorySchema = void 0;
+const mongoose_1 = require("mongoose");
+exports.CategorySchema = new mongoose_1.Schema({
     CatMiniatureUrl: { type: String },
     CatName: { type: String, required: true },
     CatDescription: { type: String }
@@ -12,5 +15,5 @@ export const CategorySchema = new Schema({
         virtuals: true
     }
 });
-export const CategoryModel = model('category', CategorySchema);
+exports.CategoryModel = (0, mongoose_1.model)('category', exports.CategorySchema);
 //# sourceMappingURL=category.model.js.map
