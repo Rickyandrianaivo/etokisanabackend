@@ -81,7 +81,7 @@
 
 import "dotenv/config";
 import DB  from './configs/database.config.js';
-import Server from './configs/app';
+import Server from './configs/app.js';
 
 DB.connectDB()
 Server.bootstrap()
