@@ -12,7 +12,7 @@ import { Options } from "nodemailer/lib/smtp-pool/index";
 import { SiteModel } from "../models/site.model";
 import nodemailer from 'nodemailer';
 import dotenv from "dotenv";
-import { JWT_SECRET } from "../Utils/constant/constant";
+import { JWT_SECRET } from "../Utils/constant/constant.js";
 dotenv.config();
 const userRouter = Router();
 

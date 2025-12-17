@@ -9,7 +9,7 @@
 //     )
 // }
 import mongoose from 'mongoose';
-import { MONGO_URI } from '../Utils/constant/constant';
+import { MONGO_URI } from '../Utils/constant/constant.js';
 class ServerDB {
     constructor() { }
     connectDB() {

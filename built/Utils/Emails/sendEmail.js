@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer';
 import winston from 'winston';
 import dotenv from "dotenv";
 import hbs from 'nodemailer-express-handlebars';
-import { EMAIL_HOST, EMAIL_PASSWORD, EMAIL_PORT, EMAIL_TEMPLATE_PATH, EMAIL_USERNAME } from '../constant/constant';
+import { EMAIL_HOST, EMAIL_PASSWORD, EMAIL_PORT, EMAIL_TEMPLATE_PATH, EMAIL_USERNAME } from '../constant/constant.js';
 dotenv.config();
 const logger = winston.createLogger({
     level: 'debug',

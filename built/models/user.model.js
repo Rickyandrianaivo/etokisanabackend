@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import bcrypt from 'bcryptjs';
-import { BCRYPT_SALT } from "../Utils/constant/constant";
+import { BCRYPT_SALT } from "../Utils/constant/constant.js";
 export const UserSchema = new Schema({
     // _id                     : { type : String},
     userNickName: { type: String },

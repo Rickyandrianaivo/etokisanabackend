@@ -6,7 +6,7 @@ import siteRouter from "../routers/site.router";
 import productRouter from "../routers/product.router";
 import categoryRouter from "../routers/category.router";
 import notificationRouter from "../routers/notification.router";
-import { LIMIT, PORT_DEV } from '../Utils/constant/constant';
+import { LIMIT, PORT_DEV } from '../Utils/constant/constant.js';
 class Server {
     app = express();
     constructor() {
