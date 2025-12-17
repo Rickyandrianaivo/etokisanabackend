@@ -1,13 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-const express_1 = require("express");
-const express_async_handler_1 = tslib_1.__importDefault(require("express-async-handler"));
-const transaction_model_1 = require("../models/transaction.model");
-const user_model_1 = require("../models/user.model");
+import { Router } from "express";
+import expressAsyncHandler from "express-async-handler";
+import { TransactionModel } from "../models/transaction.model";
+import { UserModel } from "../models/user.model";
 // import { SendEmail } from "../Utils/Emails/sendEmail.js";
-const router = (0, express_1.Router)();
-router.post("/add", (0, express_async_handler_1.default)(async (req, res) => {
+const router = Router();
+router.post("/add", expressAsyncHandler(async (req, res) => {
     const { userId, siteDepartId, siteArriveId, typeES, montantTotal, statut, productList, } = req.body;
     const newTransaction = {
         userId,
@@ -18,7 +15,7 @@ router.post("/add", (0, express_async_handler_1.default)(async (req, res) => {
         statut,
         productList,
     };
-    const currentUser = await user_model_1.UserModel.findOne({ _id: userId });
+    const currentUser = await UserModel.findOne({ _id: userId });
     if (currentUser && typeES == "Dépôt") {
         // SendEmail(
         //   // "baseMail","Deposit",
@@ -39,27 +36,27 @@ router.post("/add", (0, express_async_handler_1.default)(async (req, res) => {
         //   // }
         // )
     }
-    await transaction_model_1.TransactionModel.create(newTransaction);
+    await TransactionModel.create(newTransaction);
     res.send(newTransaction).status(200);
 }));
-router.get("/", (0, express_async_handler_1.default)(async (req, res) => {
-    const transactions = await transaction_model_1.TransactionModel.find();
+router.get("/", expressAsyncHandler(async (req, res) => {
+    const transactions = await TransactionModel.find();
     res.send(transactions).status(200);
 }));
-router.get("/id/:id", (0, express_async_handler_1.default)(async (req, res) => {
-    const transaction = await transaction_model_1.TransactionModel.findOne({ _id: req.params['id'] });
+router.get("/id/:id", expressAsyncHandler(async (req, res) => {
+    const transaction = await TransactionModel.findOne({ _id: req.params['id'] });
     res.send(transaction).status(200);
 }));
-router.get("/user/:id", (0, express_async_handler_1.default)(async (req, res) => {
-    const transactions = await transaction_model_1.TransactionModel.find({ userId: req.params['id'] });
+router.get("/user/:id", expressAsyncHandler(async (req, res) => {
+    const transactions = await TransactionModel.find({ userId: req.params['id'] });
     res.send(transactions).status(200);
 }));
-router.patch("/update/:id", (0, express_async_handler_1.default)(async (req, res) => {
-    const updatedTransaction = await transaction_model_1.TransactionModel.updateOne({ _id: req.params['id'] }, { $set: req.body });
+router.patch("/update/:id", expressAsyncHandler(async (req, res) => {
+    const updatedTransaction = await TransactionModel.updateOne({ _id: req.params['id'] }, { $set: req.body });
     res.send(updatedTransaction).status(200);
 }));
-router.delete("/delete/:id", (0, express_async_handler_1.default)(async (req, res) => {
+router.delete("/delete/:id", expressAsyncHandler(async (req, res) => {
     res.send().status(200);
 }));
-exports.default = router;
+export default router;
 //# sourceMappingURL=transaction.router.js.map

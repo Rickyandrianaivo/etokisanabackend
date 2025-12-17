@@ -1,23 +1,20 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-const express_1 = require("express");
-const express_async_handler_1 = tslib_1.__importDefault(require("express-async-handler"));
-const user_model_1 = require("../models/user.model");
-const jsonwebtoken_1 = tslib_1.__importDefault(require("jsonwebtoken"));
-const bcryptjs_1 = tslib_1.__importDefault(require("bcryptjs"));
-const token_models_1 = require("../models/token.models");
-const crypto_1 = require("crypto");
-const sendEmail_1 = require("../Utils/Emails/sendEmail");
-const multer_1 = tslib_1.__importDefault(require("multer"));
-const notification_model_1 = require("../models/notification.model");
-const site_model_1 = require("../models/site.model");
-const nodemailer_1 = tslib_1.__importDefault(require("nodemailer"));
-const dotenv_1 = tslib_1.__importDefault(require("dotenv"));
-const constant_1 = require("../Utils/constant/constant");
-dotenv_1.default.config();
-const userRouter = (0, express_1.Router)();
-const transporter = nodemailer_1.default.createTransport({
+import { Router } from "express";
+import asyncHandler from "express-async-handler";
+import { UserModel } from "../models/user.model";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import { TokenModel } from "../models/token.models";
+import { randomBytes } from "crypto";
+import { SendEmail } from "../Utils/Emails/sendEmail";
+import multer from 'multer';
+import { NotificationModel } from "../models/notification.model";
+import { SiteModel } from "../models/site.model";
+import nodemailer from 'nodemailer';
+import dotenv from "dotenv";
+import { JWT_SECRET } from "../Utils/constant/constant";
+dotenv.config();
+const userRouter = Router();
+const transporter = nodemailer.createTransport({
     host: "commercegestion.com",
     port: 465,
     secure: true,
@@ -72,7 +69,7 @@ const sendMail = async (transporter, mailOptions) => {
 // }));
 const bcryptSalt = process.env.BCRYPT_SALT;
 const clientURL = process.env.CLIENT_URL;
-const avatar = (0, multer_1.default)({
+const avatar = multer({
     limits: {
         fileSize: 1000000,
     },
@@ -86,11 +83,11 @@ const avatar = (0, multer_1.default)({
 // router.post('/user-avatar/',avatar.single('avatar'),async(req,res)=>{
 //   userImage = req.file?.buffer
 // },(err,req,res,next) => res.status(404).send({error:err}))
-userRouter.get("/user-confirmation/:token", (0, express_async_handler_1.default)(async (req, res) => {
-    const verified = await token_models_1.TokenModel.findOne({ token: req.params['token'] });
+userRouter.get("/user-confirmation/:token", asyncHandler(async (req, res) => {
+    const verified = await TokenModel.findOne({ token: req.params['token'] });
     if (verified) {
         console.log(verified);
-        const user = await user_model_1.UserModel.findOne({ _id: verified.userId });
+        const user = await UserModel.findOne({ _id: verified.userId });
         if (user) {
             const activatedUser = {
                 userName: user.userName,
@@ -118,16 +115,16 @@ userRouter.get("/user-confirmation/:token", (0, express_async_handler_1.default)
                 // userAddress : user.userAddress,
                 // userIdentityCode : user.userIdentityCode,
             };
-            await user_model_1.UserModel.updateOne({ _id: verified.userId }, activatedUser);
+            await UserModel.updateOne({ _id: verified.userId }, activatedUser);
             console.log();
-            await token_models_1.TokenModel.deleteOne({ token: verified.token });
+            await TokenModel.deleteOne({ token: verified.token });
             let newNotification = {
                 userId: verified.userId,
                 title: "Email vérifié",
                 message: "Félicitations ! Votre Email a bien été vérifié",
                 state: "new",
             };
-            await notification_model_1.NotificationModel.create(newNotification);
+            await NotificationModel.create(newNotification);
             res.status(200).send("Token Effacé");
         }
     }
@@ -135,7 +132,7 @@ userRouter.get("/user-confirmation/:token", (0, express_async_handler_1.default)
         res.status(404).send("Token introuvable");
     }
 }));
-userRouter.post("/requestVerificationEmail", (0, express_async_handler_1.default)(async (req, res) => {
+userRouter.post("/requestVerificationEmail", asyncHandler(async (req, res) => {
     let tokenInfo;
     const userInfos = req.body;
     tokenInfo = generateTokenResponse(userInfos);
@@ -145,7 +142,7 @@ userRouter.post("/requestVerificationEmail", (0, express_async_handler_1.default
     };
 }));
 //userRouter.post('/register', asyncHandler(REGISTER));
-userRouter.post("/register/", (0, express_async_handler_1.default)(async (req, res) => {
+userRouter.post("/register/", asyncHandler(async (req, res) => {
     let tokenInfo;
     let userDb;
     //----------------------
@@ -157,14 +154,14 @@ userRouter.post("/register/", (0, express_async_handler_1.default)(async (req, r
     //----------------------
     //Check si l'email est déjà utilisé
     //----------------------
-    const user = await user_model_1.UserModel.findOne({ userEmail: userEmail.toLowerCase() });
+    const user = await UserModel.findOne({ userEmail: userEmail.toLowerCase() });
     if (user) {
         res.status(500).send("Ce nom est déjà utilisé !");
         return;
     }
     else {
         //Criptage du mot de passe
-        const encryptedPassword = await bcryptjs_1.default.hash(userPassword, 10);
+        const encryptedPassword = await bcrypt.hash(userPassword, 10);
         const newUser = {
             userNickName,
             userName,
@@ -200,7 +197,7 @@ userRouter.post("/register/", (0, express_async_handler_1.default)(async (req, r
             parrain2ID,
         };
         //SendEmail(userEmail,"Test réusssi !!");
-        userDb = await user_model_1.UserModel.create(newUser);
+        userDb = await UserModel.create(newUser);
         const mailOptions = {
             from: 'contact@commercegestion.com',
             to: "randrianaivo.dominique@gmail.com",
@@ -239,19 +236,19 @@ userRouter.post("/register/", (0, express_async_handler_1.default)(async (req, r
         userId: tokenInfo._id,
         token: tokenInfo.token,
     };
-    await token_models_1.TokenModel.create(tokenDB);
+    await TokenModel.create(tokenDB);
     //Sending mail
     const verificationLink = "https://www.commercegestion.com/#/user-confirmation/" + tokenInfo.token;
     if (userType == "Entreprise") {
         sendMail(transporter, mailOptions);
-        (0, sendEmail_1.SendEmail)("baseMail", "ValidationEntrepriseEmail", userEmail, "Bienvenue sur Etokisana", {
+        SendEmail("baseMail", "ValidationEntrepriseEmail", userEmail, "Bienvenue sur Etokisana", {
             name: raisonSocial,
             link: verificationLink,
         });
     }
     if (userType == "Particulier") {
         sendMail(transporter, mailOptions);
-        (0, sendEmail_1.SendEmail)("baseMail", "ValidationEmail", userEmail, "Bienvenue sur Etokisana", {
+        SendEmail("baseMail", "ValidationEmail", userEmail, "Bienvenue sur Etokisana", {
             name: raisonSocial,
             link: verificationLink,
         });
@@ -262,25 +259,25 @@ userRouter.post("/register/", (0, express_async_handler_1.default)(async (req, r
         message: "Nous vous remercions de votre patience pendant la validation de votre insciption au sein de nos administrateurs",
         state: "new",
     };
-    await notification_model_1.NotificationModel.create(newNotification);
+    await NotificationModel.create(newNotification);
     res.status(200).send(['Utilisateur créé !!!']);
 }));
-userRouter.get("/checkparrain/:id", (0, express_async_handler_1.default)(async (req, res) => {
-    const user = await user_model_1.UserModel.findOne({ _id: req.params['id'] });
+userRouter.get("/checkparrain/:id", asyncHandler(async (req, res) => {
+    const user = await UserModel.findOne({ _id: req.params['id'] });
     if (user) {
         if (user.parrain1ID && user.parrain2ID) {
-            await user_model_1.UserModel.updateOne({ _id: req.params['id'] }, { $set: { userValidate: true } });
+            await UserModel.updateOne({ _id: req.params['id'] }, { $set: { userValidate: true } });
         }
     }
 }));
-userRouter.get("/new", (0, express_async_handler_1.default)(async (req, res) => {
-    const userNewList = await user_model_1.UserModel.find({ userValidated: false, userAccess: "Utilisateur" });
+userRouter.get("/new", asyncHandler(async (req, res) => {
+    const userNewList = await UserModel.find({ userValidated: false, userAccess: "Utilisateur" });
     res.status(200).send(userNewList);
 }));
-userRouter.get("/validate/:id", (0, express_async_handler_1.default)(async (req, res) => {
+userRouter.get("/validate/:id", asyncHandler(async (req, res) => {
     const userDBId = req.params['id'];
-    const userById = await user_model_1.UserModel.findById({ _id: userDBId });
-    await user_model_1.UserModel.updateOne({ _id: userDBId }, { $set: { userValidated: true } });
+    const userById = await UserModel.findById({ _id: userDBId });
+    await UserModel.updateOne({ _id: userDBId }, { $set: { userValidated: true } });
     if (userById?.userType == "Entreprise") {
         // SendEmail(
         //   // "baseMail",
@@ -313,11 +310,11 @@ userRouter.get("/validate/:id", (0, express_async_handler_1.default)(async (req,
     res.status(200).send(userById?.userId);
 }));
 const generateTokenResponse = (user) => {
-    const token = jsonwebtoken_1.default.sign({
+    const token = jwt.sign({
         _id: user._id,
         userEmail: user.userEmail,
         userPhone: user.userPhone,
-    }, constant_1.JWT_SECRET, {
+    }, JWT_SECRET, {
         expiresIn: "30d"
     });
     return {
@@ -339,29 +336,29 @@ const generateTokenResponse = (user) => {
         token: token
     };
 };
-userRouter.get("/token/:token", (0, express_async_handler_1.default)(async (req, res) => {
+userRouter.get("/token/:token", asyncHandler(async (req, res) => {
     const token = req.params['token'];
-    const tokenUserId = await token_models_1.TokenModel.findOne({ token });
+    const tokenUserId = await TokenModel.findOne({ token });
     if (tokenUserId) {
-        const userConcerned = await user_model_1.UserModel.findOne({ _id: tokenUserId.userId });
+        const userConcerned = await UserModel.findOne({ _id: tokenUserId.userId });
         res.send(userConcerned).status(200);
     }
 }));
-userRouter.patch("/passwordReset", (0, express_async_handler_1.default)(async (req, res) => {
+userRouter.patch("/passwordReset", asyncHandler(async (req, res) => {
     const { token, id, password } = req.body;
     console.log(id, token, password);
-    let passwordResetToken = await token_models_1.TokenModel.findOne({ userId: id });
-    let user = await user_model_1.UserModel.findOne({ _id: id });
+    let passwordResetToken = await TokenModel.findOne({ userId: id });
+    let user = await UserModel.findOne({ _id: id });
     if (!passwordResetToken) {
         throw new Error("Mot de passe incorrect !");
     }
-    const isValid = await bcryptjs_1.default.compare(token, passwordResetToken.token);
+    const isValid = await bcrypt.compare(token, passwordResetToken.token);
     if (!isValid) {
         throw new Error("Mot de passe incorrect !");
     }
-    const hash = await bcryptjs_1.default.hash(password, Number(bcryptSalt));
+    const hash = await bcrypt.hash(password, Number(bcryptSalt));
     if (user && passwordResetToken) {
-        const updatePassword = await user_model_1.UserModel.updateOne({ _id: id }, { $set: {
+        const updatePassword = await UserModel.updateOne({ _id: id }, { $set: {
                 userPassword: hash,
             }
         });
@@ -380,21 +377,21 @@ userRouter.patch("/passwordReset", (0, express_async_handler_1.default)(async (r
     }
     res.send('Mot de passe réinitialisé');
 }));
-userRouter.post("/requestResetPwd", (0, express_async_handler_1.default)(async (req, res) => {
+userRouter.post("/requestResetPwd", asyncHandler(async (req, res) => {
     const { email } = req.body;
     //console.log(email+ " " + userId)
-    const user = await user_model_1.UserModel.findOne({ userEmail: email });
+    const user = await UserModel.findOne({ userEmail: email });
     if (!user) {
         throw new Error("L'utilisateur n'existe pas");
     }
-    let token = await token_models_1.TokenModel.findOne({ _id: user._id });
+    let token = await TokenModel.findOne({ _id: user._id });
     if (token) {
         await token.deleteOne();
     }
     ;
-    let resetToken = (0, crypto_1.randomBytes)(32).toString("hex");
-    const hash = await bcryptjs_1.default.hash(resetToken, Number(bcryptSalt));
-    await new token_models_1.TokenModel({
+    let resetToken = randomBytes(32).toString("hex");
+    const hash = await bcrypt.hash(resetToken, Number(bcryptSalt));
+    await new TokenModel({
         userId: user._id,
         token: hash,
         // createdAt: Date.now(),
@@ -412,42 +409,42 @@ userRouter.post("/requestResetPwd", (0, express_async_handler_1.default)(async (
     //   // }
     // )
 }));
-userRouter.get("", (0, express_async_handler_1.default)(async (req, res) => {
-    const users = await user_model_1.UserModel.find();
+userRouter.get("", asyncHandler(async (req, res) => {
+    const users = await UserModel.find();
     res.send(users);
 }));
-userRouter.get("/id/:id", (0, express_async_handler_1.default)(async (req, res) => {
+userRouter.get("/id/:id", asyncHandler(async (req, res) => {
     const userId = req.params['id'];
-    const user = await user_model_1.UserModel.findOne({ _id: userId });
+    const user = await UserModel.findOne({ _id: userId });
     // console.log(user);
     res.send(user);
 }));
-userRouter.get("/email/:email", (0, express_async_handler_1.default)(async (req, res) => {
+userRouter.get("/email/:email", asyncHandler(async (req, res) => {
     const userEmail = req.params['email'];
-    const user = await user_model_1.UserModel.findOne({ userEmail: userEmail });
+    const user = await UserModel.findOne({ userEmail: userEmail });
     res.send(user);
 }));
-userRouter.get("/userId/:id", (0, express_async_handler_1.default)(async (req, res) => {
+userRouter.get("/userId/:id", asyncHandler(async (req, res) => {
     const userId = req.params['id'];
-    const user = await user_model_1.UserModel.findOne({ userId: userId });
+    const user = await UserModel.findOne({ userId: userId });
     res.send(user);
 }));
-userRouter.post("/login", (0, express_async_handler_1.default)(async (req, res) => {
+userRouter.post("/login", asyncHandler(async (req, res) => {
     const { userEmail, userPassword } = req.body;
-    const user = await user_model_1.UserModel.findOne({ userEmail });
-    if (user && (await bcryptjs_1.default.compare(userPassword, user.userPassword))) {
+    const user = await UserModel.findOne({ userEmail });
+    if (user && (await bcrypt.compare(userPassword, user.userPassword))) {
         res.send(generateTokenResponse(user));
     }
     else {
         res.status(404).send("L'utilisateur n'existe pas ou le mot de passe est incorrect !");
     }
 }));
-userRouter.delete("/delete/:id", (0, express_async_handler_1.default)(async (req, res) => {
+userRouter.delete("/delete/:id", asyncHandler(async (req, res) => {
     const userId = req.params.id;
-    const user = await user_model_1.UserModel.findOne({ _id: userId });
-    const deletedSite = await site_model_1.SiteModel.deleteMany({ siteUserID: userId });
+    const user = await UserModel.findOne({ _id: userId });
+    const deletedSite = await SiteModel.deleteMany({ siteUserID: userId });
     if (user && deletedSite) {
-        await user_model_1.UserModel.deleteOne({ _id: userId });
+        await UserModel.deleteOne({ _id: userId });
         res.send("Utilisateur supprimé : " + userId);
     }
     else {
@@ -465,10 +462,10 @@ userRouter.delete("/delete/:id", (0, express_async_handler_1.default)(async (req
 //   await UserModel.updateOne({_id:userId},{$set : {userAccess : "Utilisateur"}});
 //   res.send(userId);
 // }))
-userRouter.patch("/update/:id", (0, express_async_handler_1.default)(async (req, res) => {
+userRouter.patch("/update/:id", asyncHandler(async (req, res) => {
     const id = req.params['id'];
-    await user_model_1.UserModel.updateOne({ _id: id }, { $set: req.body });
+    await UserModel.updateOne({ _id: id }, { $set: req.body });
     res.send(id).status(200);
 }));
-exports.default = userRouter;
+export default userRouter;
 //# sourceMappingURL=user.router.js.map

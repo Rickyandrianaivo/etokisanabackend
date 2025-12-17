@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.StockElementModel = exports.StockElementSchema = void 0;
-const mongoose_1 = require("mongoose");
-exports.StockElementSchema = new mongoose_1.Schema({
+import { model, Schema } from "mongoose";
+export const StockElementSchema = new Schema({
     depotId: { type: String, required: true },
     productId: { type: String, required: true },
     quantity: { type: Number },
@@ -15,5 +12,5 @@ exports.StockElementSchema = new mongoose_1.Schema({
         virtuals: true
     }
 });
-exports.StockElementModel = (0, mongoose_1.model)("stockElement", exports.StockElementSchema);
+export const StockElementModel = model("stockElement", StockElementSchema);
 //# sourceMappingURL=stockElement.model.js.map

@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.JournalModel = exports.JournalSchema = void 0;
-const mongoose_1 = require("mongoose");
-exports.JournalSchema = new mongoose_1.Schema({
+import { model, Schema } from "mongoose";
+export const JournalSchema = new Schema({
     userId: { type: String },
     codeProduit: { type: String, required: true },
     destination: { type: String },
@@ -17,5 +14,5 @@ exports.JournalSchema = new mongoose_1.Schema({
         virtuals: true
     }
 });
-exports.JournalModel = (0, mongoose_1.model)('category', exports.JournalSchema);
+export const JournalModel = model('category', JournalSchema);
 //# sourceMappingURL=journal.model.js.map

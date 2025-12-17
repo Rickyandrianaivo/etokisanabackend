@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.NotificationModel = exports.NotificationSchema = void 0;
-const mongoose_1 = require("mongoose");
-exports.NotificationSchema = new mongoose_1.Schema({
+import { model, Schema } from "mongoose";
+export const NotificationSchema = new Schema({
     userId: { type: String, required: true },
     title: { type: String, required: true },
     message: { type: String },
@@ -16,5 +13,5 @@ exports.NotificationSchema = new mongoose_1.Schema({
         virtuals: true
     }
 });
-exports.NotificationModel = (0, mongoose_1.model)('notification', exports.NotificationSchema);
+export const NotificationModel = model('notification', NotificationSchema);
 //# sourceMappingURL=notification.model.js.map

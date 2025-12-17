@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TokenModel = exports.TokenSchema = void 0;
-const mongoose_1 = require("mongoose");
-exports.TokenSchema = new mongoose_1.Schema({
+import { Schema, model } from "mongoose";
+export const TokenSchema = new Schema({
     userId: { type: String, required: true },
     token: { type: String, required: true },
     // createdAt            : {type : Date, required : true, default: Date.now,expires:3600},
@@ -16,5 +13,5 @@ exports.TokenSchema = new mongoose_1.Schema({
         virtuals: true
     }
 });
-exports.TokenModel = (0, mongoose_1.model)('token', exports.TokenSchema);
+export const TokenModel = model('token', TokenSchema);
 //# sourceMappingURL=token.models.js.map
