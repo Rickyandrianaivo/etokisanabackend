@@ -1,8 +1,8 @@
 {
     "extends":"@tsconfig/node20/tsconfig.json",
     "compilerOptions": {
-      "target": "es2022",
-      "module": "es2022",
+      "target": "es2020",
+      "module": "commonjs",
       "rootDir": "./src",
       "outDir": "./built",
       "moduleResolution": "node",
@@ -23,7 +23,7 @@
       // "allowImportingTsExtensions": true,
       "noEmit": false,
       "lib": [
-          "es2022",
+          "es2020",
           "dom"
         ]
         // "outDir": "built",

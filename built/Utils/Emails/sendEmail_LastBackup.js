@@ -1,16 +1,20 @@
-import nodemailer from 'nodemailer';
-import winston from 'winston';
-import dotenv from "dotenv";
-import path from "path";
-import hbs from 'nodemailer-express-handlebars';
-dotenv.config();
-const logger = winston.createLogger({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SendEmail = void 0;
+const tslib_1 = require("tslib");
+const nodemailer_1 = tslib_1.__importDefault(require("nodemailer"));
+const winston_1 = tslib_1.__importDefault(require("winston"));
+const dotenv_1 = tslib_1.__importDefault(require("dotenv"));
+const path_1 = tslib_1.__importDefault(require("path"));
+const nodemailer_express_handlebars_1 = tslib_1.__importDefault(require("nodemailer-express-handlebars"));
+dotenv_1.default.config();
+const logger = winston_1.default.createLogger({
     level: 'debug',
-    format: winston.format.json(),
-    transports: [new winston.transports.Console()]
+    format: winston_1.default.format.json(),
+    transports: [new winston_1.default.transports.Console()]
 });
 // export const sendEmail = async (from: string, to: string, subject: string, html: string) => {
-export const SendEmail = async (defaultLayout, templateName, destinataireEmail, subjectEmail, contextObject) => {
+const SendEmail = async (defaultLayout, templateName, destinataireEmail, subjectEmail, contextObject) => {
     try {
         // const transporter = nodemailer.createTransport({
         // host:"commercegestion.com",
@@ -21,7 +25,7 @@ export const SendEmail = async (defaultLayout, templateName, destinataireEmail, 
         //         pass: "Rzh398aNVtFZUu4",
         //     }
         // });
-        const transporter = nodemailer.createTransport({
+        const transporter = nodemailer_1.default.createTransport({
             host: "commercegestion.com",
             port: 465,
             secure: true,
@@ -30,14 +34,14 @@ export const SendEmail = async (defaultLayout, templateName, destinataireEmail, 
                 pass: process.env.EMAIL_PASSWORD
             }
         });
-        transporter.use("compile", hbs({
+        transporter.use("compile", (0, nodemailer_express_handlebars_1.default)({
             viewEngine: {
                 extname: '.handlebars',
                 defaultLayout: defaultLayout,
-                partialsDir: path.resolve('./Utils/Emails/Template'),
-                layoutsDir: path.resolve('./Utils/Emails/Template'),
+                partialsDir: path_1.default.resolve('./Utils/Emails/Template'),
+                layoutsDir: path_1.default.resolve('./Utils/Emails/Template'),
             },
-            viewPath: path.resolve("./Utils/Emails/Template/"),
+            viewPath: path_1.default.resolve("./Utils/Emails/Template/"),
             extName: '.handlebars',
         }));
         await transporter.verify((error, success) => {
@@ -72,4 +76,5 @@ export const SendEmail = async (defaultLayout, templateName, destinataireEmail, 
         return { success: false, error };
     }
 };
+exports.SendEmail = SendEmail;
 //# sourceMappingURL=sendEmail_LastBackup.js.map

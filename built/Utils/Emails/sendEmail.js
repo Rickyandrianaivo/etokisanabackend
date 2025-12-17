@@ -1,33 +1,37 @@
-import nodemailer from 'nodemailer';
-import winston from 'winston';
-import dotenv from "dotenv";
-const hbs = (await import('nodemailer-express-handlebars')).default;
-import { EMAIL_HOST, EMAIL_PASSWORD, EMAIL_PORT, EMAIL_TEMPLATE_PATH, EMAIL_USERNAME } from '../constant/constant.js';
-dotenv.config();
-const logger = winston.createLogger({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SendEmail = void 0;
+const tslib_1 = require("tslib");
+const nodemailer_1 = tslib_1.__importDefault(require("nodemailer"));
+const winston_1 = tslib_1.__importDefault(require("winston"));
+const dotenv_1 = tslib_1.__importDefault(require("dotenv"));
+const constant_js_1 = require("../constant/constant.js");
+dotenv_1.default.config();
+const logger = winston_1.default.createLogger({
     level: 'debug',
-    format: winston.format.json(),
-    transports: [new winston.transports.Console()]
+    format: winston_1.default.format.json(),
+    transports: [new winston_1.default.transports.Console()]
 });
-export const SendEmail = async (defaultLayout, templateName, destinataireEmail, subjectEmail, contextObject) => {
+const SendEmail = async (defaultLayout, templateName, destinataireEmail, subjectEmail, contextObject) => {
+    const hbs = (await Promise.resolve().then(() => tslib_1.__importStar(require('nodemailer-express-handlebars')))).default;
     try {
-        const transporter = nodemailer.createTransport({
-            host: EMAIL_HOST,
-            port: EMAIL_PORT,
+        const transporter = nodemailer_1.default.createTransport({
+            host: constant_js_1.EMAIL_HOST,
+            port: constant_js_1.EMAIL_PORT,
             secure: true,
             auth: {
-                user: EMAIL_USERNAME,
-                pass: EMAIL_PASSWORD
+                user: constant_js_1.EMAIL_USERNAME,
+                pass: constant_js_1.EMAIL_PASSWORD
             }
         });
         transporter.use("compile", hbs({
             viewEngine: {
                 extname: '.handlebars',
                 defaultLayout: defaultLayout,
-                partialsDir: EMAIL_TEMPLATE_PATH,
-                layoutsDir: EMAIL_TEMPLATE_PATH
+                partialsDir: constant_js_1.EMAIL_TEMPLATE_PATH,
+                layoutsDir: constant_js_1.EMAIL_TEMPLATE_PATH
             },
-            viewPath: EMAIL_TEMPLATE_PATH,
+            viewPath: constant_js_1.EMAIL_TEMPLATE_PATH,
             extName: '.handlebars',
         }));
         await transporter.verify((error, success) => {
@@ -42,7 +46,7 @@ export const SendEmail = async (defaultLayout, templateName, destinataireEmail, 
         // 3. Informations email
         //---------------------------
         let emailData = {
-            from: EMAIL_USERNAME, // sender address
+            from: constant_js_1.EMAIL_USERNAME, // sender address
             to: destinataireEmail, // list of receivers
             subject: subjectEmail,
             context: contextObject,
@@ -63,4 +67,5 @@ export const SendEmail = async (defaultLayout, templateName, destinataireEmail, 
         return { success: false, error };
     }
 };
+exports.SendEmail = SendEmail;
 //# sourceMappingURL=sendEmail.js.map

@@ -3,7 +3,7 @@ import winston from 'winston';
 import dotenv from "dotenv";
 import path from "path";
 import handlebars, { template } from 'handlebars';
-const hbs = (await import('nodemailer-express-handlebars')).default;
+
 import { EMAIL_HOST, EMAIL_PASSWORD, EMAIL_PORT, EMAIL_TEMPLATE_PATH, EMAIL_USERNAME } from '../constant/constant.js';
 dotenv.config();
 
@@ -19,6 +19,7 @@ export const SendEmail = async (
     subjectEmail?: string,
     contextObject?: any
 ) => {
+    const hbs = (await import('nodemailer-express-handlebars')).default;
     try {
         const transporter = nodemailer.createTransport({
             host: EMAIL_HOST,
