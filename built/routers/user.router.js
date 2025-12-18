@@ -9,37 +9,36 @@ import { SendEmail } from "../Utils/Emails/sendEmail.js";
 import multer from 'multer';
 import { NotificationModel } from "../models/notification.model.js";
 import { SiteModel } from "../models/site.model.js";
-import nodemailer from 'nodemailer';
 import dotenv from "dotenv";
 import { JWT_SECRET } from "../Utils/constant/constant.js";
 dotenv.config();
 const userRouter = Router();
-const transporter = nodemailer.createTransport({
-    host: "commercegestion.com",
-    port: 465,
-    secure: true,
-    auth: {
-        user: "contact@commercegestion.com",
-        pass: "Rzh398aNVtFZUu4"
-    }
-});
-const mailOptions = {
-    from: 'contact@commercegestion.com', // sender address
-    to: "randrianaivo.dominique@gmail.com", // list of receivers
-    subject: "Test réussi",
-    text: "Test réussi",
-    html: "<h1>Test réussi</h1></br> <p>On avance !!</p>"
-    // contextObject: contextObject,
-};
-const sendMail = async (transporter, mailOptions) => {
-    try {
-        const info = await transporter.sendMail(mailOptions);
-        console.log("Message sent successfully:", info.messageId);
-    }
-    catch (error) {
-        console.log("Error while sending mail:", error);
-    }
-};
+//   const transporter = nodemailer.createTransport({
+//                   host : "commercegestion.com",
+//                   port : 465,
+//                   secure : true,
+//                   auth : 
+//                   {
+//                       user:"contact@commercegestion.com",
+//                       pass:"Rzh398aNVtFZUu4"
+//                   }
+//               })
+//   const mailOptions = {
+//     from: 'contact@commercegestion.com', // sender address
+//     to: "randrianaivo.dominique@gmail.com", // list of receivers
+//     subject : "Test réussi",
+//     text : "Test réussi",
+//     html : "<h1>Test réussi</h1></br> <p>On avance !!</p>"
+//     // contextObject: contextObject,
+//   };
+// const sendMail = async (transporter:any , mailOptions:any) => {
+//   try {
+//     const info = await transporter.sendMail(mailOptions);
+//     console.log("Message sent successfully:", info.messageId);
+//   } catch (error) {
+//     console.log("Error while sending mail:", error);
+//   }
+// };
 // router.post("/register/",asyncHandler(async(req, res) => {
 // const transporter = nodemailer.createTransport({
 //   host: "commercegestion.com",
@@ -198,38 +197,36 @@ userRouter.post("/register/", asyncHandler(async (req, res) => {
         };
         //SendEmail(userEmail,"Test réusssi !!");
         userDb = await UserModel.create(newUser);
-        const mailOptions = {
-            from: 'contact@commercegestion.com',
-            to: "randrianaivo.dominique@gmail.com",
-            subject: "inscription ranix ✔",
-            text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
-            html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
-        };
-        const sendMail = async (transporter, mailOptions) => {
-            try {
-                const info = await transporter.sendMail(mailOptions);
-                console.log("Message sent successfully:", info.messageId);
-            }
-            catch (error) {
-                console.log("Error while sending mail:", error);
-            }
-        };
-        sendMail(transporter, mailOptions);
+        //   const mailOptions = {
+        //     from: 'contact@commercegestion.com',
+        //     to: "randrianaivo.dominique@gmail.com",
+        //     subject: "inscription ranix ✔",
+        //     text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
+        //     html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
+        //   };
+        //   const sendMail = async (transporter:any, mailOptions:any) => {
+        //     try {
+        //       const info = await transporter.sendMail(mailOptions);
+        //       console.log("Message sent successfully:", info.messageId);
+        //     } catch (error) {
+        //       console.log("Error while sending mail:", error);
+        //     }
+        //   };
+        // sendMail(transporter,mailOptions);
         //---------------------------
         //4. Envoi email (async/await propre)
         //---------------------------
-        try {
-            const sendInfo = await transporter.sendMail(mailOptions);
-            if (sendInfo) {
-                console.log("Email envoyé : ", sendInfo.messageId);
-            }
-            else {
-                console.log("Erreur lors de l'envoi du mail");
-            }
-        }
-        catch (error) {
-            console.error("Erreur lors de l'envoi de l'email : ", error);
-        }
+        // try 
+        // {
+        //     const sendInfo = await transporter.sendMail(mailOptions);
+        //     if (sendInfo) {
+        //       console.log("Email envoyé : ", sendInfo.messageId);          
+        //     }else{
+        //       console.log("Erreur lors de l'envoi du mail");
+        //     }
+        // }catch(error){
+        //     console.error("Erreur lors de l'envoi de l'email : ", error);
+        // }      
     }
     tokenInfo = generateTokenResponse(userDb);
     const tokenDB = {
@@ -240,14 +237,14 @@ userRouter.post("/register/", asyncHandler(async (req, res) => {
     //Sending mail
     const verificationLink = "https://www.commercegestion.com/#/user-confirmation/" + tokenInfo.token;
     if (userType == "Entreprise") {
-        sendMail(transporter, mailOptions);
+        // sendMail(transporter, mailOptions);
         SendEmail("baseMail", "ValidationEntrepriseEmail", userEmail, "Bienvenue sur Etokisana", {
             name: raisonSocial,
             link: verificationLink,
         });
     }
     if (userType == "Particulier") {
-        sendMail(transporter, mailOptions);
+        // sendMail(transporter, mailOptions);
         SendEmail("baseMail", "ValidationEmail", userEmail, "Bienvenue sur Etokisana", {
             name: raisonSocial,
             link: verificationLink,
