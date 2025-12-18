@@ -18,17 +18,19 @@ class Server {
     private appUse() {
         this.app.use(express.json({ limit: `${LIMIT}` }));
         this.app.use(express.urlencoded({ limit: `${LIMIT}`, extended: true }));
-        this.app.use(cors());
+        this.app.use(cors(
+            {origin:["https://www.commercegestion.com","https://commercegestion.com"]}
+        ));
         this.app.use(fileUpload());
         this.app.use('/uploads', express.static('uploads'));
 
         this.app.use("/api/users", userRouter);
         this.app.use("/api/site", siteRouter)
         this.app.use("/api/product", productRouter);
-        //this.app.use("/api/depotItem", depotItemRouter);
         this.app.use("/api/category", categoryRouter);
-        //this.app.use("/api/transaction", transactionRouter);
         this.app.use("/api/notification", notificationRouter);
+        //this.app.use("/api/depotItem", depotItemRouter);
+        //this.app.use("/api/transaction", transactionRouter);
     }
 
     public bootstrap() {
