@@ -205,7 +205,7 @@ userRouter.post("/register/", asyncHandler(async (req, res) => {
         message: "Nous vous remercions de votre patience pendant la validation de votre insciption au sein de nos administrateurs",
         state: "new",
     };
-    // await NotificationModel.create(newNotification);
+    await NotificationModel.create(newNotification);
     res.status(200).send(['Utilisateur créé !!!']);
 }));
 userRouter.get("/checkparrain/:id", asyncHandler(async (req, res) => {
