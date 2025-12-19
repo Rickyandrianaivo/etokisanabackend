@@ -225,34 +225,22 @@ userRouter.get("/validate/:id", asyncHandler(async (req, res) => {
     const userById = await UserModel.findById({ _id: userDBId });
     await UserModel.updateOne({ _id: userDBId }, { $set: { userValidated: true } });
     if (userById?.userType == "Entreprise") {
-        // SendEmail(
-        //   // "baseMail",
-        //   // "welcome",
-        //   userById.userEmail,
-        //   "Inscription terminée",
-        //   // {
-        //   //   name : userById.userName,
-        //   // }
-        // )
+        SendEmail("baseMail", "welcome", userById.userEmail, "Inscription terminée", {
+            name: userById.userName,
+        });
     }
     if (userById && userById.userType == "Particulier") {
-        // SendEmail(
-        //   // "baseMail",
-        //   // "welcome",
-        //   userById.userEmail,
-        //   "Inscription terminée",
-        //   // {
-        //   //   name : userById.userName,
-        //   // }
-        // )
+        SendEmail("baseMail", "welcome", userById.userEmail, "Inscription terminée", {
+            name: userById.userName,
+        });
     }
-    // let newNotification = {
-    //     userId  : userById?.userId,
-    //     title   : "Inscritpion réussie !",
-    //     message : "Félicitations ! Vous faites maintenant partie de la grande famille de notre plateforme.",
-    //     states  : "new",
-    // }
-    // await NotificationModel.create(newNotification);
+    let newNotification = {
+        userId: userById?.userId,
+        title: "Inscritpion réussie !",
+        message: "Félicitations ! Vous faites maintenant partie de la grande famille de notre plateforme.",
+        states: "new",
+    };
+    await NotificationModel.create(newNotification);
     res.status(200).send(userById?.userId);
 }));
 const generateTokenResponse = (user) => {
@@ -313,13 +301,7 @@ userRouter.patch("/passwordReset", asyncHandler(async (req, res) => {
         }
     }
     if (isValid && user) {
-        // SendEmail(
-        //   // "baseMail",
-        //   // "resetPassword",
-        //   user.userEmail,
-        //   "Mot de passe réinitialisé",
-        //   // {name : user.userName,}
-        // )
+        SendEmail("baseMail", "resetPassword", user.userEmail, "Mot de passe réinitialisé", { name: user.userName, });
     }
     res.send('Mot de passe réinitialisé');
 }));
@@ -344,16 +326,10 @@ userRouter.post("/requestResetPwd", asyncHandler(async (req, res) => {
     }).save();
     //on envoi le token non crypté pour le comparer avec le token crypté de la base de donnée
     const link = `${clientURL}/#/passwordReset/${resetToken}/${user._id}`;
-    // SendEmail(
-    //   // "requestResetPassword",
-    //   // "baseMail",
-    //   user.userEmail,
-    //   "Réinitialisation du mot de passe",
-    //   // {
-    //   //   name : user.userFirstname,
-    //   //   link : link,
-    //   // }
-    // )
+    SendEmail("requestResetPassword", "baseMail", user.userEmail, "Réinitialisation du mot de passe", {
+        name: user.userFirstname,
+        link: link,
+    });
 }));
 userRouter.get("", asyncHandler(async (req, res) => {
     const users = await UserModel.find();
