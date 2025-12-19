@@ -219,42 +219,7 @@ userRouter.post("/register/",asyncHandler(async(req, res) => {
           parrain1ID,
           parrain2ID,
       }
-      //SendEmail(userEmail,"Test réusssi !!");
-      userDb = await UserModel.create(newUser); 
-      
-      //   const mailOptions = {
-      //     from: 'contact@commercegestion.com',
-      //     to: "randrianaivo.dominique@gmail.com",
-      //     subject: "inscription ranix ✔",
-      //     text: "Félicitations ! Votre inscription a été réussie.", // plain‑text body
-      //     html: "<b>Félicitations ! Votre inscription a été réussie.</b>", // HTML body
-      //   };
-
-      //   const sendMail = async (transporter:any, mailOptions:any) => {
-      //     try {
-      //       const info = await transporter.sendMail(mailOptions);
-      //       console.log("Message sent successfully:", info.messageId);
-      //     } catch (error) {
-      //       console.log("Error while sending mail:", error);
-      //     }
-      //   };
-      // sendMail(transporter,mailOptions);
-
-      //---------------------------
-      //4. Envoi email (async/await propre)
-      //---------------------------
-      // try 
-      // {
-      //     const sendInfo = await transporter.sendMail(mailOptions);
-      //     if (sendInfo) {
-      //       console.log("Email envoyé : ", sendInfo.messageId);          
-      //     }else{
-      //       console.log("Erreur lors de l'envoi du mail");
-      //     }
-
-      // }catch(error){
-      //     console.error("Erreur lors de l'envoi de l'email : ", error);
-      // }      
+      userDb = await UserModel.create(newUser);      
     }
 
     tokenInfo = generateTokenResponse(userDb);

@@ -21,6 +21,9 @@ export const SendEmail = async (
     contextObject?: any
 ) => {
    
+        //--------------------------------------------
+        // 1. Création du transporteur de nodemailer
+        //--------------------------------------------
         const transporter = nodemailer.createTransport({
             host:EMAIL_HOST,
             port:EMAIL_PORT,
@@ -30,18 +33,24 @@ export const SendEmail = async (
                 pass:EMAIL_PASSWORD,
             }
         })
-
+        //------------------------------
+        // 2. Mise en place du template
+        //------------------------------
         transporter.use("compile", hbs({
             viewEngine: {
                 extname: '.handlebars',
-                layoutsDir: EMAIL_TEMPLATE_PATH,
                 defaultLayout: defaultLayout,
+                layoutsDir: EMAIL_TEMPLATE_PATH,
                 partialsDir: EMAIL_TEMPLATE_PATH,
             },
             viewPath: EMAIL_TEMPLATE_PATH,
             extName: '.handlebars',
         }))
 
+
+        //---------------------------
+        // 2. Verification de l'SMTP
+        //---------------------------
         await transporter.verify((error, success) => {
             if (error) {
                 console.error('Erreur de configuration du transporteur SMTP :', error);
@@ -61,9 +70,9 @@ export const SendEmail = async (
             template: templateName
         };
     try {
-        //---------------------------
+        //------------------------------------
         // 4. Envoi email (async/await propre)
-        //---------------------------
+        //------------------------------------
         const sendInfo = await transporter.sendMail(emailData);
         console.log("Email envoyé : ", sendInfo);
 

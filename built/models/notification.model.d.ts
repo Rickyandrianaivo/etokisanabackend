@@ -5,16 +5,16 @@ export interface INotification {
     message: string;
     state: string;
 }
-export declare const NotificationSchema: Schema<INotification, import("mongoose").Model<INotification, any, any, any, import("mongoose").Document<unknown, any, INotification, any, {}> & INotification & {
+export declare const NotificationSchema: Schema<INotification, import("mongoose").Model<INotification, any, any, any, import("mongoose").Document<unknown, any, INotification> & INotification & {
     _id: import("mongoose").Types.ObjectId;
 } & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, INotification, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<INotification>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<INotification> & {
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, INotification, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<INotification>> & import("mongoose").FlatRecord<INotification> & {
     _id: import("mongoose").Types.ObjectId;
 } & {
     __v: number;
 }>;
-export declare const NotificationModel: import("mongoose").Model<INotification, {}, {}, {}, import("mongoose").Document<unknown, {}, INotification, {}, {}> & INotification & {
+export declare const NotificationModel: import("mongoose").Model<INotification, {}, {}, {}, import("mongoose").Document<unknown, {}, INotification> & INotification & {
     _id: import("mongoose").Types.ObjectId;
 } & {
     __v: number;
