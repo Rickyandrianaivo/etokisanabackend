@@ -39,39 +39,6 @@
 // app.use("/api/transaction", transactionRouter);
 // app.use("/api/notification", notificationRouter);
 
-// console.log('Routeur OK')
-// // Create a test account or replace with real credentials.
-// const transporter = nodemailer.createTransport({
-//   // service: "gmail",
-//   host: "commercegestion.com",
-//   port: 587,
-//   secure: false, // true for 465, false for other ports
-//   auth: {
-//     user: "contact@commercegestion.com",
-//     pass: "Rzh398aNVtFZUu4",
-//   },
-// });
-// console.log('Transporteur OK')
-// const mailOptions = {
-//   from: 'contact@commercegestion.com',
-//   to: "randrianaivo.dominique@gmail.com",
-//   subject: "inscription Dominique 2 ✔",
-//   text: "inscription réussie !", // plain‑text body
-//   html: "<b>inscription réussie !</b>", // HTML body
-// };
-// console.log('mailOptions OK')
-// const sendMail = async (transporter:any, mailOptions:any) => {
-//   try {
-//     const info = await transporter.sendMail(mailOptions);
-//     console.log("Message sent successfully:", info.messageId);
-//   } catch (error) {
-//     console.log("Error while sending mail:", error);
-//   }
-// };
-
-// console.log('before sendMail OK')
-// sendMail(transporter, mailOptions);
-// console.log('after sendMail OK')
 
 // const port = 3000;
 // app.listen(port, () =>{
