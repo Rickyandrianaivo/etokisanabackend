@@ -15,6 +15,7 @@ class ServerDB {
     connectDB() {
         console.log("Connecting DB...");
         mongoose.connect(`${MONGO_URI}`, {}).then(() => console.log("DB connected successfuly")).catch((e) => console.log('Error when connect DB', e));
+        console.log(`Connected with IDS mongoDB cluster`);
     }
 }
 export default new ServerDB();
