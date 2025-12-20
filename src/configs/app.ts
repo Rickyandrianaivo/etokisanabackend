@@ -18,9 +18,12 @@ class Server {
     private appUse() {
         this.app.use(express.json({ limit: `${LIMIT}` }));
         this.app.use(express.urlencoded({ limit: `${LIMIT}`, extended: true }));
-        this.app.use(cors(
-            {origin:["https://www.commercegestion.com","https://commercegestion.com"]}
-        ));
+        this.app.use(cors({
+            origin:["https://www.commercegestion.com","https://commercegestion.com"],
+            credentials: true,
+            methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            allowedHeaders: ["Content-Type", "Authorization"]
+        }));
         this.app.use(fileUpload());
         this.app.use('/uploads', express.static('uploads'));
 
