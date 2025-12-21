@@ -219,9 +219,11 @@ userRouter.post("/register/",asyncHandler(async(req, res) => {
           parrain1ID,
           parrain2ID,
       }
+      //Creation du nouvel utilisateur
       userDb = await UserModel.create(newUser);      
     }
 
+    //Creation du token pour la vérification de l'email
     tokenInfo = generateTokenResponse(userDb);
       const tokenDB : Token = {
         userId    : tokenInfo._id,
@@ -229,23 +231,23 @@ userRouter.post("/register/",asyncHandler(async(req, res) => {
       }
       await TokenModel.create(tokenDB);
     
-    //Sending mail
+    //Préparation du lien de vérification de l'email
     const verificationLink = "https://www.commercegestion.com/#/user-confirmation/"+ tokenInfo.token;
-      if (userType == "Entreprise") {
-        SendEmail(
-        "baseMail",
-        "ValidationEntrepriseEmail",
-        userEmail,
-        "Bienvenue sur Etokisana",
-        {
-          name : raisonSocial,
-          link : verificationLink,
-        }
-        )
 
+      if (userType == "Entreprise") {//Envoi du mail spécial entreprise
+        SendEmail(
+          "baseMail",
+          "ValidationEntrepriseEmail",
+          userEmail,
+          "Bienvenue sur Etokisana",
+          {
+            name : raisonSocial,
+            link : verificationLink,
+          }
+        )
+        res.status(200).json({message:"Inscription réussie et email envoyé"});
       }
-      if(userType == "Particulier") {
-        try{
+      if(userType == "Particulier") {//Envoi du mail spécial particulier
           SendEmail(
             "baseMail",
             "ValidationEmail",
@@ -256,23 +258,16 @@ userRouter.post("/register/",asyncHandler(async(req, res) => {
               link : verificationLink,
             }
           )
-
-          res.status(200).json({message:"Inscription réussie et email envoyé"});
-        }catch (error){
-          console.error(error);
-          res.status(500).json({
-            message: " Erreur lors de l'envoi de l'Email"
-          })
+          res.status(200).json({message:"Inscription réussie et email envoyé"});    
         }
-        
-      }
-      let newNotification = {
+
+      let newNotification = {//préparation des informations pour une nouvelle notification
         userId  : userId,
         title   : "Inscription en attente",
         message : "Nous vous remercions de votre patience pendant la validation de votre insciption au sein de nos administrateurs",
         state  : "new",
       }
-      await NotificationModel.create(newNotification);
+      await NotificationModel.create(newNotification);//Création de la notification dans la base de donnée
       res.status(200).send(['Utilisateur créé !!!']);
 }
 ))
